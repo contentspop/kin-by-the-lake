@@ -2058,7 +2058,7 @@ function StoryScreen({
       gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,260px),1fr))',
       gap: 40
     }
-  }, [['The lake', 'Arrive by the stepping-stone path or by longtail from the pier.', 'garden-path'], ['The pavilion', 'A round bamboo room on the water, lit by red-tasselled lanterns.', 'pavilion-sunset'], ['The table', 'An oil lantern on every table, lazy Susans in the middle.', 'lantern']].map(([t, b, p]) => /*#__PURE__*/React.createElement("div", {
+  }, [['The lake', 'Arrive by the stepping-stone path or by longtail from the pier.', 'garden-path'], ['The pavilion', 'A round bamboo room on the water, lit by red-tasselled lanterns.', 'pavilion-sunset'], ['The table', 'An oil lantern on every table, and every dish set down to share.', 'lantern']].map(([t, b, p]) => /*#__PURE__*/React.createElement("div", {
     key: t,
     style: {
       display: 'flex',

@@ -42,7 +42,7 @@ function StoryScreen({ go }) {
     </Section>
     <Section bg="var(--lake-600)" color="var(--stone-50)">
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,260px),1fr))', gap: 40 }}>
-        {[['The lake', 'Arrive by the stepping-stone path or by longtail from the pier.', 'garden-path'], ['The pavilion', 'A round bamboo room on the water, lit by red-tasselled lanterns.', 'pavilion-sunset'], ['The table', 'An oil lantern on every table, lazy Susans in the middle.', 'lantern']].map(([t, b, p]) => (
+        {[['The lake', 'Arrive by the stepping-stone path or by longtail from the pier.', 'garden-path'], ['The pavilion', 'A round bamboo room on the water, lit by red-tasselled lanterns.', 'pavilion-sunset'], ['The table', 'An oil lantern on every table, and every dish set down to share.', 'lantern']].map(([t, b, p]) => (
           <div key={t} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div style={{ aspectRatio: '4/3', overflow: 'hidden' }}><img src={A_PH + p + '.png'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
             <span style={{ font: '400 22px/1.25 var(--font-display)', letterSpacing: '.04em' }}>{t}</span>

@@ -18,7 +18,7 @@ A lakeside dining destination in Phuket where the vibrant flavours of Phuket and
 
 ## Sources
 - `uploads/839785.jpg` — logo & identity board (primary/reversed/black/grey logos, colours, type, clear space, min size, social icon, applications, Good Food/People/Moments icons).
-- `uploads/837569630_…_n.jpg` — interior mood reference (toile tub chair, round table + lazy Susan, oil lantern, encaustic tile). The “DULANTA” wordmark on it is a third-party interior studio, not part of KIN.
+- `uploads/837569630_…_n.jpg` — interior mood reference (toile tub chair, round table, oil lantern, encaustic tile). The “DULANTA” wordmark on it is a third-party interior studio, not part of KIN.
 - `uploads/KIN Design System - Standalone.html` — previously approved KIN brand book (v1.0, Oct 2026). **Ground truth** for all rules, copy, values and component specs; its master logo PNGs, photography, fonts, icons and patterns were extracted programmatically into this project.
 - `uploads/KIN by the lake_presented_LR.pdf` — architecture/interior presentation (site plan, pavilion, terrace, hall renders). Renders used here came via the standalone brand book.
 - Brief pasted by the user (role, locked assets, palette, guardrails, touchpoints).
