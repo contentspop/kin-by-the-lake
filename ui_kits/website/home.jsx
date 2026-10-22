@@ -1,3 +1,4 @@
+const REF_PHOTOS = ["ref-01-wine-pour.jpg", "ref-02-cocktail-mint.jpg", "ref-03-sunset-window.jpg", "ref-04-table-sunset.jpg", "ref-05-toast-long-table.jpg", "ref-06-mezze-sharing.jpg", "ref-07-pizza-sharing.jpg", "ref-08-bar-warm-light.jpg", "ref-09-passing-plate-golden.jpg", "ref-10-passing-plate-lanterns.jpg", "ref-11-service-silhouettes.jpg"];
 function HomeScreen({ go, lang }) {
   const { Button, TextLink, ReflectionDevice, Card, MenuItem, Tag } = KS;
   const th = lang === 'th';
@@ -42,6 +43,21 @@ function HomeScreen({ go, lang }) {
         <Card eyebrow="Every Sunday · 12–4 pm" title="The Long Lunch" body="Four courses from both kitchens, passed round the table." cta="Reserve" onCta={() => go('reserve')} image={A_PH + 'terrace-dusk.png'} />
         <Card eyebrow="Daily · from 5:30 pm" title="Aperitivo by the lake" body="Spritz, small plates and the light going gold over the water." cta="Reserve" onCta={() => go('reserve')} image={A_PH + 'lantern.png'} />
         <Card variant="story" title="Porcelain Stories" body="The blue-and-white that links Phuket to the Italian coast." cta="Our story" onCta={() => go('story')} image={A_PH + 'toile-chair.png'} />
+      </div>
+    </Section>
+    <Section bg="var(--stone-100)">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
+        <span style={kinEyebrow}>The feeling</span>
+        <h2 style={kinH2}>Light, sharing, lanterns lit</h2>
+        <span style={{ alignSelf: 'flex-start', ...kinEyebrow, fontSize: 10, padding: '6px 10px', border: '1px solid var(--red-500)', color: 'var(--red-500)' }}>Reference pictures from Pinterest · for internal use only</span>
+      </div>
+      <div style={{ columns: '4 220px', columnGap: 12 }}>
+        {REF_PHOTOS.map((f) => (
+          <div key={f} style={{ position: 'relative', breakInside: 'avoid', marginBottom: 12 }}>
+            <img src={A_PH + 'reference/' + f} alt="" loading="lazy" style={{ width: '100%', height: 'auto', display: 'block' }} />
+            <span style={{ position: 'absolute', left: 8, bottom: 8, ...kinEyebrow, fontSize: 8, letterSpacing: '.18em', padding: '3px 6px', background: 'rgba(30,61,90,.78)', color: 'var(--stone-50)' }}>Pinterest ref · internal</span>
+          </div>
+        ))}
       </div>
     </Section>
     <Section bg="var(--lake-800)" color="var(--stone-50)" style={{ textAlign: 'center' }}>
