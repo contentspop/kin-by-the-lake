@@ -163,6 +163,7 @@
     '.kinc-note{font:400 10px/1.4 Montserrat,system-ui,sans-serif;color:#6B7A88;margin-right:auto}' +
     '#kinc-toast{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);z-index:2147483001;background:' + LAKE + ';color:' + OFF + ';padding:10px 16px;font:500 11px/1.4 Montserrat,system-ui,sans-serif;letter-spacing:.1em;box-shadow:0 6px 20px rgba(15,37,56,.28)}' +
     '#kinc-toast.err{background:' + RED + '}' +
+    '.kinq-done{background:#E3EEDF!important;color:#3F6B35!important;border-color:#B9D3AE!important}' +
     '@media print{#kinc-bar,#kinc-layer,#kinc-shield,#kinc-hint,#kinc-toast,.kinc-pop{display:none!important}}';
   var st = document.createElement('style'); st.id = 'kinc-style'; st.textContent = css; document.head.appendChild(st);
 
@@ -202,7 +203,19 @@
     var a = resolveAnchor(c.anchor), r = docRect(a);
     return { x: r.left + (+c.x || 0) * r.width, y: r.top + (+c.y || 0) * r.height };
   }
+  function markAnswered() {
+    var done = {};
+    comments.forEach(function (c) { var m = String(c.area || '').match(/^(Q\d+)\b/); if (m) done[m[1]] = (done[m[1]] || 0) + 1; });
+    document.querySelectorAll('[data-q]').forEach(function (el) {
+      var q = el.getAttribute('data-q'), n = done[q] || 0;
+      el.classList.toggle('kinq-done', n > 0);
+      var st = el.querySelector('.kinq-st'); if (st) st.textContent = n ? '✓ Answered' + (n > 1 ? ' ×' + n : '') : 'Answer →';
+    });
+    var tot = document.querySelectorAll('[data-q-row]').length, ans = document.querySelectorAll('[data-q-row].kinq-done').length;
+    var cnt = document.getElementById('kinq-count'); if (cnt) cnt.textContent = ans + ' of ' + tot + ' answered';
+  }
   function render() {
+    try { markAnswered(); } catch (e) {}
     layer.innerHTML = '';
     layer.style.display = showPins ? '' : 'none';
     document.getElementById('kinc-count').textContent = String(comments.length);
@@ -273,9 +286,9 @@
   function compose(base, px, py) {
     closePop();
     var pop = document.createElement('div'); pop.className = 'kinc-pop';
-    pop.innerHTML = '<div class="kinc-meta">New comment' + (base.area || base.section ? ' · ' + esc(base.area || base.section) : '') + '</div>' +
+    pop.innerHTML = '<div class="kinc-meta">' + (base.question ? 'Answer · ' + esc(base.question) : 'New comment' + (base.area || base.section ? ' · ' + esc(base.area || base.section) : '')) + '</div>' +
       '<input type="text" maxlength="120" placeholder="Your name" value="' + esc(lsGet('kinc-name', '')) + '">' +
-      '<textarea maxlength="1900" placeholder="What would you like to change?"></textarea>' +
+      '<textarea maxlength="1900" placeholder="' + (base.question ? 'Your answer' : 'What would you like to change?') + '"></textarea>' +
       '<div class="kinc-row"><button type="button" class="kinc-x" data-act="cancel">Cancel</button><button type="button" class="kinc-go" data-act="send">Send</button></div>';
     placePop(pop, px, py);
     var name = pop.querySelector('input'), txt = pop.querySelector('textarea');
@@ -313,6 +326,16 @@
     if (b.id === 'kinc-toggle') { showPins = !showPins; lsSet('kinc-show', showPins ? '1' : '0'); closePop(); render(); }
     if (b.id === 'kinc-pdf') exportPdf();
   });
+  document.addEventListener('click', function (e) {
+    var q = e.target.closest && e.target.closest('[data-q]:not([data-q-row])');
+    if (!q || isOurs(q)) return;
+    e.preventDefault(); e.stopPropagation(); setMode(false);
+    var a = anchorFor(q.closest('[data-screen-label]') || q.parentElement), r = docRect(a.el), qr = docRect(q);
+    var px = qr.left + Math.min(qr.width, 24), py = qr.top + qr.height / 2;
+    var qid = q.getAttribute('data-q'), qt = q.getAttribute('data-qt') || '';
+    compose({ anchor: a.key, section: sectionName(a.el), area: (qid + ' · ' + qt).slice(0, 180), clicked: 'Owner question ' + qid, question: qid + ' · ' + qt,
+      x: +((px - r.left) / r.width).toFixed(4), y: +((py - r.top) / r.height).toFixed(4) }, px, py);
+  }, true);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { setMode(false); closePop(); } });
   document.addEventListener('click', function (e) { if (openPop && !openPop.contains(e.target) && !e.target.closest('.kinc-pin') && !e.target.closest('#kinc-bar')) closePop(); });
   addEventListener('resize', function () { render(); });
