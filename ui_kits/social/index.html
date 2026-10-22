@@ -178,6 +178,36 @@
   .dir-posts { display: flex; flex-wrap: wrap; gap: 22px; }
   .phone.sm { width: 300px; }
   @media (max-width: 760px) { .dir { grid-template-columns: 1fr; } }
+  .phone.tall { width: 360px; }
+  .feeds { gap: 40px; }
+  .feed-l { font: 500 10px/1 var(--font-text-latin); letter-spacing: .24em; text-transform: uppercase; color: var(--brass-500); margin-bottom: 14px; }
+  .tray { display: flex; gap: 12px; padding: 4px 12px 12px; border-bottom: 1px solid #efefef; overflow: hidden; }
+  .tray div { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; width: 62px; flex: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tray .ring { width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; background: center/cover no-repeat; box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--brass-500); }
+  .tray .ring .av { width: 54px; height: 54px; }
+  .tray .ring.dim { box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #c7c7c7; filter: saturate(.9); }
+  .navbar { display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #efefef; padding: 10px 0 14px; font-size: 18px; }
+  .screen.fb { background: #f0f2f5; }
+  .fb-cover { aspect-ratio: 2.4/1; overflow: hidden; }
+  .fb-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .fb-id { background: #fff; padding: 0 14px 12px; }
+  .av.xl { width: 84px; height: 84px; margin-top: -42px; box-shadow: 0 0 0 4px #fff; position: relative; z-index: 2; }
+  .fb-nm { font-weight: 700; font-size: 19px; margin-top: 6px; }
+  .fb-intro { font-size: 12.5px; margin-top: 6px; }
+  .fb-btns { display: flex; gap: 6px; margin-top: 10px; }
+  .fb-btns span { flex: 1; text-align: center; background: #e4e6eb; border-radius: 6px; padding: 7px 0; font-size: 12.5px; font-weight: 600; }
+  .fb-btns span:last-child { flex: 0 0 40px; }
+  .fb-btns span.pri { background: var(--lake-600); color: #fff; }
+  .fb-tabs { display: flex; gap: 16px; background: #fff; padding: 10px 14px; border-top: 1px solid #e4e6eb; font-size: 12.5px; font-weight: 600; color: #65676b; }
+  .fb-tabs .on { color: var(--lake-600); border-bottom: 2px solid var(--lake-600); padding-bottom: 6px; margin-bottom: -10px; }
+  .fbp { background: #fff; margin-top: 8px; padding-bottom: 2px; }
+  .fb-cnt { display: flex; justify-content: space-between; padding: 8px 12px 0; font-size: 11.5px; color: #65676b; }
+  .album { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 2px; aspect-ratio: 1/1; }
+  .album div { position: relative; overflow: hidden; }
+  .album img { width: 100%; height: 100%; object-fit: cover; }
+  .album .a1 { grid-row: span 2; }
+  .album .a3 b { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,.42); color: #fff; font-size: 22px; }
+  .ev-btn { margin-left: auto; background: #e4e6eb; border-radius: 6px; padding: 6px 8px; font-size: 11px; font-weight: 600; white-space: nowrap; }
   .note { margin-top: 14px; font: 400 11.5px/1.6 var(--font-text-latin); color: var(--muted); max-width: 340px; }
   footer.pg { padding: 72px 0 96px; text-align: center; font: 400 12px/1.6 var(--font-text-latin); color: var(--muted); }
   footer.pg em { font-family: var(--font-display); font-style: normal; color: var(--ink); letter-spacing: .08em; }
@@ -192,7 +222,7 @@
     <h1>Social media preview</h1>
     <p>How KIN shows up on Instagram, Facebook and LINE OA, built from section 08 of the brand book: headlines of six words or fewer, text on sky or water only, a Lake Blue scrim and never black, and the logo or reflection device used once per frame.</p>
     <span class="refnote">Red-badged images are Pinterest references · internal use only</span>
-    <nav class="jump"><a href="#voice">Caption directions</a><a href="#ig">Instagram profile</a><a href="#feed">Feed posts</a><a href="#stories">Stories</a><a href="#carousel">Carousel</a><a href="#reels">Reels</a><a href="#fb">Facebook</a><a href="#line">LINE OA</a></nav>
+    <nav class="jump"><a href="#voice">Caption directions</a><a href="#feeds">IG &amp; FB feeds</a><a href="#ig">Instagram profile</a><a href="#feed">Feed posts</a><a href="#stories">Stories</a><a href="#carousel">Carousel</a><a href="#reels">Reels</a><a href="#fb">Facebook</a><a href="#line">LINE OA</a></nav>
   </div>
 </header>
 
@@ -204,10 +234,21 @@
   </div>
 </section>
 
+<!-- FEEDS -->
+<section class="block" id="feeds" data-screen-label="IG and Facebook feeds">
+  <div class="wrap">
+    <header><span class="eyebrow">01 · In the feed</span><h2>Instagram &amp; Facebook feeds</h2><p class="spec">How KIN looks while someone scrolls: Instagram home feed with the stories tray, and the Facebook page with cover, Reserve button and a mix of single-photo, album and event posts. KIN images mixed with Pinterest references (red badge). Likes and follower counts are illustrative.</p></header>
+    <div class="row feeds">
+      <div><div class="feed-l">Instagram · home feed</div><div class="phone tall"><div class="screen"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="apphead"><span style="font-family:Georgia,serif;font-style:italic;font-size:19px;font-weight:400">Feed</span><span>♡ ✉︎</span></div><div class="tray"><div><i class="ring"><span class="av"></span></i>kinbythelake</div><div><i class="ring dim" style="background-image:url(../../assets/photos/lantern.png)"></i>phuket.eats</div><div><i class="ring dim" style="background-image:url(../../assets/photos/reference/ref-02-cocktail-mint.jpg)"></i>sunset.club</div><div><i class="ring dim" style="background-image:url(../../assets/photos/garden-path.png)"></i>visit.phuket</div><div><i class="ring dim" style="background-image:url(../../assets/photos/reference/ref-08-bar-warm-light.jpg)"></i>bar.notes</div></div><div class="post-h"><div class="av"></div><div><div class="who">kinbythelake</div><div class="loc">[Lake], Phuket</div></div><span style="margin-left:auto;font-weight:700">···</span></div><div class="media m45"><img src="../../assets/photos/pavilion-sunset.png" alt=""><div class="scrim-top"></div><div class="onimg" style="top:9%"><div class="hd">Lunch that turns into sunset.</div><div class="sm">มื้อกลางวันที่ยาวไปจนพระอาทิตย์ตก</div></div></div><div class="acts"><svg class="ico" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="M21 4 3 11l7 2 2 7z"/></svg><span class="sp"></span><svg class="ico" viewBox="0 0 24 24"><path d="M6 4h12v16l-6-4-6 4z"/></svg></div><div class="cap"><b>1,204 likes</b><br><b>kinbythelake</b> Order a few. Pass them round. Stay for the light.<br><span class="th">สั่งมาสักหน่อย ส่งต่อกันรอบโต๊ะ แล้วอยู่ดูแสงสุดท้ายด้วยกัน</span><br><span class="muted">View all comments · 2h ago</span></div><div class="post-h"><div class="av"></div><div><div class="who">kinbythelake</div><div class="loc">Phuket kitchen</div></div><span style="margin-left:auto;font-weight:700">···</span></div><div class="media m45"><img src="../../assets/photos/reference/ref-06-mezze-sharing.jpg" alt=""><span class="ref">Pinterest ref · internal</span></div><div class="dots"><i class="on"></i><i></i><i></i><i></i></div><div class="acts"><svg class="ico" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="M21 4 3 11l7 2 2 7z"/></svg><span class="sp"></span><svg class="ico" viewBox="0 0 24 24"><path d="M6 4h12v16l-6-4-6 4z"/></svg></div><div class="cap"><b>862 likes</b><br><b>kinbythelake</b> Phuket on one side of the menu. Italia on the other. Never mixed, always shared.<br><span class="th">ครัวภูเก็ตหนึ่งฝั่ง ครัวอิตาเลียนอีกฝั่ง ไม่ผสม แต่แบ่งกันกินเสมอ</span><br><span class="muted">View all comments · 1d ago</span></div><div class="post-h"><div class="av"></div><div><div class="who">kinbythelake</div><div class="loc">Lantern Terrace</div></div><span style="margin-left:auto;font-weight:700">···</span></div><div class="media m45"><img src="../../assets/photos/terrace-night.png" alt=""><div class="scrim-top"></div><div class="onimg" style="top:9%"><div class="hd">The lanterns are lit.</div></div></div><div class="acts"><svg class="ico" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="M21 4 3 11l7 2 2 7z"/></svg><span class="sp"></span><svg class="ico" viewBox="0 0 24 24"><path d="M6 4h12v16l-6-4-6 4z"/></svg></div><div class="cap"><b>978 likes</b><br><b>kinbythelake</b> Sunset tables from 5:30. Reserve via LINE: kinbythelake.<br><span class="th">โต๊ะชมพระอาทิตย์ตกตั้งแต่ 17:30</span><br><span class="muted">View all comments · 3d ago</span></div><div class="navbar"><span>⌂</span><span>⌕</span><span>⊕</span><span>▷</span><span class="av" style="width:22px;height:22px"></span></div></div></div></div>
+      <div><div class="feed-l">Facebook · page</div><div class="phone tall"><div class="screen fb"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="fb-cover"><img src="../../assets/photos/pavilion-sunset.png" alt=""></div><div class="fb-id"><div class="av xl"></div><div class="fb-nm">KIN by the Lake</div><div class="muted">Restaurant · Phuket · [followers]</div><div class="fb-intro">Two kitchens. One table. Phuket-Peranakan and Italia, by the lake.</div><div class="fb-btns"><span class="pri">📅 Reserve</span><span>💬 Message</span><span>···</span></div></div><div class="fb-tabs"><span class="on">Posts</span><span>About</span><span>Menu</span><span>Photos</span><span>Events</span></div><div class="fbp"><div class="fb-h"><div class="av"></div><div><div class="who">KIN by the Lake</div><div class="muted">3h · 🌐</div></div><span style="margin-left:auto;font-weight:700;color:#65676b">···</span></div><div class="fb-txt">Lunch runs long here, and nobody minds. Order a few, pass them round, stay for the light.<br><span style="font-family:var(--font-read-thai)">มื้อกลางวันที่นี่ยาวเสมอ และไม่มีใครรีบ</span></div><div class="media" style="aspect-ratio:4/5"><img src="../../assets/photos/reference/ref-09-passing-plate-golden.jpg" alt=""><span class="ref">Pinterest ref · internal</span></div><div class="fb-cnt"><span>👍❤️ 412</span><span>28 comments · 9 shares</span></div><div class="fb-acts"><span>👍 Like</span><span>💬 Comment</span><span>↗ Share</span></div></div><div class="fbp"><div class="fb-h"><div class="av"></div><div><div class="who">KIN by the Lake</div><div class="muted">1d · 🌐</div></div><span style="margin-left:auto;font-weight:700;color:#65676b">···</span></div><div class="fb-txt">New photos from opening week · The Hall, the Pavilion and a lot of passing plates.</div><div class="album"><div class="a1"><img src="../../assets/photos/dining-hall.png" alt=""></div><div class="a2"><img src="../../assets/photos/reference/ref-05-toast-long-table.jpg" alt=""><span class="ref">Pinterest ref</span></div><div class="a3"><img src="../../assets/photos/reference/ref-10-passing-plate-lanterns.jpg" alt=""><span class="ref">Pinterest ref</span><b>+9</b></div></div><div class="fb-cnt"><span>👍❤️ 681</span><span>44 comments · 23 shares</span></div><div class="fb-acts"><span>👍 Like</span><span>💬 Comment</span><span>↗ Share</span></div></div><div class="fbp"><div class="fb-h"><div class="av"></div><div><div class="who">KIN by the Lake</div><div class="muted">2d · 🌐</div></div><span style="margin-left:auto;font-weight:700;color:#65676b">···</span></div><div class="fb-txt">The Long Lunch is back this Sunday. Four courses from both kitchens, passed round the table, from 12 until the light changes.</div><div class="media" style="aspect-ratio:1.91/1"><img src="../../assets/photos/terrace-dusk.png" alt=""></div><div class="fb-ev"><div class="meta"><div class="dt"><b>SUN</b><span>[ ]</span></div><div><div class="t">The Long Lunch · Every Sunday</div><div class="s">12:00–16:00 · [Lake address] · [price] per guest</div></div><span class="ev-btn">☆ Interested</span></div></div><div class="fb-cnt"><span>👍❤️ 305</span><span>19 comments · 40 shares</span></div><div class="fb-acts"><span>👍 Like</span><span>💬 Comment</span><span>↗ Share</span></div></div></div></div></div>
+    </div>
+  </div>
+</section>
+
 <!-- INSTAGRAM PROFILE -->
 <section class="block" id="ig" data-screen-label="Instagram profile">
   <div class="wrap">
-    <header><span class="eyebrow">01 · Instagram</span><h2>The grid</h2><p class="spec">3:4 grid crops. Every third tile carries a headline, the rest let the photograph speak. Highlights use brass line icons on Lake Blue.</p></header>
+    <header><span class="eyebrow">02 · Instagram</span><h2>The grid</h2><p class="spec">3:4 grid crops. Every third tile carries a headline, the rest let the photograph speak. Highlights use brass line icons on Lake Blue.</p></header>
     <div class="row">
       <div class="phone"><div class="screen">
         <div class="status"><span>9:41</span><span>●●● ▮</span></div>
@@ -250,7 +291,7 @@
 <!-- FEED POSTS -->
 <section class="block" id="feed" data-screen-label="Feed posts">
   <div class="wrap">
-    <header><span class="eyebrow">02 · Feed · 1080×1350</span><h2>Feed posts</h2><p class="spec">Headline 6 words or fewer, one language large and one small. Text sits on sky or water, never across faces, food or the lanterns. Food posts carry no text on the image.</p></header>
+    <header><span class="eyebrow">03 · Feed · 1080×1350</span><h2>Feed posts</h2><p class="spec">Headline 6 words or fewer, one language large and one small. Text sits on sky or water, never across faces, food or the lanterns. Food posts carry no text on the image.</p></header>
     <div class="row">
 
       <div class="phone"><div class="screen">
@@ -284,7 +325,7 @@
 <!-- STORIES -->
 <section class="block" id="stories" data-screen-label="Stories">
   <div class="wrap">
-    <header><span class="eyebrow">03 · Stories · 1080×1920</span><h2>Stories</h2><p class="spec">Safe area: 250 px top, 340 px bottom. One sticker per frame. Brass sticker for the call to action, white link sticker for LINE.</p></header>
+    <header><span class="eyebrow">04 · Stories · 1080×1920</span><h2>Stories</h2><p class="spec">Safe area: 250 px top, 340 px bottom. One sticker per frame. Brass sticker for the call to action, white link sticker for LINE.</p></header>
     <div class="row">
       <div class="story"><img src="../../assets/photos/terrace-night.png" alt="Terrace at night"><div class="scrim-bot" style="z-index:1"></div>
         <div class="bars"><i class="on"></i><i></i><i></i></div><div class="sh"><span class="av"></span>kinbythelake</div>
@@ -306,7 +347,7 @@
 <!-- CAROUSEL -->
 <section class="block" id="carousel" data-screen-label="Carousel">
   <div class="wrap">
-    <header><span class="eyebrow">04 · Carousel · cover → content → close · max 7</span><h2>Two kitchens, one table</h2><p class="spec">A menu-led carousel: cover, one dish per kitchen, the room, then a close that points to LINE. Each kitchen keeps its own slide.</p></header>
+    <header><span class="eyebrow">05 · Carousel · cover → content → close · max 7</span><h2>Two kitchens, one table</h2><p class="spec">A menu-led carousel: cover, one dish per kitchen, the room, then a close that points to LINE. Each kitchen keeps its own slide.</p></header>
     <div class="car">
       <div class="slide dark"><img class="full" src="../../assets/photos/dining-hall.png" alt="Dining hall"><div class="scrim-bot" style="z-index:1;height:70%"></div><span class="num">01 / 05</span>
         <div class="body" style="text-align:center;align-items:center"><div class="n">Two Kitchens, One Table</div><img src="../../assets/logo/reflection-brass.png" alt="" style="width:50px"></div></div>
@@ -325,7 +366,7 @@
 <!-- REELS -->
 <section class="block" id="reels" data-screen-label="Reels">
   <div class="wrap">
-    <header><span class="eyebrow">05 · Reels cover</span><h2>Reels covers</h2><p class="spec">Title sits inside the centre 3:4 (dashed) so it survives the grid crop. Locked-off or slow dolly, natural sound.</p></header>
+    <header><span class="eyebrow">06 · Reels cover</span><h2>Reels covers</h2><p class="spec">Title sits inside the centre 3:4 (dashed) so it survives the grid crop. Locked-off or slow dolly, natural sound.</p></header>
     <div class="row">
       <div class="story"><img src="../../assets/photos/garden-path.png" alt="Garden path"><div style="position:absolute;inset:0;background:rgba(30,61,90,.35);z-index:1"></div>
         <div class="reelc"><div><div class="e">ARRIVAL</div><div class="t">Path to the Lake</div></div></div><svg class="play" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div>
@@ -340,7 +381,7 @@
 <!-- FACEBOOK -->
 <section class="block" id="fb" data-screen-label="Facebook">
   <div class="wrap">
-    <header><span class="eyebrow">06 · Facebook</span><h2>Facebook event post</h2><p class="spec">Facebook carries events and practical details. Same photography and voice, a little more information.</p></header>
+    <header><span class="eyebrow">07 · Facebook</span><h2>Facebook event post</h2><p class="spec">Facebook carries events and practical details. Same photography and voice, a little more information.</p></header>
     <div class="row">
       <div class="phone"><div class="screen">
         <div class="fb-h"><div class="av"></div><div><div class="who">KIN by the Lake</div><div class="muted">Sponsored · 🌐</div></div></div>
@@ -357,7 +398,7 @@
 <!-- LINE OA -->
 <section class="block" id="line" data-screen-label="LINE OA">
   <div class="wrap">
-    <header><span class="eyebrow">07 · LINE OA</span><h2>LINE OA chat &amp; rich menu</h2><p class="spec">Rich menu 2500×1686, 6 tiles. Thai label leads (Kanit 300), English below (Montserrat 500 caps). Tiles 2 px apart with a brass hairline. The Reserve tile is the only photo tile.</p></header>
+    <header><span class="eyebrow">08 · LINE OA</span><h2>LINE OA chat &amp; rich menu</h2><p class="spec">Rich menu 2500×1686, 6 tiles. Thai label leads (Kanit 300), English below (Montserrat 500 caps). Tiles 2 px apart with a brass hairline. The Reserve tile is the only photo tile.</p></header>
     <div class="row">
       <div class="phone"><div class="screen">
         <div class="status"><span>9:41</span><span>●●● ▮</span></div>
