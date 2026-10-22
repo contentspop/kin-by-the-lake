@@ -23,4 +23,12 @@ function Footer({ onNavigate }) {
     </footer>
   );
 }
-Object.assign(window, { KS, A_LOGO, A_PH, kinEyebrow, kinH2, kinBody, Section, Footer });
+function RefPhoto({ file, ratio = '4/5', style }) {
+  return (
+    <div style={{ position: 'relative', aspectRatio: ratio, overflow: 'hidden', ...style }}>
+      <img src={A_PH + 'reference/' + file} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+      <span style={{ position: 'absolute', left: 8, bottom: 8, ...kinEyebrow, fontSize: 8, letterSpacing: '.18em', padding: '3px 6px', background: 'rgba(168,65,46,.88)', color: 'var(--stone-50)' }}>Pinterest ref · internal</span>
+    </div>
+  );
+}
+Object.assign(window, { KS, A_LOGO, A_PH, kinEyebrow, kinH2, kinBody, Section, Footer, RefPhoto });

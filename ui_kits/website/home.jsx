@@ -22,6 +22,11 @@ function HomeScreen({ go, lang }) {
         <p style={{ ...kinBody, font: '300 16px/1.75 var(--font-read-thai)' }}>อาหารสองครัว ภูเก็ต-เปอรานากันและอิตาเลียน เสิร์ฟบนโต๊ะกลมเดียวกัน</p>
       </div>
     </Section>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,280px),1fr))', gap: 4 }}>
+      <RefPhoto file="ref-04-table-sunset.jpg" ratio="4/5" />
+      <RefPhoto file="ref-09-passing-plate-golden.jpg" ratio="4/5" />
+      <RefPhoto file="ref-03-sunset-window.jpg" ratio="4/5" />
+    </div>
     <Section bg="var(--stone-100)">
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,420px),1fr))', gap: 'clamp(32px,5vw,72px)', alignItems: 'center' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -55,7 +60,7 @@ function HomeScreen({ go, lang }) {
         {REF_PHOTOS.map((f) => (
           <div key={f} style={{ position: 'relative', breakInside: 'avoid', marginBottom: 12 }}>
             <img src={A_PH + 'reference/' + f} alt="" loading="lazy" style={{ width: '100%', height: 'auto', display: 'block' }} />
-            <span style={{ position: 'absolute', left: 8, bottom: 8, ...kinEyebrow, fontSize: 8, letterSpacing: '.18em', padding: '3px 6px', background: 'rgba(30,61,90,.78)', color: 'var(--stone-50)' }}>Pinterest ref · internal</span>
+            <span style={{ position: 'absolute', left: 8, bottom: 8, ...kinEyebrow, fontSize: 8, letterSpacing: '.18em', padding: '3px 6px', background: 'rgba(168,65,46,.88)', color: 'var(--stone-50)' }}>Pinterest ref · internal</span>
           </div>
         ))}
       </div>

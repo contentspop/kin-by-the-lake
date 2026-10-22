@@ -18,6 +18,11 @@ function ReserveScreen({ go }) {
           <p style={kinBody}>Long lunches, dinners that linger. Tell us when, and who is coming.</p>
           <div style={{ aspectRatio: '4/3', overflow: 'hidden', marginTop: 8 }}><img src={A_PH + 'terrace-night.png'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
           <DataTable columns={[{ key: 's', label: 'Space' }, { key: 'a', label: 'Seated' }, { key: 'b', label: 'Standing' }]} rows={[{ s: 'Pavilion', a: 14, b: 20 }, { s: 'Lantern Terrace', a: 40, b: 70 }, { s: 'Dining Hall', a: 80, b: 120 }]} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,minmax(0,1fr))', gap: 8 }}>
+            <RefPhoto file="ref-04-table-sunset.jpg" ratio="1/1" />
+            <RefPhoto file="ref-02-cocktail-mint.jpg" ratio="1/1" />
+            <RefPhoto file="ref-11-service-silhouettes.jpg" ratio="1/1" />
+          </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 18, background: 'var(--stone-0)', border: '1px solid var(--stone-300)', padding: 'clamp(20px,3vw,36px)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>

@@ -26,6 +26,20 @@ function StoryScreen({ go }) {
         <div style={{ aspectRatio: '4/5', overflow: 'hidden' }}><img src={A_PH + 'dining-hall.png'} alt="The dining hall: indigo toile chairs, rattan pendants, lantern light" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
       </div>
     </Section>
+    <Section>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 32 }}>
+        <span style={kinEyebrow}>At the table</span>
+        <h2 style={kinH2}>Pass it round. That's the point.</h2>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,260px),1fr))', gap: 12 }}>
+        <RefPhoto file="ref-05-toast-long-table.jpg" ratio="3/4" />
+        <div style={{ display: 'grid', gap: 12 }}>
+          <RefPhoto file="ref-07-pizza-sharing.jpg" ratio="4/3" />
+          <RefPhoto file="ref-11-service-silhouettes.jpg" ratio="4/3" />
+        </div>
+        <RefPhoto file="ref-10-passing-plate-lanterns.jpg" ratio="3/4" />
+      </div>
+    </Section>
     <Section bg="var(--lake-600)" color="var(--stone-50)">
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,260px),1fr))', gap: 40 }}>
         {[['The lake', 'Arrive by the stepping-stone path or by longtail from the pier.', 'garden-path'], ['The pavilion', 'A round bamboo room on the water, lit by red-tasselled lanterns.', 'pavilion-sunset'], ['The table', 'An oil lantern on every table, lazy Susans in the middle.', 'lantern']].map(([t, b, p]) => (
