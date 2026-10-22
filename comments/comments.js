@@ -64,6 +64,52 @@
     return { left: r.left + scrollX, top: r.top + scrollY, width: r.width || 1, height: r.height || 1 };
   }
 
+  function clean(t, n) { return String(t || '').replace(/\s+/g, ' ').trim().slice(0, n || 90); }
+  function isOurs(el) { return !!(el && el.closest && el.closest('#kinc-bar,#kinc-layer,.kinc-pop,#kinc-shield,#kinc-hint,#kinc-toast')); }
+  // nearest heading / label above (or at) the click point, inside the anchor
+  function areaFor(anchorEl, px, py) {
+    var root = anchorEl === document.body ? document.body : anchorEl;
+    var cands = root.querySelectorAll('h1,h2,h3,h4,h5,h6,figcaption,legend,label,th,strong,span,div,p,a,button');
+    var best = null, bestScore = 1e9;
+    for (var i = 0; i < cands.length; i++) {
+      var el = cands[i];
+      if (isOurs(el)) continue;
+      var isHead = /^(H[1-6]|FIGCAPTION|LEGEND|LABEL|TH)$/.test(el.tagName);
+      if (!isHead) {
+        if (el.children.length > 1) continue;
+        var cs = getComputedStyle(el);
+        var labelish = cs.textTransform === 'uppercase' || parseInt(cs.fontWeight, 10) >= 500 || /Cinzel/i.test(cs.fontFamily);
+        if (!labelish) continue;
+      }
+      var t = clean(el.textContent, 120);
+      if (t.length < 2 || t.length > 80) continue;
+      var r = el.getBoundingClientRect(); if (!r.width || !r.height) continue;
+      var top = r.top + scrollY, bottom = r.bottom + scrollY, left = r.left + scrollX;
+      if (top > py + 6) continue;                       // must start above / at the click
+      var dy = Math.max(0, py - bottom);
+      var inCol = px >= left - 40 && px <= left + Math.max(r.width, 560);
+      var score = dy + (inCol ? 0 : 700) - (isHead ? 40 : 0);
+      if (dy > 1600) continue;
+      if (score < bestScore) { bestScore = score; best = t; }
+    }
+    return best || '';
+  }
+  // what the pin sits on: text under the cursor, or the image
+  function clickedOn(target, cx, cy) {
+    if (target && target.tagName === 'IMG') {
+      var src = (target.getAttribute('src') || '').split('/').pop();
+      return 'Image: ' + clean(target.alt || src, 80);
+    }
+    var range = document.caretRangeFromPoint ? document.caretRangeFromPoint(cx, cy) : null;
+    var node = range && range.startContainer;
+    if (node && node.nodeType === 3) { var t = clean(node.textContent, 90); if (t.length > 1) return '“' + t + '”'; }
+    var bg = target && getComputedStyle(target).backgroundImage;
+    if (bg && bg !== 'none' && !/gradient/.test(bg)) return 'Image: ' + clean(bg.replace(/^url\(["']?|["']?\)$/g, '').split('/').pop(), 80);
+    var txt = target ? clean(target.innerText || '', 90) : '';
+    return txt ? '“' + txt + '”' : '';
+  }
+  function pageUrl() { return location.href.split('#')[0] + (window.KIN_SCREEN ? '#screen=' + window.KIN_SCREEN : ''); }
+
   /* ---------- transport (JSONP so responses are readable cross-origin) ---------- */
   function jsonp(params) {
     return new Promise(function (resolve, reject) {
@@ -89,7 +135,7 @@
       var all = previewStore(); c.id = 'p' + Date.now(); c.ts = new Date().toISOString(); all.push(c); lsSet('kinc-preview', JSON.stringify(all));
       return Promise.resolve({ ok: true, id: c.id, ts: c.ts });
     }
-    return jsonp({ action: 'add', page: c.page, section: c.section, anchor: c.anchor, x: c.x, y: c.y, name: c.name, comment: c.comment, url: location.href.split('#')[0] + (window.KIN_SCREEN ? '#screen=' + window.KIN_SCREEN : '') })
+    return jsonp({ action: 'add', page: c.page, section: c.section, area: c.area, clicked: c.clicked, anchor: c.anchor, x: c.x, y: c.y, name: c.name, comment: c.comment, url: pageUrl() })
       .then(function (r) { if (!r.ok) throw new Error(r.error || 'error'); return r; });
   }
 
@@ -174,7 +220,7 @@
     var pop = document.createElement('div'); pop.className = 'kinc-pop';
     pop.innerHTML = '<div class="kinc-meta">#' + (i + 1) + ' · ' + esc(c.name || 'Guest') + (c.ts ? ' · ' + esc(fmtDate(c.ts)) : '') + '</div>' +
       '<div class="kinc-body">' + esc(c.comment) + '</div>' +
-      '<div class="kinc-row" style="margin-top:10px">' + (c.section ? '<span class="kinc-note">' + esc(c.section) + '</span>' : '') +
+      '<div class="kinc-row" style="margin-top:10px">' + (c.section || c.area ? '<span class="kinc-note">' + esc([c.section, c.area].filter(Boolean).join(' · ')) + '</span>' : '') +
       (c.id && !PREVIEW ? '<button type="button" class="kinc-x" data-act="link">Copy link</button>' : '') +
       '<button type="button" class="kinc-go" data-act="close">Close</button></div>';
     pop.addEventListener('click', function (e) {
@@ -216,15 +262,17 @@
     e.stopPropagation();
     shield.style.pointerEvents = 'none'; layer.style.pointerEvents = 'none';
     var target = document.elementFromPoint(e.clientX, e.clientY);
+    var clicked = clickedOn(target, e.clientX, e.clientY);
     layer.style.pointerEvents = '';
     setMode(false);
     var a = anchorFor(target), r = docRect(a.el), px = e.clientX + scrollX, py = e.clientY + scrollY;
-    compose({ anchor: a.key, section: sectionName(a.el), x: +((px - r.left) / r.width).toFixed(4), y: +((py - r.top) / r.height).toFixed(4) }, px, py);
+    var area = areaFor(a.el, px, py), sec = sectionName(a.el);
+    compose({ anchor: a.key, section: sec, area: area, clicked: clicked, x: +((px - r.left) / r.width).toFixed(4), y: +((py - r.top) / r.height).toFixed(4) }, px, py);
   }
   function compose(base, px, py) {
     closePop();
     var pop = document.createElement('div'); pop.className = 'kinc-pop';
-    pop.innerHTML = '<div class="kinc-meta">New comment' + (base.section ? ' · ' + esc(base.section) : '') + '</div>' +
+    pop.innerHTML = '<div class="kinc-meta">New comment' + (base.area || base.section ? ' · ' + esc(base.area || base.section) : '') + '</div>' +
       '<input type="text" maxlength="120" placeholder="Your name" value="' + esc(lsGet('kinc-name', '')) + '">' +
       '<textarea maxlength="1900" placeholder="What would you like to change?"></textarea>' +
       '<div class="kinc-row"><button type="button" class="kinc-x" data-act="cancel">Cancel</button><button type="button" class="kinc-go" data-act="send">Send</button></div>';
@@ -240,7 +288,7 @@
     function send() {
       var comment = txt.value.trim(); if (!comment) { txt.focus(); return; }
       var nm = name.value.trim() || 'Guest'; lsSet('kinc-name', nm);
-      var c = { page: pageKey(), section: (pageName() + (base.section ? ' · ' + base.section : '')).slice(0, 180), anchor: base.anchor, x: base.x, y: base.y, name: nm, comment: comment, _sending: true };
+      var c = { page: pageKey(), section: (pageName() + (base.section ? ' · ' + base.section : '')).slice(0, 180), area: base.area || '', clicked: base.clicked || '', anchor: base.anchor, x: base.x, y: base.y, name: nm, comment: comment, _sending: true };
       closePop(); showPins = true; comments.push(c); render();
       saveComment(c).then(function (r) { c.id = r.id; c.ts = r.ts || new Date().toISOString(); c._sending = false; render(); toast(PREVIEW ? 'Saved in this browser (preview mode)' : 'Comment sent. Thank you!'); })
         .catch(function () { comments.splice(comments.indexOf(c), 1); render(); toast('Could not send. Please try again.', true); });

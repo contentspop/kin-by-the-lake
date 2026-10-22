@@ -67,7 +67,7 @@ function out_(obj, callback) {
 }
 
 // GET ?action=list&page=<page key>&callback=<fn>  → open comments for that page
-// GET ?action=add&page=…&section=…&anchor=…&x=…&y=…&name=…&comment=…&url=…&callback=<fn>  → save one
+// GET ?action=add&page=…&section=…&area=…&clicked=…&anchor=…&x=…&y=…&name=…&comment=…&url=…&callback=<fn>  → save one
 function doGet(e) {
   var p = (e && e.parameter) || {};
   var cb = /^[A-Za-z_$][\w$.]*$/.test(p.callback || '') ? p.callback : '';
@@ -86,7 +86,7 @@ function doGet(e) {
         list.push({
           id: pg.id.replace(/-/g, ''), ts: pg.created_time,
           comment: plain_(pr['Comment']), name: plain_(pr['Name']),
-          page: plain_(pr['Page']), section: plain_(pr['Section']), anchor: plain_(pr['Anchor']),
+          page: plain_(pr['Page']), section: plain_(pr['Section']), area: plain_(pr['Area']), anchor: plain_(pr['Anchor']),
           x: pr['X'] && pr['X'].number, y: pr['Y'] && pr['Y'].number
         });
       });
@@ -117,6 +117,8 @@ function save_(d) {
         'Name': text_(name),
         'Page': text_(d.page),
         'Section': text_(d.section),
+        'Area': text_(d.area),
+        'Clicked on': text_(d.clicked),
         'Anchor': text_(d.anchor),
         'X': { number: Number(d.x) || 0 },
         'Y': { number: Number(d.y) || 0 },
@@ -126,13 +128,17 @@ function save_(d) {
     var id = page.id.replace(/-/g, '');
     var base = String(d.url || '');
     var link = base ? base + (base.indexOf('#') >= 0 ? '&' : '#') + 'pin=' + id : '';
-    if (link) notion_('patch', '/pages/' + page.id, { properties: { 'Open on page': { url: link } } });
+    if (link) notion_('patch', '/pages/' + page.id, { properties: { 'Open on page': { url: link }, 'Page URL': { url: base } } });
     if (NOTIFY_BY_EMAIL) {
       try {
         MailApp.sendEmail(Session.getEffectiveUser().getEmail(),
-          'KIN · new comment from ' + name + (d.section ? ' · ' + d.section : ''),
-          name + ' commented on ' + (d.page || 'the site') + (d.section ? ' (' + d.section + ')' : '') + ':\n\n' +
-          comment + '\n\nOpen on page: ' + link + '\nIn Notion: ' + page.url);
+          'KIN · new comment from ' + name + ' · ' + (d.area || d.section || d.page || 'site'),
+          name + ' commented:\n\n' + comment + '\n\n' +
+          'Where:   ' + (d.section || d.page || '') + (d.area ? '  ›  ' + d.area : '') + '\n' +
+          (d.clicked ? 'On:      ' + d.clicked + '\n' : '') +
+          'Page:    ' + base + '\n' +
+          'Pin:     ' + link + '\n' +
+          'Notion:  ' + page.url);
       } catch (mailErr) { /* email is best-effort */ }
     }
     return { ok: true, id: id, ts: page.created_time };
