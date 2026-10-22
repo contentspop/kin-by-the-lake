@@ -1,0 +1,7 @@
+/* KIN — minimal element defaults */
+html{-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--color-surface-page);color:var(--color-text-primary);font:300 var(--type-body-size)/var(--type-body-lh) var(--font-body)}
+a{color:var(--color-link);text-decoration-color:var(--color-accent-brass);text-underline-offset:6px}
+a:hover{color:var(--color-link-hover)}
+::selection{background:var(--color-selection)}
+:focus-visible{outline:var(--focus-ring);outline-offset:var(--focus-offset)}

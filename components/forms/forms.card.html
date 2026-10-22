@@ -1,0 +1,18 @@
+<!-- @dsCard group="Components" viewport="700x380" name="Forms" subtitle="TextField · Select · Radio · Checkbox · SegmentedControl" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:24px;background:var(--color-surface-page);box-sizing:border-box}.lb{font:500 9px/1.4 var(--font-text-latin);letter-spacing:.22em;color:var(--lake-500);text-transform:uppercase}</style></head><body><div id="root"></div>
+<script type="text/babel">
+const NS = window.KINByTheLakeDesignSystem_006565;
+const { TextField, Select, Radio, Checkbox, SegmentedControl } = NS;
+function App(){ const [seat,setSeat]=React.useState('hall'); const [hc,setHc]=React.useState(true); const [lang,setLang]=React.useState('en');
+return <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:24}}>
+<div style={{display:'flex',flexDirection:'column',gap:14}}><TextField label="Name" placeholder="Your name"/><TextField label="Phone" defaultValue="+66 81" error="Please enter a full number."/><TextField label="Promo code" placeholder="Disabled" disabled/></div>
+<div style={{display:'flex',flexDirection:'column',gap:14}}><Select label="Area" defaultValue="Lantern terrace" options={['Dining hall','Lantern terrace','Pavilion']}/><TextField label="Occasion / notes" multiline defaultValue="Grandma's 80th. A table near the water, please."/></div>
+<div style={{display:'flex',flexDirection:'column',gap:12}}><span className="lb">Seating</span><Radio name="s" checked={seat==='hall'} onChange={()=>setSeat('hall')}>Dining hall</Radio><Radio name="s" checked={seat==='pav'} onChange={()=>setSeat('pav')}>Pavilion (8–14 guests)</Radio><span className="lb">Extras</span><Checkbox checked={hc} onChange={setHc}>High chair</Checkbox><Checkbox>Longtail boat arrival</Checkbox><span className="lb">Language</span><SegmentedControl value={lang} onChange={setLang} options={[{value:'en',label:'EN'},{value:'th',label:'ไทย',lang:'th'},{value:'it',label:'IT'}]}/></div>
+</div>; }
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>

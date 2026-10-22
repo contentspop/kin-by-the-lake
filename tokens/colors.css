@@ -1,0 +1,28 @@
+/* KIN by the Lake — colour tokens. Core 3 are LOCKED. Supporting ≤15% combined. No pure white. */
+:root{
+/* Core */
+--kin-lake-blue:#1E3D5A;--kin-off-white:#F3EFE6;--kin-brass:#B38A45;
+/* Supporting */
+--kin-indigo:#34558B;--kin-charcoal:#2E3033;--kin-honey:#D9BF8F;--kin-lantern-red:#A8412E;
+/* Lake ramp (600 = brand) */
+--lake-50:#EEF2F6;--lake-100:#D6E0EA;--lake-200:#AFC1D3;--lake-300:#8099B3;--lake-400:#52708F;--lake-500:#2F5274;--lake-600:#1E3D5A;--lake-700:#16304A;--lake-800:#0F2538;--lake-900:#0A1927;
+/* Stone ramp (replaces grey; 50 = brand off-white) */
+--stone-0:#FBF9F4;--stone-50:#F3EFE6;--stone-100:#EDE8DD;--stone-200:#E4DED1;--stone-300:#D9D3C6;--stone-400:#B9B2A4;--stone-500:#8E887C;--stone-600:#6B6559;--stone-700:#4A463E;--stone-800:#2E3033;--stone-900:#1C1D1F;
+/* Brass ramp (500 = brand) */
+--brass-100:#F1E6D0;--brass-200:#E2CC9F;--brass-300:#CFAE72;--brass-400:#C29C58;--brass-500:#B38A45;--brass-600:#977236;--brass-700:#785A2A;--brass-800:#5A431F;
+/* Supporting ramps */
+--indigo-100:#DCE3EF;--indigo-500:#34558B;--indigo-700:#243C63;
+--honey-100:#F4ECDC;--honey-500:#D9BF8F;--honey-700:#A88D5C;
+--red-100:#F3DDD8;--red-500:#A8412E;
+
+/* Semantic — named per brand spec (color.brand.lake-blue → --color-brand-lake-blue) */
+--color-brand-lake-blue:var(--kin-lake-blue);--color-brand-off-white:var(--kin-off-white);--color-accent-brass:var(--kin-brass);
+--color-support-indigo:var(--kin-indigo);--color-support-charcoal:var(--kin-charcoal);--color-support-honey:var(--kin-honey);--color-spark-lantern-red:var(--kin-lantern-red);
+--color-surface-page:var(--stone-50);--color-surface-raised:var(--stone-0);--color-surface-sunken:var(--stone-100);--color-surface-warm:var(--honey-100);--color-surface-stone:var(--stone-200);
+--color-surface-inverse:var(--lake-600);--color-surface-inverse-deep:var(--lake-800);--color-surface-charcoal:var(--kin-charcoal);
+--color-text-primary:var(--lake-600);--color-text-secondary:var(--lake-500);--color-text-muted:#6B7A88;--color-text-inverse:var(--stone-50);--color-text-on-honey:var(--lake-700);--color-text-night-accent:var(--brass-300);--color-text-error:var(--red-500);
+--color-border-hairline:var(--stone-300);--color-border-strong:var(--lake-600);--color-border-metal:var(--kin-brass);--color-border-error:var(--red-500);
+--color-action-primary:var(--lake-600);--color-action-hover:var(--lake-700);--color-action-pressed:var(--lake-800);--color-action-on-primary:var(--stone-50);
+--color-focus-ring:var(--kin-brass);--color-selection:rgba(217,191,143,.6);--color-scrim:rgba(30,61,90,.55);
+--color-link:var(--lake-600);--color-link-hover:var(--kin-indigo);
+}

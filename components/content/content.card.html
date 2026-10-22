@@ -1,0 +1,20 @@
+<!-- @dsCard group="Components" viewport="700x620" name="Content" subtitle="Card · MenuItem · DataTable · Dialog" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:24px;background:var(--color-surface-page);box-sizing:border-box}.lb{font:500 9px/1.4 var(--font-text-latin);letter-spacing:.22em;color:var(--lake-500);text-transform:uppercase}</style></head><body><div id="root"></div>
+<script type="text/babel">
+const NS = window.KINByTheLakeDesignSystem_006565;
+const { Card, MenuItem, DataTable, Dialog, Button, ReflectionDevice } = NS; const P='../../assets/photos/';
+function App(){ return <div style={{display:'grid',gridTemplateColumns:'200px 200px 1fr',gap:20,alignItems:'start'}}>
+<Card eyebrow="Every Sunday · 12–4 pm" title="The Long Lunch" body="Four courses from both kitchens, passed round the table." cta="Reserve" image={P+'terrace-dusk.png'}/>
+<Card variant="story" title="Porcelain Stories" body="The blue-and-white that links Phuket to the Italian coast." image={P+'dining-hall.png'}/>
+<div style={{display:'flex',flexDirection:'column',gap:16}}>
+<div><MenuItem name="Moo Hong" nameTh="หมูฮ้อง" price={420} description="Phuket braised pork belly, black pepper, garlic, star anise." descriptionTh="หมูสามชั้นตุ๋นพริกไทยดำ กระเทียม โป๊ยกั๊ก" allergens={['G']} share="2–4"/><MenuItem name="Gaeng Poo" nameTh="แกงปูใบชะพลู" price={690} description="Phuket crab curry, betel leaf, khanom jeen." spice={2} allergens={['S']}/></div>
+<DataTable columns={[{key:'s',label:'Space'},{key:'a',label:'Seated'},{key:'b',label:'Standing'}]} rows={[{s:'Pavilion',a:14,b:20},{s:'Lantern Terrace',a:40,b:70}]}/>
+<Dialog inline width={300}><ReflectionDevice color="lake-blue" width={56} assetBase="../../assets/logo/"/><span style={{font:'400 20px/1.25 var(--font-display)',letterSpacing:'.04em'}}>Your table is held</span><span style={{font:'300 13px/1.6 var(--font-body)'}}>Saturday 14 November · 6:30 pm · 6 guests.</span><Button size="sm">Done</Button></Dialog>
+</div></div>; }
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>
