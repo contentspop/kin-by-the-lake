@@ -78,3 +78,23 @@ figcaption { font: 400 12.5px/1.5 var(--font-text-latin); color: var(--muted); }
 footer.pg { padding: 72px 0 96px; text-align: center; font: 400 12.5px/1.6 var(--font-text-latin); color: var(--muted); }
 footer.pg em { font-family: var(--font-display); font-style: normal; color: var(--ink); letter-spacing: .08em; }
 @media (max-width: 640px) { .qrow { grid-template-columns: 40px 1fr; } .qrow > div:last-child { grid-column: 2; } }
+
+/* 60/40 split + day timeline */
+.split { display: flex; min-height: 150px; border: 1px solid var(--ink); }
+.split .seg { display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; padding: 20px 22px; min-width: 0; }
+.split .set { background: var(--ink); color: #F3EFE6; }
+.split .cui { background: var(--brass); color: #1E3D5A; }
+.split .pct { font: 500 clamp(40px, 7vw, 76px)/1 var(--font-display); letter-spacing: .02em; }
+.split .nm { font: 700 12px/1.4 var(--font-text-latin); letter-spacing: .18em; text-transform: uppercase; }
+.split .ds { font: 400 14px/1.5 var(--font-body); opacity: .9; }
+.daybar { position: relative; display: flex; height: 92px; margin-top: 34px; }
+.daybar .dp { position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 10px 10px; border-right: 1px solid rgba(255,255,255,.35); min-width: 0; }
+.daybar .dp .t { font: 600 11px/1 var(--font-text-latin); letter-spacing: .08em; opacity: .85; }
+.daybar .dp .n { font: 600 13px/1.25 var(--font-text-latin); letter-spacing: .04em; }
+.daybar .end { position: absolute; right: 0; top: 100%; margin-top: 6px; font: 600 11px/1 var(--font-text-latin); color: var(--muted); }
+.daybar .sunmark { position: absolute; bottom: 100%; margin-bottom: 8px; transform: translateX(-50%); white-space: nowrap; font: 600 11px/1 var(--font-text-latin); color: var(--red); }
+.daybar .sunmark::after { content: ""; position: absolute; left: 50%; top: 100%; width: 1px; height: 106px; background: var(--red); opacity: .6; }
+.brunch { background: #F2E3B8; color: #5A4520; } .lunch { background: #E7CF8A; color: #4B3812; } .after { background: #D9B46A; color: #3C2C0E; }
+.gold { background: linear-gradient(90deg, #D49A4A, #B8614A); color: #FFF4E6; } .dinner { background: #2D4E6F; color: #F3EFE6; } .candle { background: #14263A; color: #F1D59A; }
+.sw { display: inline-block; width: 12px; height: 12px; margin-right: 8px; vertical-align: middle; border-radius: 2px; }
+@media (max-width: 640px) { .daybar { flex-direction: column; height: auto; margin-top: 16px; } .daybar .dp { flex-direction: row; justify-content: flex-start; gap: 14px; align-items: center; min-height: 46px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.35); } .daybar .dp .t { width: 44px; } .daybar .sunmark { display: none; } .daybar .end { display: none; } .split { flex-direction: column; } .scroll .t { min-width: 640px; } }
