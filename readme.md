@@ -1,5 +1,7 @@
 # KIN by the Lake — Design System
 
+> **Status: DRAFT for review.** Nothing in this repo is approved by the owners yet.
+
 > **Live site:** https://contentspop.github.io/kin-design-system/ — start at the Brand Book or Website Preview.
 > Raw source uploads (identity board, interior reference, architecture PDF) are kept out of this public repo.
 
@@ -19,7 +21,7 @@ A lakeside dining destination in Phuket where the vibrant flavours of Phuket and
 ## Sources
 - `uploads/839785.jpg` — logo & identity board (primary/reversed/black/grey logos, colours, type, clear space, min size, social icon, applications, Good Food/People/Moments icons).
 - `uploads/837569630_…_n.jpg` — interior mood reference (toile tub chair, round table, oil lantern, encaustic tile). The “DULANTA” wordmark on it is a third-party interior studio, not part of KIN.
-- `uploads/KIN Design System - Standalone.html` — previously approved KIN brand book (v1.0, Oct 2026). **Ground truth** for all rules, copy, values and component specs; its master logo PNGs, photography, fonts, icons and patterns were extracted programmatically into this project.
+- `uploads/KIN Design System - Standalone.html` — earlier draft KIN brand book (Oct 2026), used as the starting point for rules, copy, values and component specs; its master logo PNGs, photography, fonts, icons and patterns were extracted programmatically into this project.
 - `uploads/KIN by the lake_presented_LR.pdf` — architecture/interior presentation (site plan, pavilion, terrace, hall renders). Renders used here came via the standalone brand book.
 - Brief pasted by the user (role, locked assets, palette, guardrails, touchpoints).
 
@@ -43,7 +45,7 @@ A lakeside dining destination in Phuket where the vibrant flavours of Phuket and
 - **content/** — `Card` (event / story-arch), `MenuItem`, `DataTable`, `Dialog`
 - **brand/** — `Logo`, `ReflectionDevice`
 
-Inventory follows the brand book’s “07 Components” section. Intentional additions: `Logo` and `ReflectionDevice` (wrap locked PNG artwork so nobody redraws it), `Icon` (wraps the extracted line-icon set), `MenuItem` (encodes the documented dish-name hierarchy).
+Inventory follows the brand book’s “07 Components” section. Intentional additions: `Logo` and `ReflectionDevice` (wrap the master PNG artwork so nobody redraws it), `Icon` (wraps the extracted line-icon set), `MenuItem` (encodes the documented dish-name hierarchy).
 
 Logo/ReflectionDevice take `assetBase` (path to `assets/logo/` from the consuming page).
 
@@ -95,4 +97,4 @@ Translation into the system: indigo botanical fabric → Porcelain Indigo + Porc
 - No icon font, no emoji, no CDN icon library. No wave, water, leaf or palm icons — the reflection strokes are the only water.
 
 ## Fonts
-All five families are Google Fonts (OFL), self-hosted from the subsets embedded in the approved brand book. No substitutions were needed.
+All five families are Google Fonts (OFL), self-hosted from the subsets embedded in the earlier draft brand book. No substitutions were needed.

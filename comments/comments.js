@@ -164,6 +164,8 @@
     '#kinc-toast{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);z-index:2147483001;background:' + LAKE + ';color:' + OFF + ';padding:10px 16px;font:500 11px/1.4 Montserrat,system-ui,sans-serif;letter-spacing:.1em;box-shadow:0 6px 20px rgba(15,37,56,.28)}' +
     '#kinc-toast.err{background:' + RED + '}' +
     '.kinq-done{background:#E3EEDF!important;color:#3F6B35!important;border-color:#B9D3AE!important}' +
+    '#kinc-draft{position:fixed;left:16px;bottom:16px;z-index:2147483000;background:#A8412E;color:#F3EFE6;font:600 10px/1 Montserrat,system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;padding:9px 12px;box-shadow:0 6px 20px rgba(15,37,56,.22);pointer-events:none}' +
+    '@media print{#kinc-draft{position:fixed;left:auto;right:12px;top:12px;bottom:auto;box-shadow:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}}' +
     '@media print{#kinc-bar,#kinc-layer,#kinc-shield,#kinc-hint,#kinc-toast,.kinc-pop{display:none!important}}';
   var st = document.createElement('style'); st.id = 'kinc-style'; st.textContent = css; document.head.appendChild(st);
 
@@ -178,8 +180,9 @@
     '<button type="button" id="kinc-toggle" aria-pressed="true" title="Show or hide comment pins">' + ICON_EYE + '<span id="kinc-count">0</span></button>' +
     '<button type="button" id="kinc-pdf" title="Save this page as PDF">' + ICON_PDF + '<span>PDF</span></button>';
   var layer = document.createElement('div'); layer.id = 'kinc-layer';
+  var draft = document.createElement('div'); draft.id = 'kinc-draft'; draft.textContent = 'Draft · for review';
 
-  function mount() { if (!st.isConnected) (document.head || document.documentElement).appendChild(st); if (!bar.isConnected) document.body.appendChild(bar); if (!layer.isConnected) document.body.appendChild(layer); }
+  function mount() { if (!st.isConnected) (document.head || document.documentElement).appendChild(st); if (!bar.isConnected) document.body.appendChild(bar); if (!layer.isConnected) document.body.appendChild(layer); if (!draft.isConnected) document.body.appendChild(draft); }
 
   var pulseId = null, comments = [], showPins = lsGet('kinc-show', '1') === '1', openPop = null;
 
