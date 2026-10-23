@@ -26,6 +26,7 @@
     var p = relPath();
     if (p === 'index.html' || p === '') return 'Home';
     if (/KIN-Brand-Book/.test(p)) return 'Brand Book';
+    if (/KIN-Design-System/.test(p)) return 'Design System';
     if (/ui_kits\/social/.test(p)) return 'Social';
     if (/ui_kits\/website/.test(p)) return 'Website' + (window.KIN_SCREEN ? ' · ' + window.KIN_SCREEN.charAt(0).toUpperCase() + window.KIN_SCREEN.slice(1) : '');
     if (/^guidelines\//.test(p)) return 'Guideline · ' + p.replace(/^guidelines\//, '').replace(/\.html$/, '');
