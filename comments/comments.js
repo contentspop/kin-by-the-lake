@@ -28,7 +28,7 @@
     if (p === 'index.html' || p === '') return 'Home';
     if (/KIN-Brand-Book/.test(p)) return 'Brand Book';
     if (/KIN-Design-System/.test(p)) return 'Design System';
-    if (/^questionnaire\//.test(p)) return 'Owner Questionnaire';
+    if (/^questionnaire\//.test(p)) return 'Questionnaire';
     if (/^menu\//.test(p)) return 'Menu & Offer';
     if (/^strategy\//.test(p)) return 'Strategy & Activation';
     if (/^photography\//.test(p)) return 'Photography Guideline';
