@@ -1,8 +1,8 @@
-# KIN by the Lake — Design System
+# KIN by the Lake — Project Hub
 
 > **Status: DRAFT for review.** Nothing in this repo is approved by the owners yet.
 
-> **Live site:** https://contentspop.github.io/kin-design-system/ — start at the Brand Book or Website Preview.
+> **Live site:** https://contentspop.github.io/kin-by-the-lake/ — start at the Owner Questionnaire or the Brand Book.
 > Raw source uploads (identity board, interior reference, architecture PDF) are kept out of this public repo.
 
 A lakeside dining destination in Phuket where the vibrant flavours of Phuket and its Peranakan heritage meet the generosity of the Italian table. Two kitchens, each with its own character, served to one round table — **never fusion**. Designed for sharing: long lunches, dinners that linger, time well spent together.

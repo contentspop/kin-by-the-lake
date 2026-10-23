@@ -29,6 +29,7 @@
 var DATABASE_ID = '5c5f8a05514a4bdca049e773907fbd40';
 var NOTIFY_BY_EMAIL = true;           // set to false to stop the emails
 var NOTION_VERSION = '2022-06-28';
+var TOPICS = ['Brand & Story', 'Menu & Offer', 'Strategy & Activation', 'Operations & Experience', 'Design & Content'];
 
 function token_() {
   var t = PropertiesService.getScriptProperties().getProperty('NOTION_TOKEN');
@@ -67,7 +68,7 @@ function out_(obj, callback) {
 }
 
 // GET ?action=list&page=<page key>&callback=<fn>  → open comments for that page
-// GET ?action=add&page=…&section=…&area=…&clicked=…&anchor=…&x=…&y=…&name=…&comment=…&url=…&callback=<fn>  → save one
+// GET ?action=add&page=…&section=…&area=…&clicked=…&topic=…&anchor=…&x=…&y=…&name=…&comment=…&url=…&callback=<fn>  → save one
 function doGet(e) {
   var p = (e && e.parameter) || {};
   var cb = /^[A-Za-z_$][\w$.]*$/.test(p.callback || '') ? p.callback : '';
@@ -86,7 +87,7 @@ function doGet(e) {
         list.push({
           id: pg.id.replace(/-/g, ''), ts: pg.created_time,
           comment: plain_(pr['Comment']), name: plain_(pr['Name']),
-          page: plain_(pr['Page']), section: plain_(pr['Section']), area: plain_(pr['Area']), anchor: plain_(pr['Anchor']),
+          page: plain_(pr['Page']), section: plain_(pr['Section']), area: plain_(pr['Area']), anchor: plain_(pr['Anchor']), topic: pr['Topic'] && pr['Topic'].select ? pr['Topic'].select.name : '',
           x: pr['X'] && pr['X'].number, y: pr['Y'] && pr['Y'].number
         });
       });
@@ -122,7 +123,8 @@ function save_(d) {
         'Anchor': text_(d.anchor),
         'X': { number: Number(d.x) || 0 },
         'Y': { number: Number(d.y) || 0 },
-        'Status': { select: { name: 'Open' } }
+        'Status': { select: { name: 'Open' } },
+        'Topic': TOPICS.indexOf(String(d.topic)) >= 0 ? { select: { name: String(d.topic) } } : { select: null }
       }
     });
     var id = page.id.replace(/-/g, '');
@@ -135,6 +137,7 @@ function save_(d) {
           'KIN · new comment from ' + name + ' · ' + (d.area || d.section || d.page || 'site'),
           name + ' commented:\n\n' + comment + '\n\n' +
           'Where:   ' + (d.section || d.page || '') + (d.area ? '  ›  ' + d.area : '') + '\n' +
+          (d.topic ? 'Topic:   ' + d.topic + '\n' : '') +
           (d.clicked ? 'On:      ' + d.clicked + '\n' : '') +
           'Page:    ' + base + '\n' +
           'Pin:     ' + link + '\n' +

@@ -17,8 +17,9 @@
   /* ---------- page identity ---------- */
   function relPath() {
     var p = decodeURIComponent(location.pathname);
-    var i = p.indexOf('/kin-design-system/');
-    p = i >= 0 ? p.slice(i + '/kin-design-system/'.length) : p.replace(/^\//, '');
+    var m = p.match(/\/(kin-by-the-lake|kin-design-system)\/(.*)$/);
+    p = m ? m[2] : p.replace(/^\//, '');
+    if (p === '' || /\/$/.test(p)) p += 'index.html';
     return p || 'index.html';
   }
   function pageKey() { return relPath() + (window.KIN_SCREEN ? '#' + window.KIN_SCREEN : ''); }
@@ -27,6 +28,10 @@
     if (p === 'index.html' || p === '') return 'Home';
     if (/KIN-Brand-Book/.test(p)) return 'Brand Book';
     if (/KIN-Design-System/.test(p)) return 'Design System';
+    if (/^questionnaire\//.test(p)) return 'Owner Questionnaire';
+    if (/^menu\//.test(p)) return 'Menu & Offer';
+    if (/^strategy\//.test(p)) return 'Strategy & Activation';
+    if (/^photography\//.test(p)) return 'Photography Guideline';
     if (/ui_kits\/social/.test(p)) return 'Social';
     if (/ui_kits\/website/.test(p)) return 'Website' + (window.KIN_SCREEN ? ' · ' + window.KIN_SCREEN.charAt(0).toUpperCase() + window.KIN_SCREEN.slice(1) : '');
     if (/^guidelines\//.test(p)) return 'Guideline · ' + p.replace(/^guidelines\//, '').replace(/\.html$/, '');
@@ -110,6 +115,14 @@
     var txt = target ? clean(target.innerText || '', 90) : '';
     return txt ? '“' + txt + '”' : '';
   }
+  function pageTopic() {
+    var p = relPath();
+    if (/KIN-Brand-Book|^brand\//.test(p)) return 'Brand & Story';
+    if (/^menu\//.test(p)) return 'Menu & Offer';
+    if (/^strategy\//.test(p)) return 'Strategy & Activation';
+    if (/^questionnaire\//.test(p)) return '';
+    return 'Design & Content';
+  }
   function pageUrl() { return location.href.split('#')[0] + (window.KIN_SCREEN ? '#screen=' + window.KIN_SCREEN : ''); }
 
   /* ---------- transport (JSONP so responses are readable cross-origin) ---------- */
@@ -137,7 +150,7 @@
       var all = previewStore(); c.id = 'p' + Date.now(); c.ts = new Date().toISOString(); all.push(c); lsSet('kinc-preview', JSON.stringify(all));
       return Promise.resolve({ ok: true, id: c.id, ts: c.ts });
     }
-    return jsonp({ action: 'add', page: c.page, section: c.section, area: c.area, clicked: c.clicked, anchor: c.anchor, x: c.x, y: c.y, name: c.name, comment: c.comment, url: pageUrl() })
+    return jsonp({ action: 'add', page: c.page, section: c.section, area: c.area, clicked: c.clicked, topic: c.topic || pageTopic(), anchor: c.anchor, x: c.x, y: c.y, name: c.name, comment: c.comment, url: pageUrl() })
       .then(function (r) { if (!r.ok) throw new Error(r.error || 'error'); return r; });
   }
 
@@ -207,9 +220,11 @@
     var a = resolveAnchor(c.anchor), r = docRect(a);
     return { x: r.left + (+c.x || 0) * r.width, y: r.top + (+c.y || 0) * r.height };
   }
+  var globalAnswers = [];
   function markAnswered() {
     var done = {};
-    comments.forEach(function (c) { var m = String(c.area || '').match(/^(Q\d+)\b/); if (m) done[m[1]] = (done[m[1]] || 0) + 1; });
+    var seen = {};
+    comments.concat(globalAnswers).forEach(function (c) { if (c.id && seen[c.id]) return; if (c.id) seen[c.id] = 1; var m = String(c.area || '').match(/^(Q\d+)\b/); if (m) done[m[1]] = (done[m[1]] || 0) + 1; });
     document.querySelectorAll('[data-q]').forEach(function (el) {
       var q = el.getAttribute('data-q'), n = done[q] || 0;
       el.classList.toggle('kinq-done', n > 0);
@@ -217,6 +232,12 @@
     });
     var tot = document.querySelectorAll('[data-q-row]').length, ans = document.querySelectorAll('[data-q-row].kinq-done').length;
     var cnt = document.getElementById('kinq-count'); if (cnt) cnt.textContent = ans + ' of ' + tot + ' answered';
+    document.querySelectorAll('[data-qcount]').forEach(function (el) {
+      var t = el.getAttribute('data-qcount');
+      var rows = Array.prototype.filter.call(document.querySelectorAll('[data-q-row]'), function (r) { return t === 'all' || r.getAttribute('data-topic') === t; });
+      var d = rows.filter(function (r) { return r.classList.contains('kinq-done'); }).length;
+      el.textContent = d + ' of ' + rows.length + ' answered';
+    });
   }
   function render() {
     try { markAnswered(); } catch (e) {}
@@ -249,7 +270,12 @@
     placePop(pop, p.x, p.y);
   }
 
+  function loadGlobalAnswers() {
+    if (PREVIEW || !document.querySelector('[data-q]')) return;
+    jsonp({ action: 'list' }).then(function (r) { if (r && r.ok) { globalAnswers = (r.comments || []).filter(function (c) { return /^Q\d+\b/.test(String(c.area || '')); }); try { markAnswered(); } catch (e) {} } }).catch(function () {});
+  }
   function load() {
+    loadGlobalAnswers();
     return fetchComments().then(function (list) { comments = list; render(); focusFromHash(); })
       .catch(function () { comments = []; render(); });
   }
@@ -306,7 +332,7 @@
     function send() {
       var comment = txt.value.trim(); if (!comment) { txt.focus(); return; }
       var nm = name.value.trim() || 'Guest'; lsSet('kinc-name', nm);
-      var c = { page: pageKey(), section: (pageName() + (base.section ? ' · ' + base.section : '')).slice(0, 180), area: base.area || '', clicked: base.clicked || '', anchor: base.anchor, x: base.x, y: base.y, name: nm, comment: comment, _sending: true };
+      var c = { page: pageKey(), section: (pageName() + (base.section ? ' · ' + base.section : '')).slice(0, 180), area: base.area || '', clicked: base.clicked || '', topic: base.topic || '', anchor: base.anchor, x: base.x, y: base.y, name: nm, comment: comment, _sending: true };
       closePop(); showPins = true; comments.push(c); render();
       saveComment(c).then(function (r) { c.id = r.id; c.ts = r.ts || new Date().toISOString(); c._sending = false; render(); toast(PREVIEW ? 'Saved in this browser (preview mode)' : 'Comment sent. Thank you!'); })
         .catch(function () { comments.splice(comments.indexOf(c), 1); render(); toast('Could not send. Please try again.', true); });
@@ -337,7 +363,7 @@
     var a = anchorFor(q.closest('[data-screen-label]') || q.parentElement), r = docRect(a.el), qr = docRect(q);
     var px = qr.left + Math.min(qr.width, 24), py = qr.top + qr.height / 2;
     var qid = q.getAttribute('data-q'), qt = q.getAttribute('data-qt') || '';
-    compose({ anchor: a.key, section: sectionName(a.el), area: (qid + ' · ' + qt).slice(0, 180), clicked: 'Owner question ' + qid, question: qid + ' · ' + qt,
+    compose({ anchor: a.key, section: sectionName(a.el), area: (qid + ' · ' + qt).slice(0, 180), clicked: 'Owner question ' + qid, question: qid + ' · ' + qt, topic: q.getAttribute('data-topic') || '',
       x: +((px - r.left) / r.width).toFixed(4), y: +((py - r.top) / r.height).toFixed(4) }, px, py);
   }, true);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { setMode(false); closePop(); } });
