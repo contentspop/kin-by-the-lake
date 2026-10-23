@@ -232,9 +232,13 @@
     '.kc-th button{all:unset;cursor:pointer;position:absolute;right:-7px;top:-7px;width:20px;height:20px;border-radius:50%;background:' + LAKE + ';color:' + OFF + ';font:600 12px/20px ' + F + ';text-align:center}' +
     '.kc-pic{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border:1px dashed ' + BRASS + ';color:' + LAKE + ';font:600 10px/1 ' + F + ';letter-spacing:.14em;text-transform:uppercase}' +
     /* section threads */
-    '.kins{box-sizing:border-box;margin:36px 0 0;padding:18px 0 0;border-top:1px dashed rgba(179,138,69,.55);color:' + LAKE + ';font:400 14px/1.6 ' + F + ';text-align:left;text-transform:none;letter-spacing:0;width:100%;max-width:820px}' +
-    '.kins-h{font:600 10.5px/1.4 ' + F + ';letter-spacing:.18em;text-transform:uppercase;color:' + BRASS + ';margin-bottom:10px}' +
-    '.kins-add{color:' + BRASS + ';padding:6px 0}.kins-add:hover{color:' + LAKE + '}' +
+    '.kins{box-sizing:border-box;margin:36px 0 0;padding:14px 18px 12px;border:1px solid rgba(179,138,69,.7);background:rgba(251,249,244,.75);color:' + LAKE + ';font:400 14px/1.6 ' + F + ';text-align:left;text-transform:none;letter-spacing:0;width:100%;max-width:820px;border-radius:2px}' +
+    '.kins-h{font:600 10.5px/1.4 ' + F + ';letter-spacing:.18em;text-transform:uppercase;color:' + BRASS + ';margin-bottom:8px}' +
+    '.kins-add{color:' + LAKE + ';padding:6px 0}.kins-add:hover{color:' + BRASS + '}' +
+    '.kins-sub{margin:12px 0 2px;padding:6px 10px;border:1px dashed rgba(179,138,69,.75);background:transparent;max-width:100%;font-size:13px;width:auto;display:block}' +
+    '.kins-sub .kins-add{padding:3px 0;font-size:9.5px;color:' + BRASS + '}.kins-sub.has{background:rgba(251,249,244,.75);padding:10px 12px}' +
+    '.kins-sub .kinc-it{padding:9px 11px}.kins-sub .kinc-it-g a{width:84px;height:84px}' +
+    '.kins-dark{background:rgba(243,239,230,.06);border-color:rgba(207,174,114,.75);color:' + OFF + '}.kins-dark .kins-h,.kins-dark .kins-add{color:#CFAE72}.kins-dark.has{background:rgba(243,239,230,.08)}' +
     '.kins-add[hidden]{display:none}' +
     '.kinc-it.long .kinc-it-b{max-height:10.5em;overflow:hidden;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}.kinc-it.long.open .kinc-it-b{max-height:none;-webkit-mask-image:none;mask-image:none}' +
     '.kinc-more{all:unset;cursor:pointer;margin-top:6px;font:600 10px/1 ' + F + ';letter-spacing:.14em;text-transform:uppercase;color:' + BRASS + '}' +
@@ -377,47 +381,90 @@
   function isDark(el) {
     try { var c = getComputedStyle(el).backgroundColor.match(/\d+/g); if (!c || (c[3] !== undefined && +c[3] === 0)) return false; return (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) < 110; } catch (e) { return false; }
   }
-  function threadKeyFor(c, secs) {
-    if (c.anchor && /^label:/.test(c.anchor)) {
-      for (var i = 0; i < secs.length; i++) if (keyOf(secs[i]) === c.anchor) return c.anchor;
-    }
+  /* subtopics: every h3/h4 inside a section */
+  var subReg = {};
+  function subList(sec) {
+    var label = sec.getAttribute('data-screen-label'), seen = {}, out = [];
+    var heads = Array.prototype.slice.call(sec.querySelectorAll('h3,h4,.card > .label:first-child'));
+    heads = heads.filter(function (h) { return !(h.classList.contains('label') && h.parentElement.querySelector('h3,h4')); });
+    heads.forEach(function (h) {
+      if (isOurs(h) || h.closest('table,[data-q],figure,nav,header,.qneed') || h.closest('section[data-screen-label]') !== sec) return;
+      var t = clean(h.textContent, 60); if (t.length < 2) return;
+      var k = 'sub:' + label + '>' + t; seen[k] = (seen[k] || 0) + 1; if (seen[k] > 1) k += ' (' + seen[k] + ')';
+      out.push({ h: h, key: k, title: t });
+    });
+    return out;
+  }
+  function subHost(h, sec) {
+    var card = h.parentElement, main = hostOf(sec);
+    if (!card || card === main || card === sec) return { el: h, mode: 'after' };
+    return { el: card, mode: 'append' };
+  }
+  function threadKeyFor(c, keys, secs) {
+    if (c.anchor && keys[c.anchor]) return c.anchor;
+    var m = String(c.anchor || '').match(/^sub:(.*?)>/);
+    if (m && keys['label:' + m[1]]) return 'label:' + m[1];
     var el = resolveAnchor(c.anchor);
-    var s = el && el !== document.body ? (el.closest('section[data-screen-label]') || null) : null;
-    if (s && secs.indexOf(s) >= 0) return keyOf(s);
+    var sct = el && el !== document.body ? (el.closest('section[data-screen-label]') || null) : null;
+    if (sct && secs.indexOf(sct) >= 0) return keyOf(sct);
     return secs.length ? keyOf(secs[secs.length - 1]) : '';
+  }
+  function makeThread(o) {
+    var th = document.createElement('div');
+    th.className = 'kins' + (o.sub ? ' kins-sub' : '') + (o.dark ? ' kins-dark' : ''); th.setAttribute('data-kins', o.key);
+    th.innerHTML = '<div class="kins-h"></div><div class="kins-list"></div><button type="button" class="kins-add">' + (o.sub ? '＋ Comment on this' : '＋ Comment on this section') + '</button>';
+    th.querySelector('.kins-add').addEventListener('click', function () {
+      if (th.querySelector('.kinc-compose')) { th.querySelector('.kinc-compose textarea').focus(); return; }
+      var add = th.querySelector('.kins-add'); add.hidden = true;
+      var box = composer({ title: 'Comment · ' + o.title, onCancel: function () { add.hidden = false; }, onSend: function (v) {
+        add.hidden = false;
+        submit({ page: pageKey(), section: (pageName() + ' · ' + o.label + (o.sub ? ' › ' + o.title : '')).slice(0, 180), area: o.title, clicked: o.sub ? 'Subtopic comment' : 'Section comment',
+          topic: pageTopic(), anchor: o.key, x: 0, y: 0, type: 'Comment', url: pageUrl() + (o.id ? '#' + o.id : ''), name: v.name, comment: v.comment }, v.images);
+      } });
+      th.insertBefore(box, add);
+    });
+    return th;
+  }
+  function fillThread(th, list, o) {
+    list = list.slice().sort(function (a, b) { return String(a.ts || '9').localeCompare(String(b.ts || '9')); });
+    var sig = list.map(function (c) { return (c.id || 'x') + (c._sending ? 's' : '') + (c.images ? c.images.length : 0); }).join(',');
+    if (th.getAttribute('data-sig') === sig) return;
+    th.setAttribute('data-sig', sig);
+    var h = th.querySelector('.kins-h');
+    if (o.sub) { h.hidden = !list.length; h.textContent = 'Comments · ' + list.length; }
+    else { h.hidden = false; h.textContent = 'Comments on this section' + (list.length ? ' · ' + list.length : ''); }
+    th.classList.toggle('has', list.length > 0);
+    th.querySelector('.kins-list').innerHTML = list.map(function (c) { return itemHtml(c); }).join('');
   }
   function renderThreads() {
     if (!SECTION_MODE) return;
     var secs = sectionList(); if (!secs.length) return;
-    var by = {};
-    comments.filter(function (c) { return !isAnswer(c); }).forEach(function (c) { var k = threadKeyFor(c, secs); (by[k] = by[k] || []).push(c); });
+    var plan = [], keys = {};
     secs.forEach(function (sec) {
-      var key = keyOf(sec), host = hostOf(sec);
-      var th = host.querySelector(':scope > .kins');
-      if (!th) {
-        th = document.createElement('div'); th.className = 'kins' + (isDark(sec) ? ' kins-dark' : ''); th.setAttribute('data-kins', key);
-        th.innerHTML = '<div class="kins-h" hidden></div><div class="kins-list"></div><button type="button" class="kins-add">＋ Comment on this section</button>';
-        host.appendChild(th);
-        th.querySelector('.kins-add').addEventListener('click', function () {
-          if (th.querySelector('.kinc-compose')) { th.querySelector('.kinc-compose textarea').focus(); return; }
-          var add = th.querySelector('.kins-add'); add.hidden = true;
-          var label = sec.getAttribute('data-screen-label');
-          var box = composer({ title: 'Comment · ' + label, onCancel: function () { add.hidden = false; }, onSend: function (v) {
-            add.hidden = false;
-            submit({ page: pageKey(), section: (pageName() + ' · ' + label).slice(0, 180), area: label, clicked: 'Section comment', topic: pageTopic(), anchor: key, x: 0, y: 0, type: 'Comment',
-              url: pageUrl() + (sec.id ? '#' + sec.id : ''), name: v.name, comment: v.comment }, v.images);
-          } });
-          th.insertBefore(box, add);
-        });
-      }
-      var list = (by[key] || []).slice().sort(function (a, b) { return String(a.ts || '9').localeCompare(String(b.ts || '9')); });
-      var sig = list.map(function (c) { return (c.id || 'x') + (c._sending ? 's' : '') + (c.images ? c.images.length : 0); }).join(',');
-      if (th.getAttribute('data-sig') !== sig) {
-        th.setAttribute('data-sig', sig);
-        var h = th.querySelector('.kins-h'); h.hidden = !list.length; h.textContent = 'Comments · ' + list.length;
-        th.querySelector('.kins-list').innerHTML = list.map(function (c) { return itemHtml(c); }).join('');
-      }
+      var label = sec.getAttribute('data-screen-label'), dark = isDark(sec);
+      plan.push({ key: keyOf(sec), sec: sec, label: label, title: label, dark: dark, id: sec.id });
+      subList(sec).forEach(function (sb) {
+        var e = sb.h.parentElement, bg = dark; while (e && e !== sec) { if (hasBg(e)) { bg = isDark(e); break; } e = e.parentElement; }
+        plan.push({ key: sb.key, sec: sec, h: sb.h, label: label, title: sb.title, sub: true, dark: bg, id: sec.id });
+      });
     });
+    plan.forEach(function (o) { keys[o.key] = 1; });
+    var by = {};
+    comments.filter(function (c) { return !isAnswer(c); }).forEach(function (c) { var k = threadKeyFor(c, keys, secs); (by[k] = by[k] || []).push(c); });
+    plan.forEach(function (o) {
+      var th = subReg[o.key];
+      if (!th || !th.isConnected) {
+        th = makeThread(o); subReg[o.key] = th;
+        if (o.sub) { var hs = subHost(o.h, o.sec); if (hs.mode === 'append') hs.el.appendChild(th); else hs.el.insertAdjacentElement('afterend', th); }
+        else hostOf(o.sec).appendChild(th);
+      }
+      fillThread(th, by[o.key] || [], o);
+    });
+    // drop copies left behind when a page re-renders its own markup
+    Array.prototype.forEach.call(document.querySelectorAll('.kins'), function (t) { if (subReg[t.getAttribute('data-kins')] !== t) t.remove(); });
+  }
+  function hasBg(el) {
+    try { var c = getComputedStyle(el).backgroundColor.match(/\d+/g); return !!(c && !(c[3] !== undefined && +c[3] === 0)); } catch (e) { return false; }
   }
 
   /* ---------- answers under questions ---------- */
