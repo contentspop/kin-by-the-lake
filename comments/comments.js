@@ -179,6 +179,9 @@
     '#kinc-toast{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);z-index:2147483001;background:' + LAKE + ';color:' + OFF + ';padding:10px 16px;font:500 11px/1.4 Montserrat,system-ui,sans-serif;letter-spacing:.1em;box-shadow:0 6px 20px rgba(15,37,56,.28)}' +
     '#kinc-toast.err{background:' + RED + '}' +
     '.kinq-done{background:#E3EEDF!important;color:#3F6B35!important;border-color:#B9D3AE!important}' +
+    '.kinq-ans{display:block;box-sizing:border-box;margin:8px 0 6px;padding:10px 12px;background:#EEF5EB;border-left:3px solid #3F6B35;color:#1E3D5A;font:400 13.5px/1.6 Montserrat,system-ui,sans-serif;letter-spacing:0;text-transform:none;text-align:left;white-space:pre-wrap;word-wrap:break-word;max-width:760px}' +
+    '.kinq-ans-i+.kinq-ans-i{margin-top:8px;padding-top:8px;border-top:1px solid #CFE0C8}' +
+    '.kinq-ans-m{display:block;font:600 10px/1.4 Montserrat,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#3F6B35;margin-bottom:2px;white-space:normal}' +
     '#kinc-draft{position:fixed;left:16px;bottom:16px;z-index:2147483000;background:#A8412E;color:#F3EFE6;font:600 10px/1 Montserrat,system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;padding:9px 12px;box-shadow:0 6px 20px rgba(15,37,56,.22);pointer-events:none}' +
     '@media print{#kinc-draft{position:fixed;left:auto;right:12px;top:12px;bottom:auto;box-shadow:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}}' +
     '@media print{#kinc-bar,#kinc-layer,#kinc-shield,#kinc-hint,#kinc-toast,.kinc-pop{display:none!important}}';
@@ -222,15 +225,28 @@
     return { x: r.left + (+c.x || 0) * r.width, y: r.top + (+c.y || 0) * r.height };
   }
   var globalAnswers = [];
+  function isAnswer(c) { return /^Q\d+\b/.test(String(c.area || '')); }
   function markAnswered() {
-    var done = {};
-    var seen = {};
-    comments.concat(globalAnswers).forEach(function (c) { if (c.id && seen[c.id]) return; if (c.id) seen[c.id] = 1; var m = String(c.area || '').match(/^(Q\d+)\b/); if (m) done[m[1]] = (done[m[1]] || 0) + 1; });
+    var by = {}, seen = {};
+    comments.concat(globalAnswers).forEach(function (c) { if (c.id && seen[c.id]) return; if (c.id) seen[c.id] = 1; var m = String(c.area || '').match(/^(Q\d+)\b/); if (m) (by[m[1]] = by[m[1]] || []).push(c); });
+    var keep = [];
     document.querySelectorAll('[data-q]').forEach(function (el) {
-      var q = el.getAttribute('data-q'), n = done[q] || 0;
+      var q = el.getAttribute('data-q'), list = by[q] || [], n = list.length;
       el.classList.toggle('kinq-done', n > 0);
       var st = el.querySelector('.kinq-st'); if (st) st.textContent = n ? '✓ Answered' + (n > 1 ? ' ×' + n : '') : 'Answer →';
+      var isRow = el.hasAttribute('data-q-row');
+      if (!n || (!isRow && el.closest('[data-q-row]'))) return;
+      list.sort(function (a, b) { return String(a.ts || '').localeCompare(String(b.ts || '')); });
+      var html = list.map(function (c) { return '<div class="kinq-ans-i"><span class="kinq-ans-m">Answer · ' + esc(c.name || 'Guest') + (c.ts ? ' · ' + esc(fmtDate(c.ts)) : '') + '</span>' + esc(c.comment) + '</div>'; }).join('');
+      var host = isRow ? (el.children[1] || el) : null;
+      var old = host ? host.querySelector('.kinq-ans') : (el.nextElementSibling && el.nextElementSibling.classList.contains('kinq-ans') ? el.nextElementSibling : null);
+      if (old && old.getAttribute('data-sig') === String(html.length) + q) { keep.push(old); return; }
+      if (old) old.remove();
+      var box = document.createElement('div'); box.className = 'kinq-ans'; box.setAttribute('data-sig', String(html.length) + q); box.innerHTML = html;
+      if (host) host.appendChild(box); else el.insertAdjacentElement('afterend', box);
+      keep.push(box);
     });
+    Array.prototype.forEach.call(document.querySelectorAll('.kinq-ans'), function (n) { if (keep.indexOf(n) < 0) n.remove(); });
     var tot = document.querySelectorAll('[data-q-row]').length, ans = document.querySelectorAll('[data-q-row].kinq-done').length;
     var cnt = document.getElementById('kinq-count'); if (cnt) cnt.textContent = ans + ' of ' + tot + ' answered';
     document.querySelectorAll('[data-qcount]').forEach(function (el) {
@@ -244,9 +260,10 @@
     try { markAnswered(); } catch (e) {}
     layer.innerHTML = '';
     layer.style.display = showPins ? '' : 'none';
-    document.getElementById('kinc-count').textContent = String(comments.length);
+    var pins = comments.filter(function (c) { return !isAnswer(c); });
+    document.getElementById('kinc-count').textContent = String(pins.length);
     document.getElementById('kinc-toggle').setAttribute('aria-pressed', String(showPins));
-    comments.forEach(function (c, i) {
+    pins.forEach(function (c, i) {
       var p = pinPos(c), pin = document.createElement('div');
       pin.className = 'kinc-pin' + (c._sending ? ' sending' : '') + (pulseId && String(c.id) === pulseId ? ' pulse' : ''); pin.textContent = String(i + 1);
       pin.style.left = p.x + 'px'; pin.style.top = p.y + 'px'; pin.dataset.id = c.id || '';
@@ -272,8 +289,8 @@
   }
 
   function loadGlobalAnswers() {
-    if (PREVIEW || !document.querySelector('[data-q]')) return;
-    jsonp({ action: 'list' }).then(function (r) { if (r && r.ok) { globalAnswers = (r.comments || []).filter(function (c) { return /^Q\d+\b/.test(String(c.area || '')); }); try { markAnswered(); } catch (e) {} } }).catch(function () {});
+    if (PREVIEW) return;
+    jsonp({ action: 'list', answers: 1 }).then(function (r) { if (r && r.ok) { globalAnswers = (r.comments || []).filter(function (c) { return /^Q\d+\b/.test(String(c.area || '')); }); try { markAnswered(); } catch (e) {} [800, 2500, 6000].forEach(function (t) { setTimeout(function () { try { markAnswered(); } catch (e) {} }, t); }); } }).catch(function () {});
   }
   function load() {
     loadGlobalAnswers();
@@ -282,10 +299,16 @@
   }
   function focusFromHash() {
     var m = location.hash.match(/pin=([\w-]+)/); if (!m) return;
-    var idx = comments.findIndex(function (c) { return String(c.id) === m[1]; }); if (idx < 0) return;
+    var hit = comments.filter(function (c) { return String(c.id) === m[1]; })[0]; if (!hit) return;
+    if (isAnswer(hit)) {
+      var q = String(hit.area).match(/^(Q\d+)/)[1], el = document.querySelector('[data-q-row][data-q="' + q + '"]') || document.querySelector('[data-q="' + q + '"]');
+      if (el) { var r = el.getBoundingClientRect(); scrollTo({ top: Math.max(0, r.top + scrollY - innerHeight / 3), behavior: 'smooth' }); }
+      return;
+    }
+    var pins = comments.filter(function (c) { return !isAnswer(c); }), idx = pins.indexOf(hit);
     showPins = true; pulseId = m[1]; setTimeout(function () { pulseId = null; }, 9000); render();
-    var p = pinPos(comments[idx]); scrollTo({ top: Math.max(0, p.y - innerHeight / 2), behavior: 'smooth' });
-    setTimeout(function () { render(); showComment(comments[idx], idx, pinPos(comments[idx])); }, 700);
+    var p = pinPos(hit); scrollTo({ top: Math.max(0, p.y - innerHeight / 2), behavior: 'smooth' });
+    setTimeout(function () { render(); showComment(hit, idx, pinPos(hit)); }, 700);
   }
 
   /* ---------- comment mode ---------- */

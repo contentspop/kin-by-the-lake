@@ -68,6 +68,7 @@ function out_(obj, callback) {
 }
 
 // GET ?action=list&page=<page key>&callback=<fn>  → open comments for that page
+// GET ?action=list&answers=1&callback=<fn>  → all questionnaire answers (any status)
 // GET ?action=add&page=…&section=…&area=…&clicked=…&topic=…&anchor=…&x=…&y=…&name=…&comment=…&url=…&callback=<fn>  → save one
 function doGet(e) {
   var p = (e && e.parameter) || {};
@@ -75,7 +76,10 @@ function doGet(e) {
   if (p.action === 'add') return out_(save_(p), cb);
   if (p.action !== 'list') return out_({ ok: true, service: 'kin-comments' }, cb);
   try {
-    var filter = { and: [{ property: 'Status', select: { does_not_equal: 'Done' } }] };
+    // answers=1 → every questionnaire answer, whatever its Status (answers stay visible under each question)
+    var filter = p.answers
+      ? { and: [{ property: 'Clicked on', rich_text: { contains: 'Owner question' } }] }
+      : { and: [{ property: 'Status', select: { does_not_equal: 'Done' } }] };
     if (p.page) filter.and.push({ property: 'Page', rich_text: { equals: String(p.page) } });
     var list = [], cursor;
     do {
