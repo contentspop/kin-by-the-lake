@@ -30,8 +30,9 @@
     if (/KIN-Design-System/.test(p)) return 'Design System';
     if (/^questionnaire\//.test(p)) return 'Questionnaire';
     if (/^menu\//.test(p)) return 'Menu & Offer';
-    if (/^strategy\//.test(p)) return 'Strategy & Activation';
+    if (/^(strategy|benchmark)\//.test(p)) return 'Strategy & Activation';
     if (/^photography\//.test(p)) return 'Photography Guideline';
+    if (/^benchmark\//.test(p)) return 'Benchmark · Longrain';
     if (/ui_kits\/social/.test(p)) return 'Social';
     if (/ui_kits\/website/.test(p)) return 'Website' + (window.KIN_SCREEN ? ' · ' + window.KIN_SCREEN.charAt(0).toUpperCase() + window.KIN_SCREEN.slice(1) : '');
     if (/^guidelines\//.test(p)) return 'Guideline · ' + p.replace(/^guidelines\//, '').replace(/\.html$/, '');
@@ -119,7 +120,7 @@
     var p = relPath();
     if (/KIN-Brand-Book|^brand\//.test(p)) return 'Brand & Story';
     if (/^menu\//.test(p)) return 'Menu & Offer';
-    if (/^strategy\//.test(p)) return 'Strategy & Activation';
+    if (/^(strategy|benchmark)\//.test(p)) return 'Strategy & Activation';
     if (/^questionnaire\//.test(p)) return '';
     return 'Design & Content';
   }
