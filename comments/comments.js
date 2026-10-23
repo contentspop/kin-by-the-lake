@@ -1,6 +1,9 @@
-/* KIN Design System — pinned comments + Export PDF
-   Backend: Google Apps Script bridge → Notion (see apps-script.gs).
-   Set the endpoint in comments-config.js. With no endpoint, comments stay in this browser (preview mode). */
+/* KIN by the Lake — comments, answers and Export PDF
+   - Document pages: a comment thread at the end of every section (long text, links, up to 6 pictures).
+   - Website and Social previews: pinned comments on the exact spot.
+   - Questionnaire chips: answers shown under each question, on every page.
+   Backend: Google Apps Script bridge → Notion (see apps-script.gs). Endpoint in comments-config.js.
+   With no endpoint, comments stay in this browser (preview mode). */
 (function () {
   if (window.__kinComments) return;
   window.__kinComments = true;
@@ -8,11 +11,18 @@
   var ENDPOINT = (window.KIN_COMMENTS_ENDPOINT || '').trim();
   var PREVIEW = !ENDPOINT;
   var BRASS = '#B38A45', LAKE = '#1E3D5A', OFF = '#F3EFE6', RED = '#A8412E';
+  var MAX_IMAGES = 6, MAX_SIDE = 1600;
 
-  /* ---------- storage helpers ---------- */
+  /* ---------- helpers ---------- */
   function lsGet(k, d) { try { var v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } }
   function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function linkify(s) {
+    return esc(s).replace(/(https?:\/\/[^\s<]+[^\s<.,;:!?)\]'"])/g, function (u) { return '<a href="' + u + '" target="_blank" rel="noopener">' + u + '</a>'; })
+      .replace(/(^|[\s(])(www\.[^\s<]+[^\s<.,;:!?)\]'"])/g, function (m, p, u) { return p + '<a href="https://' + u + '" target="_blank" rel="noopener">' + u + '</a>'; });
+  }
+  function fmtDate(ts) { try { return new Date(ts).toLocaleString(undefined, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } }
+  function clean(t, n) { return String(t || '').replace(/\s+/g, ' ').trim().slice(0, n || 90); }
 
   /* ---------- page identity ---------- */
   function relPath() {
@@ -30,17 +40,30 @@
     if (/KIN-Design-System/.test(p)) return 'Design System';
     if (/^questionnaire\//.test(p)) return 'Questionnaire';
     if (/^menu\//.test(p)) return 'Menu & Offer';
-    if (/^(strategy|benchmark)\//.test(p)) return 'Strategy & Activation';
-    if (/^photography\//.test(p)) return 'Photography Guideline';
+    if (/^strategy\//.test(p)) return 'Strategy & Activation';
     if (/^benchmark\//.test(p)) return 'Benchmark · Longrain';
+    if (/^photography\//.test(p)) return 'Photography Guideline';
     if (/ui_kits\/social/.test(p)) return 'Social';
     if (/ui_kits\/website/.test(p)) return 'Website' + (window.KIN_SCREEN ? ' · ' + window.KIN_SCREEN.charAt(0).toUpperCase() + window.KIN_SCREEN.slice(1) : '');
     if (/^guidelines\//.test(p)) return 'Guideline · ' + p.replace(/^guidelines\//, '').replace(/\.html$/, '');
     if (/^components\//.test(p)) return 'Components · ' + p.split('/')[1];
     return p;
   }
+  function pageTopic() {
+    var p = relPath();
+    if (/KIN-Brand-Book|^brand\//.test(p)) return 'Brand & Story';
+    if (/^menu\//.test(p)) return 'Menu & Offer';
+    if (/^(strategy|benchmark)\//.test(p)) return 'Strategy & Activation';
+    if (/^questionnaire\//.test(p)) return '';
+    return 'Design & Content';
+  }
+  function pageUrl() { return location.href.split('#')[0] + (window.KIN_SCREEN ? '#screen=' + window.KIN_SCREEN : ''); }
+
+  var PIN_MODE = /ui_kits\/(website|social)\//.test(relPath());
+  var SECTION_MODE = !PIN_MODE && !/^(index\.html|questionnaire\/)/.test(relPath());
 
   /* ---------- anchoring ---------- */
+  function isOurs(el) { return !!(el && el.closest && el.closest('#kinc-bar,#kinc-layer,.kinc-pop,#kinc-shield,#kinc-hint,#kinc-toast,.kins,.kinc-compose,.kinq-ans')); }
   function anchorFor(el) {
     var a = el && el.closest && el.closest('[data-screen-label],section,[id]');
     while (a && a.id && /^(kinc-|root$)/.test(a.id)) a = a.parentElement && a.parentElement.closest('[data-screen-label],section,[id]');
@@ -71,10 +94,6 @@
     var r = el.getBoundingClientRect();
     return { left: r.left + scrollX, top: r.top + scrollY, width: r.width || 1, height: r.height || 1 };
   }
-
-  function clean(t, n) { return String(t || '').replace(/\s+/g, ' ').trim().slice(0, n || 90); }
-  function isOurs(el) { return !!(el && el.closest && el.closest('#kinc-bar,#kinc-layer,.kinc-pop,#kinc-shield,#kinc-hint,#kinc-toast')); }
-  // nearest heading / label above (or at) the click point, inside the anchor
   function areaFor(anchorEl, px, py) {
     var root = anchorEl === document.body ? document.body : anchorEl;
     var cands = root.querySelectorAll('h1,h2,h3,h4,h5,h6,figcaption,legend,label,th,strong,span,div,p,a,button');
@@ -93,7 +112,7 @@
       if (t.length < 2 || t.length > 80) continue;
       var r = el.getBoundingClientRect(); if (!r.width || !r.height) continue;
       var top = r.top + scrollY, bottom = r.bottom + scrollY, left = r.left + scrollX;
-      if (top > py + 6) continue;                       // must start above / at the click
+      if (top > py + 6) continue;
       var dy = Math.max(0, py - bottom);
       var inCol = px >= left - 40 && px <= left + Math.max(r.width, 560);
       var score = dy + (inCol ? 0 : 700) - (isHead ? 40 : 0);
@@ -102,7 +121,6 @@
     }
     return best || '';
   }
-  // what the pin sits on: text under the cursor, or the image
   function clickedOn(target, cx, cy) {
     if (target && target.tagName === 'IMG') {
       var src = (target.getAttribute('src') || '').split('/').pop();
@@ -116,22 +134,13 @@
     var txt = target ? clean(target.innerText || '', 90) : '';
     return txt ? '“' + txt + '”' : '';
   }
-  function pageTopic() {
-    var p = relPath();
-    if (/KIN-Brand-Book|^brand\//.test(p)) return 'Brand & Story';
-    if (/^menu\//.test(p)) return 'Menu & Offer';
-    if (/^(strategy|benchmark)\//.test(p)) return 'Strategy & Activation';
-    if (/^questionnaire\//.test(p)) return '';
-    return 'Design & Content';
-  }
-  function pageUrl() { return location.href.split('#')[0] + (window.KIN_SCREEN ? '#screen=' + window.KIN_SCREEN : ''); }
 
-  /* ---------- transport (JSONP so responses are readable cross-origin) ---------- */
+  /* ---------- transport ---------- */
   function jsonp(params) {
     return new Promise(function (resolve, reject) {
       var cb = '__kinc' + Date.now() + Math.floor(Math.random() * 1e6);
       var s = document.createElement('script');
-      var t = setTimeout(function () { cleanup(); reject(new Error('timeout')); }, 20000);
+      var t = setTimeout(function () { cleanup(); reject(new Error('timeout')); }, 25000);
       function cleanup() { clearTimeout(t); try { delete window[cb]; } catch (e) { window[cb] = undefined; } s.remove(); }
       window[cb] = function (data) { cleanup(); resolve(data); };
       params.callback = cb;
@@ -141,68 +150,131 @@
       document.head.appendChild(s);
     });
   }
+  function post(payload) {
+    // text/plain keeps this a "simple" request (no CORS preflight); Apps Script answers with JSON
+    return fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(payload), redirect: 'follow' })
+      .then(function (r) { return r.json(); });
+  }
   function previewStore() { try { return JSON.parse(lsGet('kinc-preview', '[]')); } catch (e) { return []; } }
   function fetchComments() {
     if (PREVIEW) return Promise.resolve(previewStore().filter(function (c) { return c.page === pageKey(); }));
     return jsonp({ action: 'list', page: pageKey() }).then(function (r) { if (!r.ok) throw new Error(r.error || 'error'); return r.comments || []; });
   }
-  function saveComment(c) {
+  function saveComment(c, images) {
+    var payload = { action: 'add', page: c.page, section: c.section, area: c.area, clicked: c.clicked, topic: c.topic || pageTopic(), anchor: c.anchor, x: c.x || 0, y: c.y || 0,
+      name: c.name, comment: c.comment, url: c.url || pageUrl(), type: c.type || 'Comment',
+      images: (images || []).map(function (im) { return { name: im.name, type: im.type, data: im.data }; }) };
     if (PREVIEW) {
-      var all = previewStore(); c.id = 'p' + Date.now(); c.ts = new Date().toISOString(); all.push(c); lsSet('kinc-preview', JSON.stringify(all));
+      var all = previewStore(); c.id = 'p' + Date.now(); c.ts = new Date().toISOString();
+      var keep = JSON.parse(JSON.stringify(c)); delete keep._sending; delete keep.images; all.push(keep); lsSet('kinc-preview', JSON.stringify(all));
       return Promise.resolve({ ok: true, id: c.id, ts: c.ts });
     }
-    return jsonp({ action: 'add', page: c.page, section: c.section, area: c.area, clicked: c.clicked, topic: c.topic || pageTopic(), anchor: c.anchor, x: c.x, y: c.y, name: c.name, comment: c.comment, url: pageUrl() })
-      .then(function (r) { if (!r.ok) throw new Error(r.error || 'error'); return r; });
+    return post(payload).then(function (r) { if (!r || !r.ok) throw new Error((r && r.error) || 'error'); return r; }, function (err) {
+      // fallback for browsers that block the POST: short text-only comments can still go through
+      if (payload.images.length || payload.comment.length > 1500) throw err;
+      delete payload.images;
+      return jsonp(payload).then(function (r) { if (!r.ok) throw new Error(r.error || 'error'); return r; });
+    });
+  }
+
+  /* ---------- images ---------- */
+  function shrink(file) {
+    return new Promise(function (resolve, reject) {
+      var fr = new FileReader();
+      fr.onerror = reject;
+      fr.onload = function () {
+        var img = new Image();
+        img.onerror = reject;
+        img.onload = function () {
+          var s = Math.min(1, MAX_SIDE / Math.max(img.naturalWidth, img.naturalHeight));
+          var c = document.createElement('canvas'); c.width = Math.max(1, Math.round(img.naturalWidth * s)); c.height = Math.max(1, Math.round(img.naturalHeight * s));
+          var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+          var url = c.toDataURL('image/jpeg', 0.82);
+          resolve({ name: (file.name || 'image').replace(/\.[^.]+$/, '') + '.jpg', type: 'image/jpeg', data: url.split(',')[1], url: url });
+        };
+        img.src = fr.result;
+      };
+      fr.readAsDataURL(file);
+    });
   }
 
   /* ---------- styles ---------- */
+  var F = 'Montserrat,system-ui,sans-serif';
   var css = '' +
-    '#kinc-bar{position:fixed;right:16px;bottom:16px;z-index:2147483000;display:flex;gap:6px;font:500 11px/1 Montserrat,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase}' +
+    '#kinc-bar{position:fixed;right:16px;bottom:16px;z-index:2147483000;display:flex;gap:6px;font:500 11px/1 ' + F + ';letter-spacing:.14em;text-transform:uppercase}' +
     '#kinc-bar button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:11px 14px;background:' + LAKE + ';color:' + OFF + ';box-shadow:0 6px 20px rgba(15,37,56,.28);border:1px solid rgba(243,239,230,.18)}' +
     '#kinc-bar button:hover{background:#16304A}#kinc-bar button[aria-pressed="true"]{background:' + BRASS + ';color:#0F2538}' +
     '#kinc-bar svg{width:15px;height:15px;flex:none}' +
     '#kinc-layer{position:absolute;left:0;top:0;width:0;height:0;z-index:2147482000}' +
-    '.kinc-pin{position:absolute;width:28px;height:28px;margin:-28px 0 0 0;border-radius:50% 50% 50% 0;background:' + BRASS + ';color:#0F2538;border:2px solid ' + OFF + ';box-shadow:0 3px 10px rgba(15,37,56,.35);font:600 12px/24px Montserrat,system-ui,sans-serif;text-align:center;cursor:pointer;transition:transform .15s}' +
+    '.kinc-pin{position:absolute;width:28px;height:28px;margin:-28px 0 0 0;border-radius:50% 50% 50% 0;background:' + BRASS + ';color:#0F2538;border:2px solid ' + OFF + ';box-shadow:0 3px 10px rgba(15,37,56,.35);font:600 12px/24px ' + F + ';text-align:center;cursor:pointer;transition:transform .15s}' +
     '.kinc-pin:hover{transform:scale(1.12)}.kinc-pin.sending{opacity:.6}.kinc-pin.pulse{animation:kincpulse 1s ease-in-out 4}' +
     '@keyframes kincpulse{0%,100%{box-shadow:0 0 0 0 rgba(179,138,69,.7)}50%{box-shadow:0 0 0 16px rgba(179,138,69,0)}}' +
     '#kinc-shield{position:fixed;inset:0;z-index:2147482500;cursor:crosshair;background:rgba(30,61,90,.06)}' +
-    '#kinc-hint{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:2147483001;background:' + LAKE + ';color:' + OFF + ';padding:10px 16px;font:500 11px/1.4 Montserrat,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 6px 20px rgba(15,37,56,.28)}' +
-    '.kinc-pop{position:absolute;z-index:2147482800;width:min(300px,calc(100vw - 32px));background:#FBF9F4;color:' + LAKE + ';border:1px solid #D9D3C6;box-shadow:0 16px 48px rgba(15,37,56,.28);padding:14px;font:300 13px/1.55 Montserrat,system-ui,sans-serif}' +
-    '.kinc-pop .kinc-meta{font:500 10px/1.4 Montserrat,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:' + BRASS + ';margin-bottom:6px}' +
+    '#kinc-hint{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:2147483001;background:' + LAKE + ';color:' + OFF + ';padding:10px 16px;font:500 11px/1.4 ' + F + ';letter-spacing:.12em;text-transform:uppercase;box-shadow:0 6px 20px rgba(15,37,56,.28)}' +
+    '.kinc-pop{position:absolute;z-index:2147482800;width:min(380px,calc(100vw - 32px));max-height:80vh;overflow:auto;background:#FBF9F4;color:' + LAKE + ';border:1px solid #D9D3C6;box-shadow:0 16px 48px rgba(15,37,56,.28);padding:14px;font:400 13px/1.55 ' + F + '}' +
+    '.kinc-pop .kinc-meta{font:600 10px/1.4 ' + F + ';letter-spacing:.16em;text-transform:uppercase;color:' + BRASS + ';margin-bottom:6px}' +
     '.kinc-pop .kinc-body{white-space:pre-wrap;word-wrap:break-word}' +
-    '.kinc-pop input,.kinc-pop textarea{box-sizing:border-box;width:100%;border:1px solid #D9D3C6;background:#fff;padding:8px 10px;font:300 13px/1.5 Montserrat,system-ui,sans-serif;color:' + LAKE + ';margin:0 0 8px;outline:none}' +
-    '.kinc-pop input:focus,.kinc-pop textarea:focus{border-color:' + BRASS + '}.kinc-pop textarea{min-height:84px;resize:vertical}' +
-    '.kinc-row{display:flex;gap:8px;justify-content:flex-end;align-items:center}' +
-    '.kinc-row button{all:unset;cursor:pointer;padding:8px 12px;font:500 10px/1 Montserrat,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase}' +
-    '.kinc-row .kinc-go{background:' + LAKE + ';color:' + OFF + '}.kinc-row .kinc-x{color:' + LAKE + '}' +
-    '.kinc-note{font:400 10px/1.4 Montserrat,system-ui,sans-serif;color:#6B7A88;margin-right:auto}' +
-    '#kinc-toast{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);z-index:2147483001;background:' + LAKE + ';color:' + OFF + ';padding:10px 16px;font:500 11px/1.4 Montserrat,system-ui,sans-serif;letter-spacing:.1em;box-shadow:0 6px 20px rgba(15,37,56,.28)}' +
+    '.kinc-row{display:flex;gap:8px;justify-content:flex-end;align-items:center;flex-wrap:wrap}' +
+    '.kinc-row button,.kins-add{all:unset;cursor:pointer;padding:9px 13px;font:600 10px/1 ' + F + ';letter-spacing:.16em;text-transform:uppercase}' +
+    '.kinc-row .kinc-go{background:' + LAKE + ';color:' + OFF + '}.kinc-row .kinc-x{color:' + LAKE + '}.kinc-row .kinc-go[disabled]{opacity:.5;cursor:wait}' +
+    '.kinc-note{font:400 11px/1.4 ' + F + ';color:#6B7A88;margin-right:auto}' +
+    '#kinc-toast{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);z-index:2147483001;background:' + LAKE + ';color:' + OFF + ';padding:10px 16px;font:500 11px/1.4 ' + F + ';letter-spacing:.1em;box-shadow:0 6px 20px rgba(15,37,56,.28)}' +
     '#kinc-toast.err{background:' + RED + '}' +
+    /* composer */
+    '.kinc-compose{box-sizing:border-box;display:flex;flex-direction:column;gap:8px;margin:10px 0;padding:14px;background:#FBF9F4;border:1px solid #D9D3C6;color:' + LAKE + ';font:400 14px/1.55 ' + F + ';text-align:left;text-transform:none;letter-spacing:0;max-width:760px}' +
+    '.kinc-pop .kinc-compose{margin:0;padding:0;border:0;background:none}' +
+    '.kinc-compose .kc-t{font:600 10px/1.4 ' + F + ';letter-spacing:.16em;text-transform:uppercase;color:' + BRASS + '}' +
+    '.kinc-compose input[type=text],.kinc-compose textarea{box-sizing:border-box;width:100%;border:1px solid #D9D3C6;background:#fff;padding:9px 11px;font:400 14px/1.55 ' + F + ';color:' + LAKE + ';outline:none;border-radius:0}' +
+    '.kinc-compose input[type=text]:focus,.kinc-compose textarea:focus{border-color:' + BRASS + '}' +
+    '.kinc-compose textarea{min-height:120px;resize:vertical}' +
+    '.kc-imgs{display:flex;flex-wrap:wrap;gap:8px}.kc-imgs:empty{display:none}' +
+    '.kc-th{position:relative;width:76px;height:76px;background:#eee center/cover no-repeat;border:1px solid #D9D3C6}' +
+    '.kc-th button{all:unset;cursor:pointer;position:absolute;right:-7px;top:-7px;width:20px;height:20px;border-radius:50%;background:' + LAKE + ';color:' + OFF + ';font:600 12px/20px ' + F + ';text-align:center}' +
+    '.kc-pic{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border:1px dashed ' + BRASS + ';color:' + LAKE + ';font:600 10px/1 ' + F + ';letter-spacing:.14em;text-transform:uppercase}' +
+    /* section threads */
+    '.kins{box-sizing:border-box;margin:36px 0 0;padding:18px 0 0;border-top:1px dashed rgba(179,138,69,.55);color:' + LAKE + ';font:400 14px/1.6 ' + F + ';text-align:left;text-transform:none;letter-spacing:0;width:100%;max-width:820px}' +
+    '.kins-h{font:600 10.5px/1.4 ' + F + ';letter-spacing:.18em;text-transform:uppercase;color:' + BRASS + ';margin-bottom:10px}' +
+    '.kins-add{color:' + BRASS + ';padding:6px 0}.kins-add:hover{color:' + LAKE + '}' +
+    '.kins-add[hidden]{display:none}' +
+    '.kinc-it.long .kinc-it-b{max-height:10.5em;overflow:hidden;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}.kinc-it.long.open .kinc-it-b{max-height:none;-webkit-mask-image:none;mask-image:none}' +
+    '.kinc-more{all:unset;cursor:pointer;margin-top:6px;font:600 10px/1 ' + F + ';letter-spacing:.14em;text-transform:uppercase;color:' + BRASS + '}' +
+    '.kinc-it{padding:12px 14px;background:#FBF9F4;border:1px solid #E4DED1;border-left:3px solid ' + BRASS + ';margin:0 0 10px;color:' + LAKE + '}' +
+    '.kinc-it.sending{opacity:.55}.kinc-it.flash{animation:kincflash 1.2s ease-in-out 3}' +
+    '@keyframes kincflash{0%,100%{box-shadow:0 0 0 0 rgba(179,138,69,0)}50%{box-shadow:0 0 0 6px rgba(179,138,69,.35)}}' +
+    '.kinc-it-m{display:block;font:600 10px/1.4 ' + F + ';letter-spacing:.14em;text-transform:uppercase;color:' + BRASS + ';margin-bottom:4px}' +
+    '.kinc-it-b{white-space:pre-wrap;word-wrap:break-word;font:400 14px/1.6 ' + F + '}' +
+    '.kinc-it-b a,.kinq-ans a{color:inherit;text-decoration:underline;text-decoration-color:' + BRASS + ';word-break:break-all}' +
+    '.kinc-it-g{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}' +
+    '.kinc-it-g a{display:block;width:120px;height:120px;background:#eee;border:1px solid #D9D3C6;overflow:hidden}' +
+    '.kinc-it-g img{width:100%;height:100%;object-fit:cover;display:block}' +
+    '.kins-dark{color:' + OFF + '}.kins-dark .kins-h,.kins-dark .kins-add{color:#CFAE72}' +
+    /* answers */
     '.kinq-done{background:#E3EEDF!important;color:#3F6B35!important;border-color:#B9D3AE!important}' +
-    '.kinq-ans{display:block;box-sizing:border-box;margin:8px 0 6px;padding:10px 12px;background:#EEF5EB;border-left:3px solid #3F6B35;color:#1E3D5A;font:400 13.5px/1.6 Montserrat,system-ui,sans-serif;letter-spacing:0;text-transform:none;text-align:left;white-space:pre-wrap;word-wrap:break-word;max-width:760px}' +
-    '.kinq-ans-i+.kinq-ans-i{margin-top:8px;padding-top:8px;border-top:1px solid #CFE0C8}' +
-    '.kinq-ans-m{display:block;font:600 10px/1.4 Montserrat,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#3F6B35;margin-bottom:2px;white-space:normal}' +
-    '#kinc-draft{position:fixed;left:16px;bottom:16px;z-index:2147483000;background:#A8412E;color:#F3EFE6;font:600 10px/1 Montserrat,system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;padding:9px 12px;box-shadow:0 6px 20px rgba(15,37,56,.22);pointer-events:none}' +
+    '.kinq-ans{display:block;box-sizing:border-box;margin:8px 0 6px;padding:10px 12px;background:#EEF5EB;border-left:3px solid #3F6B35;color:#1E3D5A;font:400 13.5px/1.6 ' + F + ';letter-spacing:0;text-transform:none;text-align:left;word-wrap:break-word;max-width:760px}' +
+    '.kinq-ans .kinc-it{background:none;border:0;padding:0;margin:0}.kinq-ans .kinc-it+.kinc-it{margin-top:8px;padding-top:8px;border-top:1px solid #CFE0C8}' +
+    '.kinq-ans .kinc-it-m{color:#3F6B35}.kinq-ans .kinc-it-b{font-size:13.5px}' +
+    '#kinc-draft{position:fixed;left:16px;bottom:16px;z-index:2147483000;background:#A8412E;color:#F3EFE6;font:600 10px/1 ' + F + ';letter-spacing:.22em;text-transform:uppercase;padding:9px 12px;box-shadow:0 6px 20px rgba(15,37,56,.22);pointer-events:none}' +
     '@media print{#kinc-draft{position:fixed;left:auto;right:12px;top:12px;bottom:auto;box-shadow:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}}' +
-    '@media print{#kinc-bar,#kinc-layer,#kinc-shield,#kinc-hint,#kinc-toast,.kinc-pop{display:none!important}}';
+    '@media print{#kinc-bar,#kinc-layer,#kinc-shield,#kinc-hint,#kinc-toast,.kinc-pop,.kins,.kinc-compose{display:none!important}}';
   var st = document.createElement('style'); st.id = 'kinc-style'; st.textContent = css; document.head.appendChild(st);
 
-  /* ---------- UI ---------- */
+  /* ---------- UI shell ---------- */
   var ICON_CMT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16v11H9l-5 4z"/></svg>';
   var ICON_EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg>';
   var ICON_PDF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v11m-5-5 5 5 5-5M5 20h14"/></svg>';
+  var ICON_PIC = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 6-6 4 4 3-3 3 3"/></svg>';
 
   var bar = document.createElement('div'); bar.id = 'kinc-bar';
-  bar.innerHTML =
-    '<button type="button" id="kinc-add" aria-pressed="false" title="Click anywhere on the page to leave a comment">' + ICON_CMT + '<span>Comment</span></button>' +
-    '<button type="button" id="kinc-toggle" aria-pressed="true" title="Show or hide comment pins">' + ICON_EYE + '<span id="kinc-count">0</span></button>' +
+  bar.innerHTML = (PIN_MODE ?
+    '<button type="button" id="kinc-add" aria-pressed="false" title="Click anywhere on the screen to leave a comment">' + ICON_CMT + '<span>Comment</span></button>' +
+    '<button type="button" id="kinc-toggle" aria-pressed="true" title="Show or hide comment pins">' + ICON_EYE + '<span id="kinc-count">0</span></button>' : '') +
     '<button type="button" id="kinc-pdf" title="Save this page as PDF">' + ICON_PDF + '<span>PDF</span></button>';
   var layer = document.createElement('div'); layer.id = 'kinc-layer';
   var draft = document.createElement('div'); draft.id = 'kinc-draft'; draft.textContent = 'Draft · for review';
 
-  function mount() { if (!st.isConnected) (document.head || document.documentElement).appendChild(st); if (!bar.isConnected) document.body.appendChild(bar); if (!layer.isConnected) document.body.appendChild(layer); if (!draft.isConnected) document.body.appendChild(draft); }
+  function mount() { if (!st.isConnected) (document.head || document.documentElement).appendChild(st); if (!bar.isConnected) document.body.appendChild(bar); if (PIN_MODE && !layer.isConnected) document.body.appendChild(layer); if (!draft.isConnected) document.body.appendChild(draft); }
 
-  var pulseId = null, comments = [], showPins = lsGet('kinc-show', '1') === '1', openPop = null;
+  var pulseId = null, comments = [], globalAnswers = [], showPins = lsGet('kinc-show', '1') === '1', openPop = null;
 
   function toast(msg, err) {
     var t = document.getElementById('kinc-toast'); if (t) t.remove();
@@ -218,14 +290,137 @@
     pop.style.left = Math.max(scrollX + 8, left) + 'px'; pop.style.top = Math.max(scrollY + 8, top) + 'px';
     openPop = pop;
   }
-  function fmtDate(ts) { try { return new Date(ts).toLocaleString(undefined, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } }
 
-  function pinPos(c) {
-    var a = resolveAnchor(c.anchor), r = docRect(a);
-    return { x: r.left + (+c.x || 0) * r.width, y: r.top + (+c.y || 0) * r.height };
+  function isAnswer(c) { return /^Q\d+\b/.test(String(c.area || '')) || c.type === 'Answer'; }
+  function itemHtml(c, label) {
+    var imgs = (c.images || []).map(function (u) { return '<a href="' + esc(u) + '" target="_blank" rel="noopener"><img src="' + esc(u) + '" alt="" loading="lazy"></a>'; }).join('');
+    var long = String(c.comment || '').length > 700 || (String(c.comment || '').match(/\n/g) || []).length > 8;
+    return '<div class="kinc-it' + (long ? ' long' : '') + (c._sending ? ' sending' : '') + '" data-cid="' + esc(c.id || '') + '"><span class="kinc-it-m">' + (label ? label + ' · ' : '') + esc(c.name || 'Guest') + (c.ts ? ' · ' + esc(fmtDate(c.ts)) : (c._sending ? ' · sending…' : '')) + '</span>' +
+      (c.comment ? '<div class="kinc-it-b">' + linkify(c.comment) + '</div>' : '') + (long ? '<button type="button" class="kinc-more">Read more</button>' : '') + (imgs ? '<div class="kinc-it-g">' + imgs + '</div>' : '') + '</div>';
   }
-  var globalAnswers = [];
-  function isAnswer(c) { return /^Q\d+\b/.test(String(c.area || '')); }
+
+  /* ---------- composer (shared by sections, answers and pins) ---------- */
+  function composer(opts) {
+    var box = document.createElement('div'); box.className = 'kinc-compose';
+    box.innerHTML = '<div class="kc-t">' + esc(opts.title || 'New comment') + '</div>' +
+      '<input type="text" maxlength="120" placeholder="Your name" value="' + esc(lsGet('kinc-name', '')) + '">' +
+      '<textarea placeholder="' + esc(opts.placeholder || 'Write as much as you like. Paste links too.') + '"></textarea>' +
+      '<div class="kc-imgs"></div>' +
+      '<div class="kinc-row"><button type="button" class="kc-pic">' + ICON_PIC + 'Add pictures</button><span class="kinc-note">Up to ' + MAX_IMAGES + ' pictures · links are clickable</span>' +
+      '<button type="button" class="kinc-x" data-act="cancel">Cancel</button><button type="button" class="kinc-go" data-act="send">Send</button></div>' +
+      '<input type="file" accept="image/*" multiple hidden>';
+    var name = box.querySelector('input[type=text]'), txt = box.querySelector('textarea'), file = box.querySelector('input[type=file]'), grid = box.querySelector('.kc-imgs'), go = box.querySelector('.kinc-go');
+    var pics = [], busy = 0;
+    function draw() {
+      grid.innerHTML = '';
+      pics.forEach(function (p, i) {
+        var th = document.createElement('div'); th.className = 'kc-th'; th.style.backgroundImage = 'url(' + p.url + ')';
+        var x = document.createElement('button'); x.type = 'button'; x.textContent = '×'; x.title = 'Remove';
+        x.addEventListener('click', function () { pics.splice(i, 1); draw(); });
+        th.appendChild(x); grid.appendChild(th);
+      });
+    }
+    box.querySelector('.kc-pic').addEventListener('click', function () { file.click(); });
+    file.addEventListener('change', function () {
+      var list = Array.prototype.slice.call(file.files || []).filter(function (f) { return /^image\//.test(f.type); });
+      var room = MAX_IMAGES - pics.length;
+      if (list.length > room) toast('Up to ' + MAX_IMAGES + ' pictures per comment', true);
+      list.slice(0, Math.max(0, room)).forEach(function (f) {
+        busy++; go.disabled = true;
+        shrink(f).then(function (p) { pics.push(p); draw(); }, function () { toast('Could not read ' + f.name, true); })
+          .then(function () { busy--; if (!busy) go.disabled = false; });
+      });
+      file.value = '';
+    });
+    function grow() { txt.style.height = 'auto'; txt.style.height = Math.min(Math.max(120, txt.scrollHeight + 2), 520) + 'px'; }
+    txt.addEventListener('input', grow);
+    box.addEventListener('click', function (e) {
+      var act = e.target.closest && e.target.closest('[data-act]'); act = act && act.getAttribute('data-act');
+      if (act === 'cancel') { box.remove(); if (opts.onCancel) opts.onCancel(); }
+      if (act === 'send') send();
+    });
+    box.addEventListener('keydown', function (e) { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) send(); });
+    function send() {
+      if (busy) return;
+      var text = txt.value.replace(/\s+$/, '').replace(/^\s*\n/, '');
+      if (!text.trim() && !pics.length) { txt.focus(); return; }
+      var nm = name.value.trim() || 'Guest'; lsSet('kinc-name', nm);
+      opts.onSend({ name: nm, comment: text, images: pics.slice() });
+      box.remove();
+    }
+    setTimeout(function () { (name.value ? txt : name).focus(); }, 30);
+    return box;
+  }
+
+  function submit(c, images) {
+    c.images = images.map(function (p) { return p.url; }); c._sending = true;
+    comments.push(c); render();
+    saveComment(c, images).then(function (r) {
+      c.id = r.id; c.ts = r.ts || new Date().toISOString(); c._sending = false; render();
+      toast(PREVIEW ? 'Saved in this browser (preview mode)' : (r.failed ? 'Sent, but ' + r.failed + ' picture(s) did not upload' : 'Sent. Thank you!'), !!r.failed);
+    }).catch(function () {
+      comments.splice(comments.indexOf(c), 1); render(); toast('Could not send. Please try again.', true);
+    });
+  }
+
+  /* ---------- section threads ---------- */
+  function sectionList() {
+    return Array.prototype.filter.call(document.querySelectorAll('section[data-screen-label]'), function (s) {
+      return s.id !== 'questions' && !s.closest('.kins') && !s.parentElement.closest('section[data-screen-label]');
+    });
+  }
+  function keyOf(sec) { return 'label:' + sec.getAttribute('data-screen-label'); }
+  function hostOf(sec) {
+    var f = sec.firstElementChild;
+    return f && f.tagName === 'DIV' && sec.children.length <= 2 ? f : sec;
+  }
+  function isDark(el) {
+    try { var c = getComputedStyle(el).backgroundColor.match(/\d+/g); if (!c || (c[3] !== undefined && +c[3] === 0)) return false; return (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) < 110; } catch (e) { return false; }
+  }
+  function threadKeyFor(c, secs) {
+    if (c.anchor && /^label:/.test(c.anchor)) {
+      for (var i = 0; i < secs.length; i++) if (keyOf(secs[i]) === c.anchor) return c.anchor;
+    }
+    var el = resolveAnchor(c.anchor);
+    var s = el && el !== document.body ? (el.closest('section[data-screen-label]') || null) : null;
+    if (s && secs.indexOf(s) >= 0) return keyOf(s);
+    return secs.length ? keyOf(secs[secs.length - 1]) : '';
+  }
+  function renderThreads() {
+    if (!SECTION_MODE) return;
+    var secs = sectionList(); if (!secs.length) return;
+    var by = {};
+    comments.filter(function (c) { return !isAnswer(c); }).forEach(function (c) { var k = threadKeyFor(c, secs); (by[k] = by[k] || []).push(c); });
+    secs.forEach(function (sec) {
+      var key = keyOf(sec), host = hostOf(sec);
+      var th = host.querySelector(':scope > .kins');
+      if (!th) {
+        th = document.createElement('div'); th.className = 'kins' + (isDark(sec) ? ' kins-dark' : ''); th.setAttribute('data-kins', key);
+        th.innerHTML = '<div class="kins-h" hidden></div><div class="kins-list"></div><button type="button" class="kins-add">＋ Comment on this section</button>';
+        host.appendChild(th);
+        th.querySelector('.kins-add').addEventListener('click', function () {
+          if (th.querySelector('.kinc-compose')) { th.querySelector('.kinc-compose textarea').focus(); return; }
+          var add = th.querySelector('.kins-add'); add.hidden = true;
+          var label = sec.getAttribute('data-screen-label');
+          var box = composer({ title: 'Comment · ' + label, onCancel: function () { add.hidden = false; }, onSend: function (v) {
+            add.hidden = false;
+            submit({ page: pageKey(), section: (pageName() + ' · ' + label).slice(0, 180), area: label, clicked: 'Section comment', topic: pageTopic(), anchor: key, x: 0, y: 0, type: 'Comment',
+              url: pageUrl() + (sec.id ? '#' + sec.id : ''), name: v.name, comment: v.comment }, v.images);
+          } });
+          th.insertBefore(box, add);
+        });
+      }
+      var list = (by[key] || []).slice().sort(function (a, b) { return String(a.ts || '9').localeCompare(String(b.ts || '9')); });
+      var sig = list.map(function (c) { return (c.id || 'x') + (c._sending ? 's' : '') + (c.images ? c.images.length : 0); }).join(',');
+      if (th.getAttribute('data-sig') !== sig) {
+        th.setAttribute('data-sig', sig);
+        var h = th.querySelector('.kins-h'); h.hidden = !list.length; h.textContent = 'Comments · ' + list.length;
+        th.querySelector('.kins-list').innerHTML = list.map(function (c) { return itemHtml(c); }).join('');
+      }
+    });
+  }
+
+  /* ---------- answers under questions ---------- */
   function markAnswered() {
     var by = {}, seen = {};
     comments.concat(globalAnswers).forEach(function (c) { if (c.id && seen[c.id]) return; if (c.id) seen[c.id] = 1; var m = String(c.area || '').match(/^(Q\d+)\b/); if (m) (by[m[1]] = by[m[1]] || []).push(c); });
@@ -233,16 +428,17 @@
     document.querySelectorAll('[data-q]').forEach(function (el) {
       var q = el.getAttribute('data-q'), list = by[q] || [], n = list.length;
       el.classList.toggle('kinq-done', n > 0);
-      var st = el.querySelector('.kinq-st'); if (st) st.textContent = n ? '✓ Answered' + (n > 1 ? ' ×' + n : '') : 'Answer →';
+      var stt = el.querySelector('.kinq-st'); if (stt) stt.textContent = n ? '✓ Answered' + (n > 1 ? ' ×' + n : '') + ' · add' : 'Answer →';
       var isRow = el.hasAttribute('data-q-row');
       if (!n || (!isRow && el.closest('[data-q-row]'))) return;
-      list.sort(function (a, b) { return String(a.ts || '').localeCompare(String(b.ts || '')); });
-      var html = list.map(function (c) { return '<div class="kinq-ans-i"><span class="kinq-ans-m">Answer · ' + esc(c.name || 'Guest') + (c.ts ? ' · ' + esc(fmtDate(c.ts)) : '') + '</span>' + esc(c.comment) + '</div>'; }).join('');
+      list.sort(function (a, b) { return String(a.ts || '9').localeCompare(String(b.ts || '9')); });
+      var html = list.map(function (c) { return itemHtml(c, 'Answer'); }).join('');
       var host = isRow ? (el.children[1] || el) : null;
       var old = host ? host.querySelector('.kinq-ans') : (el.nextElementSibling && el.nextElementSibling.classList.contains('kinq-ans') ? el.nextElementSibling : null);
-      if (old && old.getAttribute('data-sig') === String(html.length) + q) { keep.push(old); return; }
+      var sig = q + ':' + list.map(function (c) { return (c.id || 'x') + (c._sending ? 's' : ''); }).join(',');
+      if (old && old.getAttribute('data-sig') === sig) { keep.push(old); return; }
       if (old) old.remove();
-      var box = document.createElement('div'); box.className = 'kinq-ans'; box.setAttribute('data-sig', String(html.length) + q); box.innerHTML = html;
+      var box = document.createElement('div'); box.className = 'kinq-ans'; box.setAttribute('data-sig', sig); box.innerHTML = html;
       if (host) host.appendChild(box); else el.insertAdjacentElement('afterend', box);
       keep.push(box);
     });
@@ -256,13 +452,36 @@
       el.textContent = d + ' of ' + rows.length + ' answered';
     });
   }
-  function render() {
-    try { markAnswered(); } catch (e) {}
+  function openAnswer(q) {
+    var qid = q.getAttribute('data-q'), qt = q.getAttribute('data-qt') || '';
+    var row = q.closest('[data-q-row]');
+    var host = row ? (row.children[1] || row) : null;
+    var existing = (host || q.parentElement).querySelector('.kinc-compose[data-for="' + qid + '"]');
+    if (existing) { existing.querySelector('textarea').focus(); return; }
+    var sec = q.closest('[data-screen-label]');
+    var a = anchorFor(sec || q.parentElement);
+    var box = composer({ title: 'Answer · ' + qid, placeholder: qt || 'Your answer', onSend: function (v) {
+      submit({ page: pageKey(), section: (pageName() + (sec ? ' · ' + sec.getAttribute('data-screen-label') : '')).slice(0, 180), area: (qid + ' · ' + qt).slice(0, 180),
+        clicked: 'Owner question ' + qid, topic: q.getAttribute('data-topic') || pageTopic(), anchor: a.key, x: 0, y: 0, type: 'Answer',
+        url: pageUrl(), name: v.name, comment: v.comment }, v.images);
+    } });
+    box.setAttribute('data-for', qid);
+    if (host) host.appendChild(box);
+    else { var after = q.nextElementSibling && q.nextElementSibling.classList.contains('kinq-ans') ? q.nextElementSibling : q; after.insertAdjacentElement('afterend', box); }
+  }
+
+  /* ---------- pins (Website and Social previews) ---------- */
+  function pinPos(c) {
+    var a = resolveAnchor(c.anchor), r = docRect(a);
+    return { x: r.left + (+c.x || 0) * r.width, y: r.top + (+c.y || 0) * r.height };
+  }
+  function renderPins() {
+    if (!PIN_MODE) return;
     layer.innerHTML = '';
     layer.style.display = showPins ? '' : 'none';
     var pins = comments.filter(function (c) { return !isAnswer(c); });
-    document.getElementById('kinc-count').textContent = String(pins.length);
-    document.getElementById('kinc-toggle').setAttribute('aria-pressed', String(showPins));
+    var cnt = document.getElementById('kinc-count'); if (cnt) cnt.textContent = String(pins.length);
+    var tg = document.getElementById('kinc-toggle'); if (tg) tg.setAttribute('aria-pressed', String(showPins));
     pins.forEach(function (c, i) {
       var p = pinPos(c), pin = document.createElement('div');
       pin.className = 'kinc-pin' + (c._sending ? ' sending' : '') + (pulseId && String(c.id) === pulseId ? ' pulse' : ''); pin.textContent = String(i + 1);
@@ -275,10 +494,8 @@
   function showComment(c, i, p) {
     closePop();
     var pop = document.createElement('div'); pop.className = 'kinc-pop';
-    pop.innerHTML = '<div class="kinc-meta">#' + (i + 1) + ' · ' + esc(c.name || 'Guest') + (c.ts ? ' · ' + esc(fmtDate(c.ts)) : '') + '</div>' +
-      '<div class="kinc-body">' + esc(c.comment) + '</div>' +
-      '<div class="kinc-row" style="margin-top:10px">' + (c.section || c.area ? '<span class="kinc-note">' + esc([c.section, c.area].filter(Boolean).join(' · ')) + '</span>' : '') +
-      (c.id && !PREVIEW ? '<button type="button" class="kinc-x" data-act="link">Copy link</button>' : '') +
+    pop.innerHTML = '<div class="kinc-meta">#' + (i + 1) + (c.section || c.area ? ' · ' + esc([c.section, c.area].filter(Boolean).join(' · ')) : '') + '</div>' + itemHtml(c) +
+      '<div class="kinc-row" style="margin-top:10px">' + (c.id && !PREVIEW ? '<button type="button" class="kinc-x" data-act="link">Copy link</button>' : '') +
       '<button type="button" class="kinc-go" data-act="close">Close</button></div>';
     pop.addEventListener('click', function (e) {
       var a = e.target.getAttribute && e.target.getAttribute('data-act');
@@ -287,34 +504,10 @@
     });
     placePop(pop, p.x, p.y);
   }
-
-  function loadGlobalAnswers() {
-    if (PREVIEW) return;
-    jsonp({ action: 'list', answers: 1 }).then(function (r) { if (r && r.ok) { globalAnswers = (r.comments || []).filter(function (c) { return /^Q\d+\b/.test(String(c.area || '')); }); try { markAnswered(); } catch (e) {} [800, 2500, 6000].forEach(function (t) { setTimeout(function () { try { markAnswered(); } catch (e) {} }, t); }); } }).catch(function () {});
-  }
-  function load() {
-    loadGlobalAnswers();
-    return fetchComments().then(function (list) { comments = list; render(); focusFromHash(); })
-      .catch(function () { comments = []; render(); });
-  }
-  function focusFromHash() {
-    var m = location.hash.match(/pin=([\w-]+)/); if (!m) return;
-    var hit = comments.filter(function (c) { return String(c.id) === m[1]; })[0]; if (!hit) return;
-    if (isAnswer(hit)) {
-      var q = String(hit.area).match(/^(Q\d+)/)[1], el = document.querySelector('[data-q-row][data-q="' + q + '"]') || document.querySelector('[data-q="' + q + '"]');
-      if (el) { var r = el.getBoundingClientRect(); scrollTo({ top: Math.max(0, r.top + scrollY - innerHeight / 3), behavior: 'smooth' }); }
-      return;
-    }
-    var pins = comments.filter(function (c) { return !isAnswer(c); }), idx = pins.indexOf(hit);
-    showPins = true; pulseId = m[1]; setTimeout(function () { pulseId = null; }, 9000); render();
-    var p = pinPos(hit); scrollTo({ top: Math.max(0, p.y - innerHeight / 2), behavior: 'smooth' });
-    setTimeout(function () { render(); showComment(hit, idx, pinPos(hit)); }, 700);
-  }
-
-  /* ---------- comment mode ---------- */
   var shield = null, hint = null;
   function setMode(on) {
-    document.getElementById('kinc-add').setAttribute('aria-pressed', String(on));
+    var b = document.getElementById('kinc-add'); if (!b) return;
+    b.setAttribute('aria-pressed', String(on));
     if (on) {
       closePop();
       shield = document.createElement('div'); shield.id = 'kinc-shield';
@@ -335,32 +528,49 @@
     setMode(false);
     var a = anchorFor(target), r = docRect(a.el), px = e.clientX + scrollX, py = e.clientY + scrollY;
     var area = areaFor(a.el, px, py), sec = sectionName(a.el);
-    compose({ anchor: a.key, section: sec, area: area, clicked: clicked, x: +((px - r.left) / r.width).toFixed(4), y: +((py - r.top) / r.height).toFixed(4) }, px, py);
-  }
-  function compose(base, px, py) {
     closePop();
     var pop = document.createElement('div'); pop.className = 'kinc-pop';
-    pop.innerHTML = '<div class="kinc-meta">' + (base.question ? 'Answer · ' + esc(base.question) : 'New comment' + (base.area || base.section ? ' · ' + esc(base.area || base.section) : '')) + '</div>' +
-      '<input type="text" maxlength="120" placeholder="Your name" value="' + esc(lsGet('kinc-name', '')) + '">' +
-      '<textarea maxlength="1900" placeholder="' + (base.question ? 'Your answer' : 'What would you like to change?') + '"></textarea>' +
-      '<div class="kinc-row"><button type="button" class="kinc-x" data-act="cancel">Cancel</button><button type="button" class="kinc-go" data-act="send">Send</button></div>';
+    var base = { anchor: a.key, x: +((px - r.left) / r.width).toFixed(4), y: +((py - r.top) / r.height).toFixed(4) };
+    pop.appendChild(composer({ title: 'New comment' + (area || sec ? ' · ' + (area || sec) : ''), onCancel: closePop, onSend: function (v) {
+      closePop(); showPins = true;
+      submit({ page: pageKey(), section: (pageName() + (sec ? ' · ' + sec : '')).slice(0, 180), area: area, clicked: clicked, topic: pageTopic(), anchor: base.anchor, x: base.x, y: base.y, type: 'Pin',
+        url: pageUrl(), name: v.name, comment: v.comment }, v.images);
+    } }));
     placePop(pop, px, py);
-    var name = pop.querySelector('input'), txt = pop.querySelector('textarea');
-    (name.value ? txt : name).focus();
-    pop.addEventListener('click', function (e) {
-      var act = e.target.getAttribute && e.target.getAttribute('data-act');
-      if (act === 'cancel') closePop();
-      if (act === 'send') send();
-    });
-    pop.addEventListener('keydown', function (e) { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) send(); });
-    function send() {
-      var comment = txt.value.trim(); if (!comment) { txt.focus(); return; }
-      var nm = name.value.trim() || 'Guest'; lsSet('kinc-name', nm);
-      var c = { page: pageKey(), section: (pageName() + (base.section ? ' · ' + base.section : '')).slice(0, 180), area: base.area || '', clicked: base.clicked || '', topic: base.topic || '', anchor: base.anchor, x: base.x, y: base.y, name: nm, comment: comment, _sending: true };
-      closePop(); showPins = true; comments.push(c); render();
-      saveComment(c).then(function (r) { c.id = r.id; c.ts = r.ts || new Date().toISOString(); c._sending = false; render(); toast(PREVIEW ? 'Saved in this browser (preview mode)' : 'Comment sent. Thank you!'); })
-        .catch(function () { comments.splice(comments.indexOf(c), 1); render(); toast('Could not send. Please try again.', true); });
+  }
+
+  /* ---------- render / load ---------- */
+  function render() {
+    try { markAnswered(); } catch (e) {}
+    try { renderThreads(); } catch (e) {}
+    try { renderPins(); } catch (e) {}
+  }
+  function loadGlobalAnswers() {
+    if (PREVIEW) return;
+    jsonp({ action: 'list', answers: 1 }).then(function (r) {
+      if (r && r.ok) { globalAnswers = (r.comments || []).filter(function (c) { return /^Q\d+\b/.test(String(c.area || '')); }); render(); }
+    }).catch(function () {});
+  }
+  function load() {
+    loadGlobalAnswers();
+    return fetchComments().then(function (list) { comments = list; render(); focusFromHash(); })
+      .catch(function () { comments = []; render(); });
+  }
+  function focusFromHash() {
+    var m = location.hash.match(/pin=([\w-]+)/); if (!m) return;
+    var hit = comments.concat(globalAnswers).filter(function (c) { return String(c.id) === m[1]; })[0]; if (!hit) return;
+    function scrollToEl(el) { if (!el) return; var r = el.getBoundingClientRect(); scrollTo({ top: Math.max(0, r.top + scrollY - innerHeight / 3), behavior: 'smooth' }); el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 4000); }
+    if (isAnswer(hit)) {
+      var q = String(hit.area).match(/^(Q\d+)/);
+      setTimeout(function () { scrollToEl(document.querySelector('.kinc-it[data-cid="' + hit.id + '"]') || (q && document.querySelector('[data-q="' + q[1] + '"]'))); }, 500);
+      return;
     }
+    if (SECTION_MODE) { setTimeout(function () { render(); scrollToEl(document.querySelector('.kins .kinc-it[data-cid="' + hit.id + '"]')); }, 500); return; }
+    if (!PIN_MODE) return;
+    var pins = comments.filter(function (c) { return !isAnswer(c); }), idx = pins.indexOf(hit);
+    showPins = true; pulseId = m[1]; setTimeout(function () { pulseId = null; }, 9000); render();
+    var p = pinPos(hit); scrollTo({ top: Math.max(0, p.y - innerHeight / 2), behavior: 'smooth' });
+    setTimeout(function () { render(); showComment(hit, idx, pinPos(hit)); }, 700);
   }
 
   /* ---------- PDF ---------- */
@@ -383,24 +593,21 @@
   document.addEventListener('click', function (e) {
     var q = e.target.closest && e.target.closest('[data-q]:not([data-q-row])');
     if (!q || isOurs(q)) return;
-    e.preventDefault(); e.stopPropagation(); setMode(false);
-    var a = anchorFor(q.closest('[data-screen-label]') || q.parentElement), r = docRect(a.el), qr = docRect(q);
-    var px = qr.left + Math.min(qr.width, 24), py = qr.top + qr.height / 2;
-    var qid = q.getAttribute('data-q'), qt = q.getAttribute('data-qt') || '';
-    compose({ anchor: a.key, section: sectionName(a.el), area: (qid + ' · ' + qt).slice(0, 180), clicked: 'Owner question ' + qid, question: qid + ' · ' + qt, topic: q.getAttribute('data-topic') || '',
-      x: +((px - r.left) / r.width).toFixed(4), y: +((py - r.top) / r.height).toFixed(4) }, px, py);
+    e.preventDefault(); e.stopPropagation(); setMode(false); closePop();
+    openAnswer(q);
   }, true);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { setMode(false); closePop(); } });
+  document.addEventListener('click', function (e) { var m = e.target.closest && e.target.closest('.kinc-more'); if (!m) return; var it = m.closest('.kinc-it'); it.classList.toggle('open'); m.textContent = it.classList.contains('open') ? 'Show less' : 'Read more'; });
   document.addEventListener('click', function (e) { if (openPop && !openPop.contains(e.target) && !e.target.closest('.kinc-pin') && !e.target.closest('#kinc-bar')) closePop(); });
-  addEventListener('resize', function () { render(); });
+  addEventListener('resize', function () { renderPins(); });
   addEventListener('hashchange', focusFromHash);
   addEventListener('kin:navigate', function () { closePop(); setMode(false); comments = []; render(); setTimeout(load, 300); });
 
   function start() {
     mount(); render(); load();
-    new MutationObserver(function () { if (!st.isConnected || !bar.isConnected || !layer.isConnected) mount(); }).observe(document.documentElement, { childList: true, subtree: false });
+    new MutationObserver(function () { if (!st.isConnected || !bar.isConnected || (PIN_MODE && !layer.isConnected)) mount(); }).observe(document.documentElement, { childList: true, subtree: false });
     new MutationObserver(function () { if (!st.isConnected || !bar.isConnected) mount(); }).observe(document.head || document.documentElement, { childList: true });
-    // layouts settle late (fonts, images, React) — re-place pins a few times
+    // some pages render late (bundles, fonts, React): re-apply a few times
     [800, 2000, 4000, 8000].forEach(function (t) { setTimeout(function () { mount(); render(); }, t); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
