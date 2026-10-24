@@ -307,7 +307,7 @@
   function composer(opts) {
     var box = document.createElement('div'); box.className = 'kinc-compose';
     box.innerHTML = '<div class="kc-t">' + esc(opts.title || 'New comment') + '</div>' +
-      '<input type="text" maxlength="120" placeholder="Your name" value="' + esc(lsGet('kinc-name', '')) + '">' +
+      '<input type="text" maxlength="120" placeholder="Your name (required)">' +
       '<textarea placeholder="' + esc(opts.placeholder || 'Write as much as you like. Paste links too.') + '"></textarea>' +
       '<div class="kc-imgs"></div>' +
       '<div class="kinc-row"><button type="button" class="kc-pic">' + ICON_PIC + 'Add pictures</button><span class="kinc-note">Up to ' + MAX_IMAGES + ' pictures · links are clickable</span>' +
@@ -348,11 +348,11 @@
       if (busy) return;
       var text = txt.value.replace(/\s+$/, '').replace(/^\s*\n/, '');
       if (!text.trim() && !pics.length) { txt.focus(); return; }
-      var nm = name.value.trim() || 'Guest'; lsSet('kinc-name', nm);
+      var nm = name.value.trim(); if (!nm) { name.focus(); name.style.borderColor = '#A8412E'; toast('Please add your name', true); return; }
       opts.onSend({ name: nm, comment: text, images: pics.slice() });
       box.remove();
     }
-    setTimeout(function () { (name.value ? txt : name).focus(); }, 30);
+    setTimeout(function () { name.focus(); }, 30);
     return box;
   }
 
