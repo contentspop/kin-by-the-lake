@@ -42,6 +42,7 @@
     if (/^menu\//.test(p)) return 'Menu & Offer';
     if (/^strategy\//.test(p)) return 'Strategy & Activation';
     if (/^benchmark\//.test(p)) return 'Benchmark · Longrain';
+    if (/^direction\//.test(p)) return 'Design Direction';
     if (/^photography\//.test(p)) return 'Photography Guideline';
     if (/ui_kits\/social/.test(p)) return 'Social';
     if (/ui_kits\/website/.test(p)) return 'Website' + (window.KIN_SCREEN ? ' · ' + window.KIN_SCREEN.charAt(0).toUpperCase() + window.KIN_SCREEN.slice(1) : '');

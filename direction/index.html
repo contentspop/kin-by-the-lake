@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KIN by the Lake — Design Direction</title>
+<link rel="stylesheet" href="../hub.css">
+<style>
+  :root {
+    --lake: #1E3D5A; --ink: #0F2233; --deep: #162E45; --l70: #4A6A88; --l40: #8EA4BB; --l15: #D2DCE6;
+    --off: #F3EFE6; --stone: #E6DFD1; --brass: #B38A45; --brass-lt: #D4B47A;
+    --glaze: #24468C; --wash: #A9C1DE;
+  }
+  .tabs { position: sticky; top: 0; z-index: 50; background: rgba(243,239,230,.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .tabs .wrap { display: flex; gap: 6px; overflow-x: auto; padding-top: 10px; padding-bottom: 10px; }
+  .tabs button { all: unset; cursor: pointer; white-space: nowrap; padding: 10px 14px; font: 600 11px/1 var(--font-text-latin); letter-spacing: .16em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--line); background: var(--card); }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: var(--off); border-color: var(--ink); }
+  .tabs button small { font-weight: 400; letter-spacing: .06em; text-transform: none; opacity: .75; margin-left: 6px; }
+  section.dir[hidden] { display: none; }
+  .lede { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); margin: 8px 0 8px; }
+  .boards { display: grid; gap: 28px 24px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); margin-top: 28px; }
+  .board { background: var(--card); border: 1px solid var(--line); padding: 22px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .board h3 { font-size: 19px; }
+  .board .note { font: 400 13px/1.6 var(--font-body); color: var(--muted); margin: 0; }
+  .stage { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; justify-content: center; padding: 18px; background: #E9E3D6; overflow: hidden; }
+  .stage.dark { background: #CFC7B7; }
+  .art { position: relative; overflow: hidden; flex: none; box-shadow: 0 10px 28px rgba(15,34,51,.22), 0 2px 6px rgba(15,34,51,.12); }
+  .art svg.fill { position: absolute; }
+  .logo { display: block; background: currentColor; -webkit-mask: url(../assets/logo/logo-primary.png) center/contain no-repeat; mask: url(../assets/logo/logo-primary.png) center/contain no-repeat; aspect-ratio: 1219/686; }
+  .refl { display: block; background: currentColor; -webkit-mask: url(../assets/logo/reflection-lake-blue.png) center/contain no-repeat; mask: url(../assets/logo/reflection-lake-blue.png) center/contain no-repeat; aspect-ratio: 1209/209; }
+  .cz { font-family: var(--font-display); letter-spacing: .06em; }
+  .mt { font-family: var(--font-text-latin); }
+  .caps { font: 500 8px/1.3 var(--font-text-latin); letter-spacing: .28em; text-transform: uppercase; }
+  .tone { display: flex; height: 64px; border: 1px solid var(--line); }
+  .tone div { display: flex; align-items: flex-end; padding: 6px 8px; font: 600 9.5px/1.2 var(--font-text-latin); letter-spacing: .08em; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { display: flex; align-items: center; gap: 8px; font: 500 11.5px/1.3 var(--font-text-latin); color: var(--ink); }
+  .chip i { width: 26px; height: 26px; border: 1px solid rgba(0,0,0,.12); display: inline-block; }
+  .chip i.opt { outline: 1px dashed var(--red); outline-offset: 2px; }
+  .tableware { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 10px; }
+  .tableware figure img { aspect-ratio: 4/5; object-fit: cover; width: 100%; }
+  .finishes { display: flex; flex-wrap: wrap; gap: 6px; }
+  .finishes span { font: 600 10px/1 var(--font-text-latin); letter-spacing: .12em; text-transform: uppercase; padding: 7px 9px; border: 1px solid var(--line); background: #fff; }
+  /* menu text */
+  .menu-p { position: absolute; inset: 0; padding: 30px 26px; display: flex; flex-direction: column; gap: 9px; color: var(--lake); }
+  .dish { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; }
+  .dish b { font: 500 10.5px/1.25 var(--font-display); letter-spacing: .07em; text-transform: uppercase; }
+  .dish em { grid-column: 1; font: 300 7.6px/1.45 var(--font-text-latin); font-style: normal; opacity: .85; }
+  .dish span { grid-row: 1; grid-column: 2; font: 500 9px/1.25 var(--font-text-latin); }
+  /* compare */
+  .cmp { overflow-x: auto; }
+  .cmp table { border-collapse: separate; border-spacing: 8px; width: 100%; min-width: 900px; table-layout: fixed; }
+  .cmp td .cell img { max-width: none; }
+  .cmp th { font: 600 11px/1.3 var(--font-text-latin); letter-spacing: .16em; text-transform: uppercase; color: var(--brass); text-align: left; padding: 4px; }
+  .cmp th.rowh { width: 70px; vertical-align: middle; }
+  .cmp td { background: #E9E3D6; vertical-align: middle; text-align: center; padding: 12px; }
+  .cmp td .cell { display: flex; gap: 10px; justify-content: center; align-items: flex-end; zoom: .62; }
+  .cmp th.col { font-size: 12px; color: var(--ink); }
+  .cmp th.col small { display: block; font-weight: 400; letter-spacing: .04em; text-transform: none; color: var(--muted); margin-top: 4px; }
+  .verdict { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); margin-top: 24px; }
+  .photo-o img { display: block; height: 100%; }
+  @media (max-width: 640px) { .stage { padding: 10px; } .stage .art { zoom: .8; } }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="back" href="../index.html">← KIN by the Lake</a>
+  <span class="kicker">Guidelines · Design direction</span>
+  <h1>Design Direction</h1>
+  <p>Three proposals to make the owner's identity richer and more distinctive. The logo, the three colours and the two typefaces stay exactly as they are. What changes is how we use them: patterns, engraving, colour reversal, tone and finish. Compare them side by side, then comment on each.</p>
+  <div class="status"><span class="pill red">Proposal · for discussion</span><span class="pill">Owner's logo, colours and fonts unchanged</span></div>
+</div></header>
+
+<section class="block" id="brief" data-screen-label="Brief"><div class="wrap">
+  <div class="eyebrow">00 · The brief</div><h2>Enhance, not rebrand</h2>
+  <p class="lead">The current identity is correct but too quiet: flat navy, cream and gold reads like a yacht club, not a restaurant with two kitchens. Each direction below keeps everything the owner approved and adds a graphic language KIN can own.</p>
+  <div class="grid">
+    <div class="card"><div class="label">Stays exactly as is</div><ul><li>KIN logo with the reflection and “by the lake”</li><li>Lake Blue #1E3D5A · Warm Off-White #F3EFE6 · Aged Brass #B38A45</li><li>Cinzel and Montserrat Light</li></ul></div>
+    <div class="card"><div class="label">What we explore</div><ul><li>Positive and negative colour, light-on-dark and dark-on-light</li><li>Tints and shades of Lake Blue, blue-on-blue layering</li><li>Engraved and etched illustration, pattern systems</li><li>Print finishes: deboss, blind emboss, foil, tonal varnish</li></ul></div>
+    <div class="card"><div class="label">What we avoid</div><ul><li>Yacht-club navy-and-gold, generic contemporary restaurant graphics</li><li>Wave and ripple patterns everywhere, seafood or ocean icons</li><li>New trendy accent colours, gold foil overload, all-monochrome</li></ul></div>
+  </div>
+  <h3 style="margin-top:34px;">The starting point: KIN's own tableware</h3>
+  <p class="lead" style="margin-top:8px;">Cobalt lips, spun brush bands that feather into a cream well, dry-brushed edges on rectangular trays. Not flowers or tiles: rings, bands and brushwork. Direction B is built directly on this.</p>
+  <div class="tableware">
+    <figure><img src="../assets/direction/tableware/plate-banded.jpg" alt="Round plate with dark blue band" loading="lazy"><figcaption>Plate · matt off-white, dark blue band</figcaption></figure>
+    <figure><img src="../assets/direction/tableware/pasta-plate.jpg" alt="Pasta plate with spun bands" loading="lazy"><figcaption>Pasta plate · spun bands</figcaption></figure>
+    <figure><img src="../assets/direction/tableware/square-plate.jpg" alt="Square plate with brushed arcs" loading="lazy"><figcaption>Square plate · brushed arcs</figcaption></figure>
+    <figure><img src="../assets/direction/tableware/rect-tray.jpg" alt="Rectangular tray with brushed edge" loading="lazy"><figcaption>Tray · dry-brushed edge</figcaption></figure>
+    <figure><img src="../assets/direction/tableware/oval-platter.jpg" alt="Oval platter" loading="lazy"><figcaption>Oval platter · heavy brushwork</figcaption></figure>
+    <figure><img src="../assets/direction/tableware/cup-saucer.jpg" alt="Cup and saucer" loading="lazy"><figcaption>Cup · cobalt lip, feathered band</figcaption></figure>
+  </div>
+</div></section>
+
+<nav class="tabs" role="tablist" aria-label="Directions"><div class="wrap" id="tabs"></div></nav>
+
+<section class="block dir" id="compare" data-screen-label="Compare all"><div class="wrap">
+  <div class="eyebrow">Side by side</div><h2>Compare the four</h2>
+  <p class="lead">The owner's original next to the three proposals, on the same four applications. Open a direction above to see its full system: tone, pattern, illustration, menu, social, print and website.</p>
+  <div class="cmp"><table id="cmp"></table></div>
+  <div class="verdict" id="verdict"></div>
+</div></section>
+
+<section class="block dir" id="original" data-screen-label="Original (owner)" hidden><div class="wrap" id="body-o"></div></section>
+<section class="block dir" id="dir-a" data-screen-label="Direction A · The Engraver's Table" hidden><div class="wrap" id="body-a"></div></section>
+<section class="block dir" id="dir-b" data-screen-label="Direction B · Glaze & Rim" hidden><div class="wrap" id="body-b"></div></section>
+<section class="block dir" id="dir-c" data-screen-label="Direction C · Guilloché House" hidden><div class="wrap" id="body-c"></div></section>
+
+<footer class="pg"><div class="wrap"><em>Eat well. Laugh often. Stay close.</em><br>KIN by the Lake · design direction · proposal, not approved</div></footer>
+
+<div id="sprite-host" aria-hidden="true"></div>
+<script>
+(function () {
+  var DIM = {"eng-still": [0.0, 0.0, 600.0, 820.0], "eng-band": [0.0, 0.0, 1200.0, 320.0], "eng-tile": [0.0, 0.0, 400.0, 400.0], "cer-swirl": [-300.0, -300.0, 600.0, 600.0], "eng-betel": [-20.0, -80.0, 190.0, 160.0], "eng-slice": [-130.0, -130.0, 260.0, 260.0], "eng-chilli": [-40.0, -60.0, 260.0, 110.0], "eng-anise": [-70.0, -70.0, 140.0, 140.0], "eng-lemon": [-20.0, -90.0, 250.0, 200.0], "eng-basil": [-110.0, -200.0, 220.0, 210.0], "cer-plate": [-300.0, -300.0, 600.0, 600.0], "cer-bowl": [-300.0, -300.0, 600.0, 600.0], "cer-frame": [0.0, 0.0, 400.0, 560.0], "cer-frame-l": [0.0, 0.0, 560.0, 400.0], "cer-rings": [0.0, 0.0, 120.0, 120.0], "cer-sweep": [0.0, 0.0, 600.0, 60.0], "gui-rosette": [-210.0, -210.0, 420.0, 420.0], "gui-band": [0.0, 0.0, 600.0, 40.0], "gui-lattice": [0.0, 0.0, 120.0, 120.0], "gui-rosette-s": [-80.0, -80.0, 160.0, 160.0]};
+  var PH = '../assets/photos/';
+  function ic(id, style, cls) {
+    var v = DIM[id] || [0, 0, 100, 100];
+    return '<svg class="' + (cls || '') + '" viewBox="0 0 ' + v[2] + ' ' + v[3] + '"' + (cls === 'stretch' ? ' preserveAspectRatio="none"' : '') + ' style="' + (style || '') + '" aria-hidden="true"><use href="#' + id + '" width="' + v[2] + '" height="' + v[3] + '"/></svg>';
+  }
+  function patt(id, size, color, bg, w, h, extra) {
+    var v = DIM[id], pid = 'p' + Math.random().toString(36).slice(2, 8);
+    return '<svg width="' + w + '" height="' + h + '" style="display:block;background:' + bg + ';color:' + color + ';--ko:' + bg + (extra || '') + '" aria-hidden="true"><defs><pattern id="' + pid + '" width="' + size + '" height="' + size + '" patternUnits="userSpaceOnUse"><use href="#' + id + '" width="' + size + '" height="' + size + '"/></pattern></defs><rect width="100%" height="100%" fill="url(#' + pid + ')"/></svg>';
+  }
+  function logo(w, color, extra) { return '<span class="logo" style="width:' + w + 'px;color:' + color + ';' + (extra || '') + '"></span>'; }
+  function art(w, h, bg, inner, extra) { return '<div class="art" style="width:' + w + 'px;height:' + h + 'px;background:' + bg + ';' + (extra || '') + '">' + inner + '</div>'; }
+  function abs(css, html) { return '<div style="position:absolute;' + css + '">' + html + '</div>'; }
+  var P = [['Moo Hong', 'Braised pork belly, black pepper, garlic, star anise', '420'], ['Gaeng Poo Bai Cha Plu', 'Phuket crab curry, betel leaf, khanom jeen', '690'], ['Mee Hokkien', 'Wok-fried yellow noodles, prawn, squid, egg', '360'], ['Loba', 'Five-spice pork roll, tofu, sweet chilli', '280']];
+  var I = [['Burrata e Pomodori', 'Burrata, heirloom tomatoes, basil, olive oil', '520'], ['Tagliolini al Limone', 'Fresh egg pasta, lemon, butter, parmigiano', '560'], ['Branzino al Sale', 'Whole salt-baked sea bass, carved at the table', '1,450'], ['Tiramisù', 'Mascarpone, espresso, cocoa', '290']];
+  function dishes(list) { return list.map(function (d) { return '<div class="dish"><b>' + d[0] + '</b><span>' + d[2] + '</span><em>' + d[1] + '</em></div>'; }).join(''); }
+
+  /* ------------------------------------------------------------------ A · The Engraver's Table */
+  var A = {
+    key: 'a', name: "The Engraver's Table", short: 'Engraved botanicals',
+    idea: 'The two kitchens drawn like plates in an old botanical book: betel leaf, pomelo, bird’s-eye chilli and star anise from Phuket next to lemon and basil from Italy. Fine engraved linework in light Lake Blue on a deep shade of Lake Blue, reversed to Lake Blue on cream for daytime pieces. The ingredients become the brand’s ornament.',
+    why: 'Food-led and specific to KIN: no other restaurant can draw these two pantries together. Engraving reads crafted and timeless, never like a yacht club.',
+    tone: [['Ink (Lake Blue 50% shade)', 'var(--ink)', 45, '#F3EFE6'], ['Lake Blue', 'var(--lake)', 20, '#F3EFE6'], ['Lake 40 tint · linework', 'var(--l40)', 8, '#0F2233'], ['Warm Off-White', 'var(--off)', 22, '#1E3D5A'], ['Brass', 'var(--brass)', 5, '#0F2233']],
+    finishes: ['Blind deboss of the engraving', 'Brass foil on the logo only', 'Uncoated cotton stock', 'Two-colour letterpress'],
+    pattern: function () { return '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">' + patt('eng-tile', 200, 'var(--lake)', 'var(--off)', 240, 240) + patt('eng-tile', 200, 'var(--l40)', 'var(--ink)', 240, 240) + '</div>'; },
+    illus: function () { return art(300, 410, 'var(--ink)', ic('eng-still', 'position:absolute;inset:4% 2%;width:96%;height:92%;color:var(--l40);--ko:var(--ink)')) + art(260, 260, 'var(--off)', ic('eng-slice', 'position:absolute;inset:8%;width:84%;height:84%;color:var(--lake);--ko:var(--off)')); },
+    cover: function () {
+      return art(300, 424, 'var(--ink)',
+        ic('eng-still', 'position:absolute;left:-14%;top:22%;width:128%;height:auto;color:var(--l40);--ko:var(--ink)') +
+        abs('inset:12px;border:1px solid rgba(179,138,69,.7)', '') +
+        abs('left:0;right:0;top:34px;display:flex;justify-content:center', logo(120, 'var(--brass)')) +
+        abs('left:0;right:0;bottom:22px;text-align:center;color:var(--off)', '<span class="caps">Menu · Lunch to last lantern</span>'));
+    },
+    inside: function () {
+      var page = function (num, title, th, list, sym) {
+        return art(300, 424, 'var(--off)', ic(sym, 'position:absolute;right:-30px;top:-14px;width:150px;color:var(--lake);--ko:var(--off);opacity:.95') +
+          '<div class="menu-p" style="padding-top:110px"><div class="caps" style="color:var(--brass)">' + num + '</div><div class="cz" style="font-size:18px;line-height:1.1">' + title + '</div><div style="font:300 9px/1.2 Kanit,sans-serif;margin-bottom:6px">' + th + '</div>' + dishes(list) + '</div>' +
+          abs('left:0;right:0;bottom:6px;height:92px;color:var(--lake);--ko:var(--off)', ic('eng-band', 'width:100%;height:100%;display:block')));
+      };
+      return page('I · Phuket & Peranakan', 'The Phuket kitchen', 'ครัวภูเก็ต-เพอรานากัน', P, 'eng-betel') + page('II · Italia', 'The Italian kitchen', 'ครัวอิตาเลียน', I, 'eng-lemon');
+    },
+    social: function () {
+      return art(320, 400, 'var(--ink)',
+        abs('left:0;right:0;top:0;height:58%', '<img src="' + PH + 'pavilion-sunset.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block">') +
+        ic('eng-chilli', 'position:absolute;left:168px;top:170px;width:190px;color:var(--l40);--ko:var(--ink);transform:rotate(-28deg)') +
+        abs('left:22px;bottom:24px;right:22px;color:var(--off)', '<div class="caps" style="color:var(--brass-lt);margin-bottom:8px">Two kitchens · one table</div><div class="cz" style="font-size:24px;line-height:1.08">From the long lunch<br>to the last lantern</div>'));
+    },
+    print: function () {
+      return art(200, 200, 'var(--ink)', ic('eng-anise', 'position:absolute;inset:16%;width:68%;height:68%;color:var(--l40);--ko:var(--ink)') + abs('left:0;right:0;bottom:22px;text-align:center;color:var(--brass)', '<span class="caps">KIN · by the lake</span>'), 'border-radius:50%') +
+        art(300, 180, 'var(--off)', ic('eng-betel', 'position:absolute;right:-40px;top:-30px;width:250px;color:var(--l15);--ko:var(--off);filter:drop-shadow(1px 1px 0 rgba(255,255,255,.9)) drop-shadow(-1px -1px 0 rgba(15,34,51,.12))') + abs('left:24px;top:28px', logo(96, 'var(--lake)')) + abs('left:24px;bottom:20px;color:var(--lake)', '<span class="caps">Reservation card · blind emboss</span>'));
+    },
+    web: function () {
+      return art(640, 360, 'var(--ink)',
+        abs('left:0;right:0;top:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;color:var(--off)', logo(54, 'var(--off)') + '<span class="caps" style="display:flex;gap:18px">Menu<span>Story</span><span>Events</span><span style="color:var(--brass-lt)">Reserve</span></span>') +
+        ic('eng-still', 'position:absolute;right:-30px;top:20px;width:330px;color:var(--l40);--ko:var(--ink)') +
+        abs('left:30px;top:110px;width:300px;color:var(--off)', '<div class="caps" style="color:var(--brass-lt);margin-bottom:10px">Phuket-Peranakan · Italia</div><div class="cz" style="font-size:32px;line-height:1.05">Two kitchens.<br>One table<br>by the lake.</div><div style="margin-top:18px;display:flex;gap:10px"><span class="caps" style="padding:9px 12px;background:var(--brass);color:var(--ink)">Reserve</span><span class="caps" style="padding:9px 12px;border:1px solid var(--l40)">See the menu</span></div>') +
+        abs('left:30px;right:30px;bottom:18px;display:flex;gap:6px', ['ref-04-table-sunset.jpg', 'ref-06-mezze-sharing.jpg', 'ref-09-passing-plate-golden.jpg'].map(function (f) { return '<img src="' + PH + 'reference/' + f + '" alt="" style="width:70px;height:46px;object-fit:cover;opacity:.9">'; }).join('')));
+    }
+  };
+
+  /* ------------------------------------------------------------------ B · Glaze & Rim */
+  var B = {
+    key: 'b', name: 'Glaze & Rim', short: 'From KIN’s own plates',
+    idea: 'The graphic language comes straight from KIN’s tableware: a solid cobalt lip, spun bands that feather into a cream well, dry-brushed edges on rectangular trays and loose brushed arcs. Every layout “holds” its content the way a plate holds food: a cream well framed by a blue rim.',
+    why: 'Completely ownable and true: guests see the same rim on the menu, the coaster and the plate in front of them. Cream-led and warm, so it feels like a restaurant, not a marina.',
+    tone: [['Warm Off-White · the well', 'var(--off)', 52, '#1E3D5A'], ['Lake Blue', 'var(--lake)', 22, '#F3EFE6'], ['Glaze cobalt · optional', 'var(--glaze)', 14, '#F3EFE6'], ['Wash tint · optional', 'var(--wash)', 7, '#1E3D5A'], ['Brass', 'var(--brass)', 5, '#1E3D5A']],
+    optional: true,
+    finishes: ['Matt off-white board like the plates', 'Tonal gloss varnish on the rim only', 'Hand-painted rim on coasters', 'Deckled edge'],
+    pattern: function () { return '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">' + patt('cer-rings', 110, 'var(--glaze)', 'var(--off)', 240, 240) + art(240, 240, 'var(--lake)', ic('cer-swirl', 'position:absolute;left:-30%;top:-30%;width:160%;height:160%;color:var(--wash)'), 'box-shadow:none') + '</div>'; },
+    illus: function () { return art(300, 300, 'var(--off)', ic('cer-plate', 'position:absolute;inset:4%;width:92%;height:92%;color:var(--glaze)')) + art(260, 300, 'var(--off)', ic('cer-frame', 'position:absolute;inset:6%;width:88%;height:88%;color:var(--glaze)')); },
+    cover: function () {
+      return art(300, 424, 'var(--off)',
+        ic('cer-plate', 'position:absolute;left:-60px;top:-8px;width:420px;height:420px;color:var(--glaze)') +
+        abs('left:0;right:0;top:140px;display:flex;justify-content:center', logo(116, 'var(--lake)')) +
+        abs('left:0;right:0;top:232px;text-align:center;color:var(--lake)', '<span class="caps">Menu · Lunch to last lantern</span>'));
+    },
+    inside: function () {
+      var page = function (num, title, th, list) {
+        return art(300, 424, 'var(--off)', ic('cer-frame', 'position:absolute;inset:0;width:100%;height:100%;color:var(--glaze)', 'stretch') +
+          ic('cer-swirl', 'position:absolute;right:-120px;bottom:-130px;width:300px;height:300px;color:var(--glaze);opacity:.5') + '<div class="menu-p" style="padding:46px 40px"><div class="caps" style="color:var(--brass)">' + num + '</div><div class="cz" style="font-size:17px;line-height:1.1">' + title + '</div>' + ic('cer-sweep', 'width:70%;height:7px;display:block;color:var(--glaze);margin:2px 0 4px', 'stretch') + '<div style="font:300 9px/1.2 Kanit,sans-serif;margin-bottom:4px">' + th + '</div>' + dishes(list) + '</div>');
+      };
+      return page('I · Phuket & Peranakan', 'The Phuket kitchen', 'ครัวภูเก็ต-เพอรานากัน', P) + page('II · Italia', 'The Italian kitchen', 'ครัวอิตาเลียน', I);
+    },
+    social: function () {
+      return art(320, 400, 'var(--off)',
+        abs('left:50px;top:28px;width:220px;height:220px;border-radius:50%;overflow:hidden', '<img src="' + PH + 'terrace-dusk.png" alt="" style="width:100%;height:100%;object-fit:cover">') +
+        ic('cer-swirl', 'position:absolute;left:10px;top:-12px;width:300px;height:300px;color:var(--glaze)') +
+        abs('left:0;right:0;bottom:30px;text-align:center;color:var(--lake)', '<div class="caps" style="color:var(--brass);margin-bottom:8px">Every day · 12–3 pm</div><div class="cz" style="font-size:25px;line-height:1.05">The long lunch</div><div class="mt" style="font-size:10px;font-weight:300;margin-top:6px">Both kitchens, passed round the table.</div>'));
+    },
+    print: function () {
+      return art(200, 200, 'var(--off)', ic('cer-plate', 'position:absolute;inset:0;width:100%;height:100%;color:var(--glaze)') + abs('left:0;right:0;top:78px;display:flex;justify-content:center', logo(64, 'var(--lake)')), 'border-radius:50%') +
+        art(300, 180, 'var(--off)', ic('cer-frame-l', 'position:absolute;inset:0;width:100%;height:100%;color:var(--glaze)', 'stretch') + abs('left:34px;top:34px', logo(80, 'var(--lake)')) + abs('right:34px;bottom:30px;text-align:right;color:var(--lake)', '<div class="caps">Reserved for</div><div class="cz" style="font-size:14px;margin-top:4px">The long table · 8</div>'));
+    },
+    web: function () {
+      return art(640, 360, 'var(--off)',
+        abs('left:0;right:0;top:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;color:var(--lake)', logo(54, 'var(--lake)') + '<span class="caps" style="display:flex;gap:18px">Menu<span>Story</span><span>Events</span><span style="color:var(--brass)">Reserve</span></span>') +
+        abs('left:350px;top:60px;width:250px;height:250px;border-radius:50%;overflow:hidden', '<img src="' + PH + 'pavilion-sunset.png" alt="" style="width:100%;height:100%;object-fit:cover">') +
+        ic('cer-plate', 'position:absolute;left:316px;top:26px;width:318px;height:318px;color:var(--glaze)') +
+        abs('left:30px;top:110px;width:290px;color:var(--lake)', '<div class="caps" style="color:var(--brass);margin-bottom:10px">Phuket-Peranakan · Italia</div><div class="cz" style="font-size:32px;line-height:1.05">Two kitchens.<br>One table<br>by the lake.</div><div style="margin-top:18px;display:flex;gap:10px"><span class="caps" style="padding:9px 12px;background:var(--lake);color:var(--off)">Reserve</span><span class="caps" style="padding:9px 12px;border:1px solid var(--lake)">See the menu</span></div>') +
+        ic('cer-sweep', 'position:absolute;left:0;bottom:0;width:100%;height:12px;color:var(--glaze)', 'stretch'));
+    }
+  };
+
+  /* ------------------------------------------------------------------ C · Guilloché House */
+  var C = {
+    key: 'c', name: 'Guilloché House', short: 'Engraved geometry, tone on tone',
+    idea: 'The precision of banknote and passport engraving: guilloché rosettes, rope borders and an interlaced lattice, printed tone-on-tone in shades of Lake Blue with brass hairlines. Strong reversed typography in Cinzel. An engraved ingredient sits at the heart of the rosette, so the geometry always carries food.',
+    why: 'The most premium of the three and the richest use of positive and negative colour. Feels like an heirloom certificate: proof of two real kitchens.',
+    tone: [['Lake Blue', 'var(--lake)', 40, '#F3EFE6'], ['Deep (Lake Blue 25% shade)', 'var(--deep)', 22, '#F3EFE6'], ['Lake 70 tint · linework', 'var(--l70)', 8, '#F3EFE6'], ['Warm Off-White', 'var(--off)', 20, '#1E3D5A'], ['Brass', 'var(--brass)', 10, '#0F2233']],
+    finishes: ['Tonal spot UV on the rosette', 'Brass foil hairlines', 'Fine-line offset, 2 blues', 'Edge painting in Lake Blue'],
+    pattern: function () { return '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">' + patt('gui-lattice', 60, 'var(--l70)', 'var(--lake)', 240, 240) + patt('gui-lattice', 60, 'var(--l15)', 'var(--off)', 240, 240) + '</div>' + '<div style="width:100%;max-width:490px;height:18px;margin:10px auto 0;color:var(--brass)">' + ic('gui-band', 'width:100%;height:100%;display:block', 'stretch') + '</div>'; },
+    illus: function () { return art(300, 300, 'var(--deep)', ic('gui-rosette', 'position:absolute;inset:3%;width:94%;height:94%;color:var(--l70)')) + art(260, 300, 'var(--lake)', ic('gui-rosette-s', 'position:absolute;left:10%;top:13%;width:80%;height:auto;color:var(--brass)') + ic('eng-anise', 'position:absolute;left:30%;top:33%;width:40%;color:var(--off);--ko:var(--lake)')); },
+    cover: function () {
+      return art(300, 424, 'var(--lake)',
+        ic('gui-rosette', 'position:absolute;left:-60px;top:52px;width:420px;height:420px;color:var(--l70)') +
+        abs('left:18px;right:18px;top:18px;height:14px;color:var(--brass)', ic('gui-band', 'width:100%;height:100%;display:block', 'stretch')) +
+        abs('left:18px;right:18px;bottom:18px;height:14px;color:var(--brass)', ic('gui-band', 'width:100%;height:100%;display:block', 'stretch')) +
+        abs('left:72px;top:184px;width:156px;height:156px;border-radius:50%;background:var(--lake);box-shadow:0 0 0 1px var(--brass), 0 0 0 5px var(--lake), 0 0 0 5.6px var(--brass);display:flex;align-items:center;justify-content:center', logo(108, 'var(--off)')) +
+        abs('left:0;right:0;top:56px;text-align:center;color:var(--off)', '<div class="cz" style="font-size:13px;letter-spacing:.4em">MENU</div>'));
+    },
+    inside: function () {
+      var page = function (num, title, th, list) {
+        return art(300, 424, 'var(--off)', patt('gui-lattice', 46, 'var(--l15)', 'var(--off)', 300, 424, ';position:absolute;inset:0') +
+          abs('inset:14px;border:1px solid var(--lake)', '') + abs('inset:18px;border:.5px solid var(--brass)', '') +
+          ['left:4px;top:4px', 'right:4px;top:4px', 'left:4px;bottom:4px', 'right:4px;bottom:4px'].map(function (pos) { return abs(pos + ';width:28px;height:28px;color:var(--brass)', ic('gui-rosette-s', 'width:28px;height:28px;display:block;background:var(--off);border-radius:50%')); }).join('') +
+          '<div class="menu-p" style="padding:40px 34px"><div class="cz" style="font-size:44px;line-height:.9;color:var(--brass)">' + num + '</div><div class="cz" style="font-size:16px;line-height:1.1">' + title + '</div><div style="font:300 9px/1.2 Kanit,sans-serif;margin-bottom:6px">' + th + '</div>' + dishes(list) + '</div>');
+      };
+      return page('I', 'Phuket & Peranakan', 'ครัวภูเก็ต-เพอรานากัน', P) + page('II', 'Italia', 'ครัวอิตาเลียน', I);
+    },
+    social: function () {
+      return art(320, 400, 'var(--deep)',
+        ic('gui-rosette', 'position:absolute;left:-150px;top:-150px;width:400px;height:400px;color:var(--l70)') +
+        abs('right:22px;top:24px;width:150px;height:190px;outline:1px solid var(--brass);outline-offset:5px', '<img src="' + PH + 'lantern.png" alt="" style="width:100%;height:100%;object-fit:cover">') +
+        abs('left:22px;right:22px;bottom:58px;color:var(--off)', '<div class="caps" style="color:var(--brass-lt);margin-bottom:8px">Daily · 17:00–19:00</div><div class="cz" style="font-size:38px;line-height:.98">Golden<br>hour</div>') +
+        abs('left:22px;right:22px;bottom:24px;height:12px;color:var(--brass)', ic('gui-band', 'width:100%;height:100%;display:block', 'stretch')));
+    },
+    print: function () {
+      return art(200, 200, 'var(--lake)', ic('gui-rosette-s', 'position:absolute;inset:4%;width:92%;height:92%;color:var(--l70)') + abs('left:0;right:0;top:78px;display:flex;justify-content:center', logo(70, 'var(--off)')), 'border-radius:50%') +
+        art(320, 180, 'var(--off)', patt('gui-lattice', 36, 'var(--l15)', 'var(--off)', 320, 180, ';position:absolute;inset:0') + ic('gui-rosette', 'position:absolute;right:-50px;top:-30px;width:240px;height:240px;color:var(--lake)') +
+          abs('left:0;top:0;bottom:0;width:120px;background:var(--lake);display:flex;flex-direction:column;justify-content:space-between;padding:18px 14px;color:var(--off)', logo(80, 'var(--off)') + '<div><div class="caps" style="color:var(--brass-lt)">Gift voucher</div><div class="cz" style="font-size:22px;margin-top:4px">฿ 3,000</div></div>') +
+          abs('left:132px;top:12px;padding:4px 6px;background:var(--off);color:var(--lake)', '<div class="caps" style="font-size:7px">No. 000124 · valid 12 months</div>'));
+    },
+    web: function () {
+      return art(640, 360, 'var(--lake)',
+        ic('gui-rosette', 'position:absolute;left:-120px;top:40px;width:440px;height:440px;color:var(--l70);opacity:.9') +
+        abs('left:0;right:0;top:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;color:var(--off);border-bottom:1px solid rgba(179,138,69,.5)', logo(54, 'var(--off)') + '<span class="caps" style="display:flex;gap:18px">Menu<span>Story</span><span>Events</span><span style="color:var(--brass-lt)">Reserve</span></span>') +
+        abs('right:0;top:46px;bottom:0;width:300px', '<img src="' + PH + 'terrace-night.png" alt="" style="width:100%;height:100%;object-fit:cover">') +
+        abs('right:300px;top:46px;bottom:0;width:14px;color:var(--brass)', '') +
+        abs('left:30px;top:96px;width:300px;color:var(--off)', '<div class="caps" style="color:var(--brass-lt);margin-bottom:10px">I · Phuket-Peranakan &nbsp; II · Italia</div><div class="cz" style="font-size:34px;line-height:1.02">Two kitchens.<br>One table<br>by the lake.</div><div style="margin-top:18px;display:flex;gap:10px"><span class="caps" style="padding:9px 12px;background:var(--brass);color:var(--ink)">Reserve</span><span class="caps" style="padding:9px 12px;border:1px solid var(--brass-lt)">See the menu</span></div>') +
+        abs('left:30px;width:290px;bottom:22px;height:12px;color:var(--brass)', ic('gui-band', 'width:100%;height:100%;display:block', 'stretch')));
+    }
+  };
+
+  /* ------------------------------------------------------------------ Original (owner) */
+  var O = {
+    key: 'o', name: 'Original', short: 'Owner’s identity today',
+    cover: function () { return art(300, 380, '#ccc', '<img src="' + PH + 'menu-cover.png" alt="Current menu cover" style="width:100%;height:100%;object-fit:cover">'); },
+    social: function () { return art(320, 400, '#ccc', '<img src="../assets/direction/original-social.jpg" alt="Current social post" style="width:100%;height:100%;object-fit:cover;object-position:top">'); },
+    print: function () { return art(200, 280, '#ccc', '<img src="' + PH + 'napkin-ring.png" alt="Current napkin ring" style="width:100%;height:100%;object-fit:cover">') + art(200, 280, '#ccc', '<img src="' + PH + 'blade-sign.png" alt="Current blade sign" style="width:100%;height:100%;object-fit:cover">'); },
+    web: function () { return art(640, 360, '#ccc', '<img src="../assets/direction/original-website.jpg" alt="Current website preview" style="width:100%;height:100%;object-fit:cover;object-position:top">'); }
+  };
+
+  var D = [A, B, C];
+  function stage(html, dark) { return '<div class="stage' + (dark ? ' dark' : '') + '">' + html + '</div>'; }
+  function board(title, note, html, wide) { return '<div class="board"' + (wide ? ' style="grid-column:1/-1"' : '') + '><h3>' + title + '</h3>' + (note ? '<p class="note">' + note + '</p>' : '') + html + '</div>'; }
+
+  function dirBody(d, i) {
+    var tone = '<div class="tone">' + d.tone.map(function (t) { return '<div style="flex:' + t[2] + ';background:' + t[1] + ';color:' + t[3] + '">' + t[2] + '%</div>'; }).join('') + '</div>' +
+      '<div class="chips">' + d.tone.map(function (t) { return '<span class="chip"><i style="background:' + t[1] + '"' + (/optional/.test(t[0]) ? ' class="opt"' : '') + '></i>' + t[0] + '</span>'; }).join('') + '</div>' +
+      (d.optional ? '<p class="note">Dashed swatches are optional tones sampled from KIN’s own plates. Not approved; the direction also works with Lake Blue alone.</p>' : '<p class="note">Only the owner’s three colours plus tints and shades of Lake Blue. No new accent colours.</p>');
+    return '<div class="eyebrow">Direction ' + d.key.toUpperCase() + ' · ' + d.short + '</div><h2>' + d.name + '</h2>' +
+      '<div class="lede"><div class="card"><div class="label">The idea</div><p>' + d.idea + '</p></div><div class="card"><div class="label">Why it works for KIN</div><p>' + d.why + '</p></div><div class="card"><div class="label">Finishes</div><div class="finishes">' + d.finishes.map(function (f) { return '<span>' + f + '</span>'; }).join('') + '</div></div></div>' +
+      '<div class="boards">' +
+      board('Colour & tone', 'How the same palette is weighted in this direction, from most to least used.', tone) +
+      board('Pattern', 'Positive and negative versions of the same pattern.', stage(d.pattern())) +
+      board('Illustration', 'The illustration technique this direction is built on.', stage(d.illus(), true), true) +
+      board('Menu cover', 'A4, flat artwork (no mock-up photography).', stage(d.cover())) +
+      board('Social post', 'Instagram 4:5 with KIN photography.', stage(d.social())) +
+      board('Menu inside', 'Two kitchens, two pages. Dishes and prices are placeholders.', stage(d.inside()), true) +
+      board('Print', 'Coaster and a second printed piece.', stage(d.print(), true), true) +
+      board('Website', 'Home page, first screen. No generic icons: the brand graphics do the work.', stage(d.web()), true) +
+      '</div>';
+  }
+  function origBody() {
+    return '<div class="eyebrow">The baseline · stays</div><h2>Original (owner)</h2><p class="lead">The approved identity as it is today. It stays as the reference; the three directions build on it, they do not replace it.</p>' +
+      '<div class="boards">' +
+      board('Logo', 'Unchanged in every direction.', stage(art(300, 200, 'var(--off)', abs('left:0;right:0;top:40px;display:flex;justify-content:center', logo(190, 'var(--lake)'))) + art(300, 200, 'var(--lake)', abs('left:0;right:0;top:40px;display:flex;justify-content:center', logo(190, 'var(--off)'))))) +
+      board('Colours', 'The three approved colours, used flat today.', '<div class="tone" style="height:120px"><div style="flex:1;background:var(--lake);color:var(--off)">Lake Blue #1E3D5A</div><div style="flex:1;background:var(--off);color:var(--lake)">Warm Off-White #F3EFE6</div><div style="flex:1;background:var(--brass);color:var(--ink)">Aged Brass #B38A45</div></div>') +
+      board('Pattern today', 'Porcelain lattice from the Design System.', stage('<div class="art" style="width:240px;height:240px;background:url(../assets/patterns/porcelain-lattice-lake-blue.svg) var(--off)"></div><div class="art" style="width:240px;height:240px;background:url(../assets/patterns/porcelain-lattice-off-white.svg) var(--lake)"></div>')) +
+      board('Applications today', 'Menu cover, napkin ring and blade sign from the owner’s design.', stage(O.cover() + O.print()), true) +
+      board('Website today', 'The current Website Preview uses outline icons and flat colour blocks.', stage(O.web()), true) +
+      '</div>';
+  }
+
+  function compare() {
+    var cols = [['o', 'Original', 'Owner’s identity today', O], ['a', 'A · ' + A.name, A.short, A], ['b', 'B · ' + B.name, B.short, B], ['c', 'C · ' + C.name, C.short, C]];
+    var rows = [['Menu cover', 'cover'], ['Social post', 'social'], ['Print', 'print'], ['Website', 'web']];
+    var h = '<colgroup><col style="width:76px"><col><col><col><col></colgroup><tr><th></th>' + cols.map(function (c) { return '<th class="col">' + c[1] + '<small>' + c[2] + '</small></th>'; }).join('') + '</tr>';
+    rows.forEach(function (r) {
+      h += '<tr><th class="rowh">' + r[0] + '</th>' + cols.map(function (c) { return '<td><div class="cell"' + (r[1] === 'web' ? ' style="zoom:.34"' : r[1] === 'print' ? ' style="zoom:.42"' : '') + '>' + c[3][r[1]]() + '</div></td>'; }).join('') + '</tr>';
+    });
+    document.getElementById('cmp').innerHTML = h;
+    document.getElementById('verdict').innerHTML =
+      '<div class="card"><div class="label">A · The Engraver’s Table</div><p><b>Most food-led.</b> Best if KIN wants the menu and the two kitchens to be the hero. Strongest on dark, evening and print.</p></div>' +
+      '<div class="card"><div class="label">B · Glaze & Rim</div><p><b>Most ownable.</b> Built on the plates already bought, so menu, coaster and table speak one language. Brightest and warmest; best for daytime and the long lunch.</p></div>' +
+      '<div class="card"><div class="label">C · Guilloché House</div><p><b>Most premium.</b> Richest use of tone-on-tone and reversed colour; ideal for vouchers, wine lists and events. Needs restraint in daily social posts.</p></div>' +
+      '<div class="card dark"><div class="label">Our recommendation (draft)</div><p>Lead with <b>B</b> as the everyday system, because it comes from KIN’s own tableware, and borrow <b>A</b>’s engraved ingredients for menus and storytelling. Keep <b>C</b> for vouchers and special occasions.</p></div>';
+  }
+
+  /* tabs */
+  var TABS = [['compare', 'Compare all', ''], ['original', 'Original', 'owner'], ['dir-a', 'A · Engraver’s Table', ''], ['dir-b', 'B · Glaze & Rim', ''], ['dir-c', 'C · Guilloché House', '']];
+  var built = {};
+  function build(id) {
+    if (built[id]) return; built[id] = 1;
+    if (id === 'compare') compare();
+    if (id === 'original') document.getElementById('body-o').innerHTML = origBody();
+    if (id === 'dir-a') document.getElementById('body-a').innerHTML = dirBody(A);
+    if (id === 'dir-b') document.getElementById('body-b').innerHTML = dirBody(B);
+    if (id === 'dir-c') document.getElementById('body-c').innerHTML = dirBody(C);
+  }
+  function show(id, scroll) {
+    TABS.forEach(function (t) { var s = document.getElementById(t[0]); build(t[0]); s.hidden = t[0] !== id; });
+    Array.prototype.forEach.call(document.querySelectorAll('#tabs button'), function (b) { b.setAttribute('aria-selected', String(b.dataset.id === id)); });
+    try { history.replaceState(null, '', '#' + id); } catch (e) {}
+    if (scroll) { var t = document.querySelector('.tabs'); scrollTo({ top: t.getBoundingClientRect().top + scrollY + 2, behavior: 'smooth' }); }
+  }
+  document.getElementById('tabs').innerHTML = TABS.map(function (t) { return '<button type="button" role="tab" data-id="' + t[0] + '">' + t[1] + (t[2] ? '<small>' + t[2] + '</small>' : '') + '</button>'; }).join('');
+  document.getElementById('tabs').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) show(b.dataset.id, true); });
+
+  fetch('sprite.svg').then(function (r) { return r.text(); }).then(function (t) {
+    document.getElementById('sprite-host').innerHTML = t;
+    var h = (location.hash || '').replace('#', '');
+    var first = TABS.some(function (t) { return t[0] === h; }) ? h : 'compare';
+    TABS.forEach(function (t) { build(t[0]); });
+    show(first, false);
+  });
+})();
+</script>
+<script src="../comments/comments-config.js?v=20261024a"></script><script src="../comments/comments.js?v=20261024a" defer></script>
+</body>
+</html>
