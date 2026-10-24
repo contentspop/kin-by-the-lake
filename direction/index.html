@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KIN by the Lake — Design Direction</title>
+<title>KIN by the Lake — Design System · Directions</title>
 <link rel="stylesheet" href="../hub.css">
 <style>
   :root {
@@ -63,16 +63,16 @@
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap"><a class="back" href="../index.html">← KIN by the Lake</a>
-  <span class="kicker">Guidelines · Design direction</span>
-  <h1>Design Direction</h1>
-  <p>Three proposals to make the owner's identity richer and more distinctive. The logo, the three colours and the two typefaces stay exactly as they are. What changes is how we use them: patterns, engraving, colour reversal, tone and finish. Compare them side by side, then comment on each.</p>
-  <div class="status"><span class="pill red">Proposal · for discussion</span><span class="pill">Owner's logo, colours and fonts unchanged</span></div>
+<header class="top"><div class="wrap"><a class="back" href="../share/KIN-Design-System.html">← Design System</a>
+  <span class="kicker">Design System · Directions</span>
+  <h1>Design Directions</h1>
+  <p>Three proposals to make KIN’s current identity richer and more distinctive. The logo, the three colours and the two typefaces stay exactly as they are. What changes is how we use them: patterns, engraving, colour reversal, tone and finish. Compare them side by side, then comment on each.</p>
+  <div class="status"><span class="pill red">Proposal · for discussion</span><span class="pill">Logo, colours and fonts unchanged</span></div>
 </div></header>
 
 <section class="block" id="brief" data-screen-label="Brief"><div class="wrap">
   <div class="eyebrow">00 · The brief</div><h2>Enhance, not rebrand</h2>
-  <p class="lead">The current identity is correct but too quiet: flat navy, cream and gold reads like a yacht club, not a restaurant with two kitchens. Each direction below keeps everything the owner approved and adds a graphic language KIN can own.</p>
+  <p class="lead">The current identity is correct but too quiet: flat navy, cream and gold reads like a yacht club, not a restaurant with two kitchens. Each direction below keeps everything already approved and adds a graphic language KIN can own.</p>
   <div class="grid">
     <div class="card"><div class="label">Stays exactly as is</div><ul><li>KIN logo with the reflection and “by the lake”</li><li>Lake Blue #1E3D5A · Warm Off-White #F3EFE6 · Aged Brass #B38A45</li><li>Cinzel and Montserrat Light</li></ul></div>
     <div class="card"><div class="label">What we explore</div><ul><li>Positive and negative colour, light-on-dark and dark-on-light</li><li>Tints and shades of Lake Blue, blue-on-blue layering</li><li>Engraved and etched illustration, pattern systems</li><li>Print finishes: deboss, blind emboss, foil, tonal varnish</li></ul></div>
@@ -93,18 +93,18 @@
 <nav class="tabs" role="tablist" aria-label="Directions"><div class="wrap" id="tabs"></div></nav>
 
 <section class="block dir" id="compare" data-screen-label="Compare all"><div class="wrap">
-  <div class="eyebrow">Side by side</div><h2>Compare the four</h2>
-  <p class="lead">The owner's original next to the three proposals, on the same four applications. Open a direction above to see its full system: tone, pattern, illustration, menu, social, print and website.</p>
+  <div class="eyebrow">Side by side</div><h2>Current vs. three directions</h2>
+  <p class="lead">The current identity next to the three proposals, on the same four applications. Open a direction above to see its full system: tone, pattern, illustration, menu, social, print and website.</p>
   <div class="cmp"><table id="cmp"></table></div>
   <div class="verdict" id="verdict"></div>
 </div></section>
 
-<section class="block dir" id="original" data-screen-label="Original (owner)" hidden><div class="wrap" id="body-o"></div></section>
+<section class="block dir" id="original" data-screen-label="Current identity" hidden><div class="wrap" id="body-o"></div></section>
 <section class="block dir" id="dir-a" data-screen-label="Direction A · The Engraver's Table" hidden><div class="wrap" id="body-a"></div></section>
 <section class="block dir" id="dir-b" data-screen-label="Direction B · Glaze & Rim" hidden><div class="wrap" id="body-b"></div></section>
 <section class="block dir" id="dir-c" data-screen-label="Direction C · Guilloché House" hidden><div class="wrap" id="body-c"></div></section>
 
-<footer class="pg"><div class="wrap"><em>Eat well. Laugh often. Stay close.</em><br>KIN by the Lake · design direction · proposal, not approved</div></footer>
+<footer class="pg"><div class="wrap"><em>Eat well. Laugh often. Stay close.</em><br>KIN by the Lake · Design System · directions, proposal not approved</div></footer>
 
 <div id="sprite-host" aria-hidden="true"></div>
 <script>
@@ -262,9 +262,9 @@
     }
   };
 
-  /* ------------------------------------------------------------------ Original (owner) */
+  /* ------------------------------------------------------------------ Current identity */
   var O = {
-    key: 'o', name: 'Original', short: 'Owner’s identity today',
+    key: 'o', name: 'Original', short: 'KIN’s identity today',
     cover: function () { return art(300, 380, '#ccc', '<img src="' + PH + 'menu-cover.png" alt="Current menu cover" style="width:100%;height:100%;object-fit:cover">'); },
     social: function () { return art(320, 400, '#ccc', '<img src="../assets/direction/original-social.jpg" alt="Current social post" style="width:100%;height:100%;object-fit:cover;object-position:top">'); },
     print: function () { return art(200, 280, '#ccc', '<img src="' + PH + 'napkin-ring.png" alt="Current napkin ring" style="width:100%;height:100%;object-fit:cover">') + art(200, 280, '#ccc', '<img src="' + PH + 'blade-sign.png" alt="Current blade sign" style="width:100%;height:100%;object-fit:cover">'); },
@@ -278,7 +278,7 @@
   function dirBody(d, i) {
     var tone = '<div class="tone">' + d.tone.map(function (t) { return '<div style="flex:' + t[2] + ';background:' + t[1] + ';color:' + t[3] + '">' + t[2] + '%</div>'; }).join('') + '</div>' +
       '<div class="chips">' + d.tone.map(function (t) { return '<span class="chip"><i style="background:' + t[1] + '"' + (/optional/.test(t[0]) ? ' class="opt"' : '') + '></i>' + t[0] + '</span>'; }).join('') + '</div>' +
-      (d.optional ? '<p class="note">Dashed swatches are optional tones sampled from KIN’s own plates. Not approved; the direction also works with Lake Blue alone.</p>' : '<p class="note">Only the owner’s three colours plus tints and shades of Lake Blue. No new accent colours.</p>');
+      (d.optional ? '<p class="note">Dashed swatches are optional tones sampled from KIN’s own plates. Not approved; the direction also works with Lake Blue alone.</p>' : '<p class="note">Only the three approved colours plus tints and shades of Lake Blue. No new accent colours.</p>');
     return '<div class="eyebrow">Direction ' + d.key.toUpperCase() + ' · ' + d.short + '</div><h2>' + d.name + '</h2>' +
       '<div class="lede"><div class="card"><div class="label">The idea</div><p>' + d.idea + '</p></div><div class="card"><div class="label">Why it works for KIN</div><p>' + d.why + '</p></div><div class="card"><div class="label">Finishes</div><div class="finishes">' + d.finishes.map(function (f) { return '<span>' + f + '</span>'; }).join('') + '</div></div></div>' +
       '<div class="boards">' +
@@ -293,18 +293,18 @@
       '</div>';
   }
   function origBody() {
-    return '<div class="eyebrow">The baseline · stays</div><h2>Original (owner)</h2><p class="lead">The approved identity as it is today. It stays as the reference; the three directions build on it, they do not replace it.</p>' +
+    return '<div class="eyebrow">The baseline · stays</div><h2>Current identity</h2><p class="lead">The approved identity as it is today. It stays as the reference; the three directions build on it, they do not replace it.</p>' +
       '<div class="boards">' +
       board('Logo', 'Unchanged in every direction.', stage(art(300, 200, 'var(--off)', abs('left:0;right:0;top:40px;display:flex;justify-content:center', logo(190, 'var(--lake)'))) + art(300, 200, 'var(--lake)', abs('left:0;right:0;top:40px;display:flex;justify-content:center', logo(190, 'var(--off)'))))) +
       board('Colours', 'The three approved colours, used flat today.', '<div class="tone" style="height:120px"><div style="flex:1;background:var(--lake);color:var(--off)">Lake Blue #1E3D5A</div><div style="flex:1;background:var(--off);color:var(--lake)">Warm Off-White #F3EFE6</div><div style="flex:1;background:var(--brass);color:var(--ink)">Aged Brass #B38A45</div></div>') +
       board('Pattern today', 'Porcelain lattice from the Design System.', stage('<div class="art" style="width:240px;height:240px;background:url(../assets/patterns/porcelain-lattice-lake-blue.svg) var(--off)"></div><div class="art" style="width:240px;height:240px;background:url(../assets/patterns/porcelain-lattice-off-white.svg) var(--lake)"></div>')) +
-      board('Applications today', 'Menu cover, napkin ring and blade sign from the owner’s design.', stage(O.cover() + O.print()), true) +
+      board('Applications today', 'Menu cover, napkin ring and blade sign from the current design.', stage(O.cover() + O.print()), true) +
       board('Website today', 'The current Website Preview uses outline icons and flat colour blocks.', stage(O.web()), true) +
       '</div>';
   }
 
   function compare() {
-    var cols = [['o', 'Original', 'Owner’s identity today', O], ['a', 'A · ' + A.name, A.short, A], ['b', 'B · ' + B.name, B.short, B], ['c', 'C · ' + C.name, C.short, C]];
+    var cols = [['o', 'Current', 'KIN’s identity today', O], ['a', 'A · ' + A.name, A.short, A], ['b', 'B · ' + B.name, B.short, B], ['c', 'C · ' + C.name, C.short, C]];
     var rows = [['Menu cover', 'cover'], ['Social post', 'social'], ['Print', 'print'], ['Website', 'web']];
     var h = '<colgroup><col style="width:76px"><col><col><col><col></colgroup><tr><th></th>' + cols.map(function (c) { return '<th class="col">' + c[1] + '<small>' + c[2] + '</small></th>'; }).join('') + '</tr>';
     rows.forEach(function (r) {
@@ -319,7 +319,7 @@
   }
 
   /* tabs */
-  var TABS = [['compare', 'Compare all', ''], ['original', 'Original', 'owner'], ['dir-a', 'A · Engraver’s Table', ''], ['dir-b', 'B · Glaze & Rim', ''], ['dir-c', 'C · Guilloché House', '']];
+  var TABS = [['compare', 'Compare all', ''], ['original', 'Current', ''], ['dir-a', 'A · Engraver’s Table', ''], ['dir-b', 'B · Glaze & Rim', ''], ['dir-c', 'C · Guilloché House', '']];
   var built = {};
   function build(id) {
     if (built[id]) return; built[id] = 1;
