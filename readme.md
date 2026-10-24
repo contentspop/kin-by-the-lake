@@ -10,7 +10,7 @@ A lakeside dining destination in Phuket where the vibrant flavours of Phuket and
 - **Name insight:** “Kin” = กิน (to eat) in Thai, and family in English.
 - **Brand line:** Eat well. Laugh often. Stay close.
 - **Values:** Simple. Natural. Timeless. — Good food · Good people · Good moments
-- **Creative direction:** “Lanterns on the Water”. Lake Blue + Warm Off-White carry the brand; Aged Brass is the lantern glint; the logo’s reflection strokes are the signature graphic.
+- **Creative direction:** “Light on the Lake”. Lake Blue + Warm Off-White carry the brand; Aged Brass is the lantern glint; the logo’s reflection strokes are the signature graphic.
 - **Open placeholders:** location/lake name, price per head, core guest mix, final dayparts, billboard size, address/email — shown as `[brackets]` wherever they appear.
 
 ## Contact
