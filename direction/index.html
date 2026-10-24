@@ -59,50 +59,30 @@
   .cmp th.col small { display: block; font-weight: 400; letter-spacing: .04em; text-transform: none; color: var(--muted); margin-top: 4px; }
   .verdict { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); margin-top: 24px; }
   .photo-o img { display: block; height: 100%; }
+.refs { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+  .refrow { display:flex; gap:10px; flex-wrap:wrap; }
+  .refrow figure { width:160px; } .refrow img { width:160px; height:200px; object-fit:cover; border:1px solid var(--line); }
+  .opt-h { display:flex; gap:18px; align-items:flex-start; }
+  .opt-l { flex:none; width:46px; height:46px; display:flex; align-items:center; justify-content:center; background:var(--ink); color:var(--off); font:500 24px/1 var(--font-display); }
+  .board > h3:first-child + .opt-h { margin-top:-4px; }
   @media (max-width: 640px) { .stage { padding: 10px; } .stage .art { zoom: .8; } }
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap"><a class="back" href="../share/KIN-Design-System.html">← Design System</a>
-  <span class="kicker">Design System · Directions</span>
-  <h1>Design Directions</h1>
-  <p>Three proposals to make KIN’s current identity richer and more distinctive. The logo, the three colours and the two typefaces stay exactly as they are. What changes is how we use them: patterns, engraving, colour reversal, tone and finish. Compare them side by side, then comment on each.</p>
+  <span class="kicker">Design System · Proposals</span>
+  <h1>Three Additions to the Identity</h1>
+  <p>KIN’s current identity is a logo, three colours and two typefaces. It has no pattern, no accent colour and no illustration style, so most pieces end up flat navy, cream and gold. We propose three additions, each with options to choose from. The logo, the colours and the fonts stay exactly as they are.</p>
   <div class="status"><span class="pill red">Proposal · for discussion</span><span class="pill">Logo, colours and fonts unchanged</span></div>
 </div></header>
 
-<section class="block" id="brief" data-screen-label="Brief"><div class="wrap">
-  <div class="eyebrow">00 · The brief</div><h2>Enhance, not rebrand</h2>
-  <p class="lead">The current identity is correct but too quiet: flat navy, cream and gold reads like a yacht club, not a restaurant with two kitchens. Each direction below keeps everything already approved and adds a graphic language KIN can own.</p>
-  <div class="grid">
-    <div class="card"><div class="label">Stays exactly as is</div><ul><li>KIN logo with the reflection and “by the lake”</li><li>Lake Blue #1E3D5A · Warm Off-White #F3EFE6 · Aged Brass #B38A45</li><li>Cinzel and Montserrat Light</li></ul></div>
-    <div class="card"><div class="label">What we explore</div><ul><li>Positive and negative colour, light-on-dark and dark-on-light</li><li>Tints and shades of Lake Blue, blue-on-blue layering</li><li>Engraved and etched illustration, pattern systems</li><li>Print finishes: deboss, blind emboss, foil, tonal varnish</li></ul></div>
-    <div class="card"><div class="label">What we avoid</div><ul><li>Yacht-club navy-and-gold, generic contemporary restaurant graphics</li><li>Wave and ripple patterns everywhere, seafood or ocean icons</li><li>New trendy accent colours, gold foil overload, all-monochrome</li></ul></div>
-  </div>
-  <h3 style="margin-top:34px;">The starting point: KIN's own tableware</h3>
-  <p class="lead" style="margin-top:8px;">Cobalt lips, spun brush bands that feather into a cream well, dry-brushed edges on rectangular trays. Not flowers or tiles: rings, bands and brushwork. Direction B is built directly on this.</p>
-  <div class="tableware">
-    <figure><img src="../assets/direction/tableware/plate-banded.jpg" alt="Round plate with dark blue band" loading="lazy"><figcaption>Plate · matt off-white, dark blue band</figcaption></figure>
-    <figure><img src="../assets/direction/tableware/pasta-plate.jpg" alt="Pasta plate with spun bands" loading="lazy"><figcaption>Pasta plate · spun bands</figcaption></figure>
-    <figure><img src="../assets/direction/tableware/square-plate.jpg" alt="Square plate with brushed arcs" loading="lazy"><figcaption>Square plate · brushed arcs</figcaption></figure>
-    <figure><img src="../assets/direction/tableware/rect-tray.jpg" alt="Rectangular tray with brushed edge" loading="lazy"><figcaption>Tray · dry-brushed edge</figcaption></figure>
-    <figure><img src="../assets/direction/tableware/oval-platter.jpg" alt="Oval platter" loading="lazy"><figcaption>Oval platter · heavy brushwork</figcaption></figure>
-    <figure><img src="../assets/direction/tableware/cup-saucer.jpg" alt="Cup and saucer" loading="lazy"><figcaption>Cup · cobalt lip, feathered band</figcaption></figure>
-  </div>
-</div></section>
+<nav class="tabs" role="tablist" aria-label="Proposals"><div class="wrap" id="tabs"></div></nav>
 
-<nav class="tabs" role="tablist" aria-label="Directions"><div class="wrap" id="tabs"></div></nav>
-
-<section class="block dir" id="compare" data-screen-label="Compare all"><div class="wrap">
-  <div class="eyebrow">Side by side</div><h2>Current vs. three directions</h2>
-  <p class="lead">The current identity next to the three proposals, on the same four applications. Open a direction above to see its full system: tone, pattern, illustration, menu, social, print and website.</p>
-  <div class="cmp"><table id="cmp"></table></div>
-  <div class="verdict" id="verdict"></div>
-</div></section>
-
-<section class="block dir" id="original" data-screen-label="Current identity" hidden><div class="wrap" id="body-o"></div></section>
-<section class="block dir" id="dir-a" data-screen-label="Direction A · The Engraver's Table" hidden><div class="wrap" id="body-a"></div></section>
-<section class="block dir" id="dir-b" data-screen-label="Direction B · Glaze & Rim" hidden><div class="wrap" id="body-b"></div></section>
-<section class="block dir" id="dir-c" data-screen-label="Direction C · Guilloché House" hidden><div class="wrap" id="body-c"></div></section>
+<section class="block dir" id="current" data-screen-label="Current identity"><div class="wrap" id="body-current"></div></section>
+<section class="block dir" id="pattern" data-screen-label="Proposal 1 · Pattern" hidden><div class="wrap" id="body-pattern"></div></section>
+<section class="block dir" id="accent" data-screen-label="Proposal 2 · Accent colour" hidden><div class="wrap" id="body-accent"></div></section>
+<section class="block dir" id="line" data-screen-label="Proposal 3 · Graphic line" hidden><div class="wrap" id="body-line"></div></section>
+<section class="block dir" id="together" data-screen-label="Put together" hidden><div class="wrap" id="body-together"></div></section>
 
 <footer class="pg"><div class="wrap"><em>Eat well. Laugh often. Stay close.</em><br>KIN by the Lake · Design System · directions, proposal not approved</div></footer>
 
@@ -271,79 +251,166 @@
     web: function () { return art(640, 360, '#ccc', '<img src="../assets/direction/original-website.jpg" alt="Current website preview" style="width:100%;height:100%;object-fit:cover;object-position:top">'); }
   };
 
-  var D = [A, B, C];
+  /* ------------------------------------------------------------------ helpers for the proposals */
+  var SK = '../assets/direction/sketch/';
+  function sk(name, color, css) { return '<span style="display:block;background:' + color + ';-webkit-mask:url(' + SK + name + '.png) center/cover no-repeat;mask:url(' + SK + name + '.png) center/cover no-repeat;' + (css || '') + '"></span>'; }
   function stage(html, dark) { return '<div class="stage' + (dark ? ' dark' : '') + '">' + html + '</div>'; }
   function board(title, note, html, wide) { return '<div class="board"' + (wide ? ' style="grid-column:1/-1"' : '') + '><h3>' + title + '</h3>' + (note ? '<p class="note">' + note + '</p>' : '') + html + '</div>'; }
-
-  function dirBody(d, i) {
-    var tone = '<div class="tone">' + d.tone.map(function (t) { return '<div style="flex:' + t[2] + ';background:' + t[1] + ';color:' + t[3] + '">' + t[2] + '%</div>'; }).join('') + '</div>' +
-      '<div class="chips">' + d.tone.map(function (t) { return '<span class="chip"><i style="background:' + t[1] + '"' + (/optional/.test(t[0]) ? ' class="opt"' : '') + '></i>' + t[0] + '</span>'; }).join('') + '</div>' +
-      (d.optional ? '<p class="note">Dashed swatches are optional tones sampled from KIN’s own plates. Not approved; the direction also works with Lake Blue alone.</p>' : '<p class="note">Only the three approved colours plus tints and shades of Lake Blue. No new accent colours.</p>');
-    return '<div class="eyebrow">Direction ' + d.key.toUpperCase() + ' · ' + d.short + '</div><h2>' + d.name + '</h2>' +
-      '<div class="lede"><div class="card"><div class="label">The idea</div><p>' + d.idea + '</p></div><div class="card"><div class="label">Why it works for KIN</div><p>' + d.why + '</p></div><div class="card"><div class="label">Finishes</div><div class="finishes">' + d.finishes.map(function (f) { return '<span>' + f + '</span>'; }).join('') + '</div></div></div>' +
-      '<div class="boards">' +
-      board('Colour & tone', 'How the same palette is weighted in this direction, from most to least used.', tone) +
-      board('Pattern', 'Positive and negative versions of the same pattern.', stage(d.pattern())) +
-      board('Illustration', 'The illustration technique this direction is built on.', stage(d.illus(), true), true) +
-      board('Menu cover', 'A4, flat artwork (no mock-up photography).', stage(d.cover())) +
-      board('Social post', 'Instagram 4:5 with KIN photography.', stage(d.social())) +
-      board('Menu inside', 'Two kitchens, two pages. Dishes and prices are placeholders.', stage(d.inside()), true) +
-      board('Print', 'Coaster and a second printed piece.', stage(d.print(), true), true) +
-      board('Website', 'Home page, first screen. No generic icons: the brand graphics do the work.', stage(d.web()), true) +
-      '</div>';
+  function refs(list) { return '<div class="refs"><span class="pill need" style="align-self:flex-start">Reference · internal use only</span><div class="refrow">' + list.map(function (r) { return '<figure><img src="../assets/direction/' + r[0] + '" alt="" loading="lazy"><figcaption>' + r[1] + '</figcaption></figure>'; }).join('') + '</div></div>'; }
+  function head(num, title, lead) { return '<div class="eyebrow">' + num + '</div><h2>' + title + '</h2><p class="lead">' + lead + '</p>'; }
+  function optHead(letter, name, idea, why, tags) {
+    return '<div class="opt-h"><span class="opt-l">' + letter + '</span><div><p style="margin:2px 0 0;max-width:860px;font-size:15.5px">' + idea + '</p>' +
+      (why ? '<p class="note" style="margin-top:6px;max-width:820px"><b>Why:</b> ' + why + '</p>' : '') + (tags ? '<div class="finishes" style="margin-top:10px">' + tags.map(function (t) { return '<span>' + t + '</span>'; }).join('') + '</div>' : '') + '</div></div>';
   }
-  function origBody() {
-    return '<div class="eyebrow">The baseline · stays</div><h2>Current identity</h2><p class="lead">The approved identity as it is today. It stays as the reference; the three directions build on it, they do not replace it.</p>' +
+  var GREEN = '#44613F', TERRA = '#B4593F';
+
+  /* ------------------------------------------------------------------ Current */
+  function currentBody() {
+    return head('Where we start', 'Current identity', 'The approved identity board. Everything here stays. What it does not have yet is listed on the right: these are the three proposals.') +
       '<div class="boards">' +
-      board('Logo', 'Unchanged in every direction.', stage(art(300, 200, 'var(--off)', abs('left:0;right:0;top:40px;display:flex;justify-content:center', logo(190, 'var(--lake)'))) + art(300, 200, 'var(--lake)', abs('left:0;right:0;top:40px;display:flex;justify-content:center', logo(190, 'var(--off)'))))) +
-      board('Colours', 'The three approved colours, used flat today.', '<div class="tone" style="height:120px"><div style="flex:1;background:var(--lake);color:var(--off)">Lake Blue #1E3D5A</div><div style="flex:1;background:var(--off);color:var(--lake)">Warm Off-White #F3EFE6</div><div style="flex:1;background:var(--brass);color:var(--ink)">Aged Brass #B38A45</div></div>') +
-      board('Pattern today', 'Porcelain lattice from the Design System.', stage('<div class="art" style="width:240px;height:240px;background:url(../assets/patterns/porcelain-lattice-lake-blue.svg) var(--off)"></div><div class="art" style="width:240px;height:240px;background:url(../assets/patterns/porcelain-lattice-off-white.svg) var(--lake)"></div>')) +
-      board('Applications today', 'Menu cover, napkin ring and blade sign from the current design.', stage(O.cover() + O.print()), true) +
-      board('Website today', 'The current Website Preview uses outline icons and flat colour blocks.', stage(O.web()), true) +
+      board('The approved board', 'Logo, reversed logo, alternate versions, colours, typography, clear space, icons and applications.', '<img src="../assets/direction/current-board.jpg" alt="KIN identity board" style="width:100%;border:1px solid var(--line)">', true) +
+      board('What it has', '', '<ul style="margin:0;padding-left:18px"><li>Logo with the lake reflection and “by the lake”</li><li>Lake Blue, Warm Off-White, Aged Brass</li><li>Cinzel and Montserrat Light</li><li>Concept: Simple. Natural. Timeless.</li></ul>') +
+      board('What is missing', '', '<ol style="margin:0;padding-left:18px"><li><b>A pattern</b>: nothing to use on menu covers, packaging, walls or social backgrounds → <a href="#pattern" data-go="pattern">Proposal 1</a></li><li><b>An accent colour</b>: everything is navy, cream or gold → <a href="#accent" data-go="accent">Proposal 2</a></li><li><b>A graphic line style</b>: the icons (fork and plate, people) are generic outline icons → <a href="#line" data-go="line">Proposal 3</a></li></ol>') +
+      board('The starting point: KIN’s own tableware', 'Cobalt lips, spun brush bands feathering into a cream well, dry-brushed tray edges. Pattern C and line style C come straight from these plates.',
+        '<div class="tableware">' + [['plate-banded', 'Plate · dark blue band'], ['pasta-plate', 'Pasta plate · spun bands'], ['square-plate', 'Square plate · brushed arcs'], ['rect-tray', 'Tray · dry-brushed edge'], ['oval-platter', 'Oval platter · brushwork'], ['cup-saucer', 'Cup · cobalt lip']].map(function (t) { return '<figure><img src="../assets/direction/tableware/' + t[0] + '.jpg" alt="" loading="lazy"><figcaption>' + t[1] + '</figcaption></figure>'; }).join('') + '</div>', true) +
       '</div>';
   }
 
-  function compare() {
-    var cols = [['o', 'Current', 'KIN’s identity today', O], ['a', 'A · ' + A.name, A.short, A], ['b', 'B · ' + B.name, B.short, B], ['c', 'C · ' + C.name, C.short, C]];
+  /* ------------------------------------------------------------------ Proposal 1 · Pattern */
+  function coaster(bg, inner) { return art(180, 180, bg, inner, 'border-radius:50%'); }
+  function patternBody() {
+    var A1 = optHead('A', 'Pantry Engraving', 'A repeat of engraved ingredients from both kitchens: betel leaf, pomelo, bird’s-eye chilli and star anise from Phuket, lemon and basil from Italy. Fine line, like an old botanical print.', 'Food-led and specific to KIN. Works tone-on-tone (light blue on Lake Blue) or Lake Blue on cream.', ['Menus', 'Packaging', 'Wallpaper', 'Social backgrounds']) +
+      stage(patt('eng-tile', 200, 'var(--lake)', 'var(--off)', 260, 260) + patt('eng-tile', 200, 'var(--l40)', 'var(--ink)', 260, 260) +
+        art(220, 311, 'var(--ink)', patt('eng-tile', 170, 'var(--l70)', 'var(--ink)', 220, 311, ';position:absolute;inset:0') + abs('left:30px;right:30px;top:96px;bottom:96px;background:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px var(--brass)', logo(110, 'var(--brass)'))) +
+        coaster('var(--off)', patt('eng-tile', 150, 'var(--lake)', 'var(--off)', 180, 180, ';position:absolute;inset:0')));
+    var B1 = optHead('B', 'Porcelain Lattice, hand-painted', 'The Porcelain Lattice from the Design System draft, redrawn as hand-painted tiles: uneven watercolour pigment, quatrefoils, star flowers and scrolls, like Peranakan and Italian majolica tiles side by side.', 'Speaks to both cultures at once (Peranakan tiles, Italian maiolica). Warmer and more crafted than a flat vector lattice.', ['Menu covers', 'Walls and floors', 'Napkins', 'Coasters']) +
+      stage('<figure style="margin:0"><div class="art" style="width:200px;height:200px;background:url(../assets/patterns/porcelain-lattice-lake-blue.svg) var(--off)"></div><figcaption style="text-align:center;margin-top:8px">Design System draft (flat)</figcaption></figure>' +
+        '<figure style="margin:0">' + patt('wc-repeat', 200, 'var(--lake)', 'var(--off)', 260, 260) + '<figcaption style="text-align:center;margin-top:8px">Hand-painted version</figcaption></figure>' +
+        '<figure style="margin:0">' + patt('wc-repeat', 200, 'var(--l15)', 'var(--lake)', 260, 260) + '<figcaption style="text-align:center;margin-top:8px">Reversed</figcaption></figure>' +
+        art(220, 311, 'var(--off)', patt('wc-repeat', 110, 'var(--lake)', 'var(--off)', 220, 311, ';position:absolute;inset:0') + abs('left:34px;right:34px;top:92px;bottom:92px;background:var(--off);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px var(--lake)', logo(110, 'var(--lake)'))) +
+        coaster('var(--off)', ic('wc-a', 'position:absolute;inset:6%;width:88%;height:88%;color:var(--lake)'))) +
+      refs([['ref-tiles-watercolour.jpg', 'Hand-painted tile wall'], ['ref-tiles-blue.jpg', 'Blue watercolour tiles']]);
+    var C1 = optHead('C', 'Glaze & Rim', 'Taken from KIN’s own tableware: rings of spun brush bands, brushed arcs and dry-brushed edges. A “stacked plates” repeat for backgrounds, a rim frame that holds text the way a plate holds food.', 'Completely ownable and true: the menu, the coaster and the plate in front of the guest speak one language.', ['Menu frames', 'Coasters', 'Packaging tape', 'Website edges']) +
+      stage(patt('cer-rings', 110, 'var(--lake)', 'var(--off)', 260, 260) + patt('cer-rings', 110, 'var(--l15)', 'var(--lake)', 260, 260) +
+        art(220, 311, 'var(--off)', ic('cer-frame', 'position:absolute;inset:0;width:100%;height:100%;color:var(--lake)', 'stretch') + abs('left:0;right:0;top:118px;display:flex;justify-content:center', logo(110, 'var(--lake)'))) +
+        coaster('var(--off)', ic('cer-plate', 'position:absolute;inset:0;width:100%;height:100%;color:var(--lake)') + abs('left:0;right:0;top:70px;display:flex;justify-content:center', logo(60, 'var(--lake)'))));
+    return head('Proposal 1', 'Add a pattern', 'A pattern gives KIN something to use on menu covers, packaging, napkins, walls and social backgrounds. Three options, all in the approved colours. Each shows positive and negative versions, a menu cover and a coaster.') +
+      '<div class="boards">' + board('Option A · Pantry Engraving', '', A1, true) + board('Option B · Porcelain Lattice, hand-painted', '', B1, true) + board('Option C · Glaze & Rim', '', C1, true) + '</div>';
+  }
+
+  /* ------------------------------------------------------------------ Proposal 2 · Accent colour */
+  function accentBody() {
+    function sw(hex, name, role, opt) { return '<div style="display:flex;flex-direction:column;gap:6px;min-width:150px"><div style="height:90px;background:' + hex + ';border:1px solid rgba(0,0,0,.08)' + (opt ? ';outline:1px dashed var(--red);outline-offset:3px' : '') + '"></div><b style="font:600 12px/1.3 var(--font-text-latin)">' + name + '</b><span class="small">' + hex + ' · ' + role + '</span></div>'; }
+    function bar(parts) { return '<div class="tone">' + parts.map(function (t) { return '<div style="flex:' + t[2] + ';background:' + t[1] + ';color:' + t[3] + '">' + t[0] + ' ' + t[2] + '%</div>'; }).join('') + '</div>'; }
+    function post(bg, fg, acc, title, sub, img) {
+      return art(260, 325, bg, abs('left:0;right:0;top:0;height:56%', '<img src="' + PH + img + '" alt="" style="width:100%;height:100%;object-fit:cover">') +
+        abs('left:18px;right:18px;bottom:20px;color:' + fg, '<span class="caps" style="display:inline-block;padding:5px 8px;background:' + acc + ';color:#F3EFE6;margin-bottom:10px">' + sub + '</span><div class="cz" style="font-size:22px;line-height:1.08">' + title + '</div>'));
+    }
+    function menuTag(acc) {
+      return art(260, 325, 'var(--off)', '<div class="menu-p" style="padding:26px 22px"><div class="caps" style="color:var(--brass)">I · Phuket & Peranakan</div><div class="cz" style="font-size:16px">The Phuket kitchen</div>' +
+        dishes(P.slice(0, 3)).replace('Gaeng Poo Bai Cha Plu</b>', 'Gaeng Poo Bai Cha Plu <i style="font:600 7px/1 var(--font-text-latin);letter-spacing:.14em;padding:3px 5px;background:' + acc + ';color:#F3EFE6;font-style:normal;vertical-align:2px">SIGNATURE</i></b>') +
+        '<div style="margin-top:auto;height:3px;background:' + acc + ';width:40%"></div></div>');
+    }
+    var A2 = optHead('A', 'Glaze Cobalt', 'A brighter, more saturated blue sampled from the cobalt lip of KIN’s own plates, with a pale wash tint. Stays in the blue family, so the identity keeps its calm.', 'The safest option: it already exists on every table. Adds energy to blue-on-blue without introducing a new colour family.', ['From the tableware', 'Max 10% of a layout']) +
+      stage('<div style="display:flex;gap:14px;flex-wrap:wrap">' + sw('#24468C', 'Glaze Cobalt', 'highlights, tags, illustration', true) + sw('#A9C1DE', 'Glaze Wash', 'backgrounds, tints', true) + '</div>') +
+      bar([['Off-White', 'var(--off)', 50, '#1E3D5A'], ['Lake', 'var(--lake)', 30, '#F3EFE6'], ['Cobalt', '#24468C', 10, '#F3EFE6'], ['Wash', '#A9C1DE', 5, '#1E3D5A'], ['Brass', 'var(--brass)', 5, '#0F2233']]) +
+      stage(post('var(--off)', 'var(--lake)', '#24468C', 'The long lunch', 'Every day · 12–3 pm', 'terrace-dusk.png') + menuTag('#24468C'));
+    var B2 = optHead('B', 'Betel Green', 'A deep leaf green taken from the betel leaf (chaplu) in Phuket cooking and the garden around the lake. Used for signatures, “from the garden” notes and small illustration details.', 'Brings nature and food into the palette, and links to the green of the setting. Pairs well with Lake Blue without looking nautical.', ['From the betel leaf & garden', 'Max 10% of a layout']) +
+      stage('<div style="display:flex;gap:14px;flex-wrap:wrap">' + sw(GREEN, 'Betel Green', 'signatures, garden, highlights', true) + sw('#C9D3C2', 'Leaf Tint', 'backgrounds', true) + '</div>') +
+      bar([['Off-White', 'var(--off)', 50, '#1E3D5A'], ['Lake', 'var(--lake)', 30, '#F3EFE6'], ['Green', GREEN, 10, '#F3EFE6'], ['Tint', '#C9D3C2', 5, '#1E3D5A'], ['Brass', 'var(--brass)', 5, '#0F2233']]) +
+      stage(post('var(--off)', 'var(--lake)', GREEN, 'Lunch in the garden', 'Phuket-Peranakan', 'garden-path.png') + menuTag(GREEN));
+    var C2 = optHead('C', 'Peranakan Terracotta', 'A warm clay red from Phuket’s Peranakan shophouses, roof tiles and dried chilli. Used sparingly for signatures, events and the warm side of golden hour.', 'Adds warmth and appetite; the most “restaurant” of the three. Needs discipline so it never reads as Chinese New Year red-and-gold.', ['From shophouses & chilli', 'Max 8% of a layout']) +
+      stage('<div style="display:flex;gap:14px;flex-wrap:wrap">' + sw(TERRA, 'Peranakan Terracotta', 'signatures, events', true) + sw('#E9C9B8', 'Clay Tint', 'backgrounds', true) + '</div>') +
+      bar([['Off-White', 'var(--off)', 52, '#1E3D5A'], ['Lake', 'var(--lake)', 30, '#F3EFE6'], ['Terracotta', TERRA, 8, '#F3EFE6'], ['Tint', '#E9C9B8', 5, '#1E3D5A'], ['Brass', 'var(--brass)', 5, '#0F2233']]) +
+      stage(post('var(--off)', 'var(--lake)', TERRA, 'Golden hour', 'Daily · 17:00–19:00', 'lantern.png') + menuTag(TERRA)) +
+      refs([['ref-engraved-resort.jpg', 'Green and terracotta on cream']]);
+    return head('Proposal 2', 'Add an accent colour', 'One accent, used for no more than about 10% of any layout: signature dishes, tags, highlights and small illustration details. Lake Blue, Warm Off-White and Aged Brass stay the main colours. None of these accents is approved yet.') +
+      '<div class="boards">' + board('Option A · Glaze Cobalt', '', A2, true) + board('Option B · Betel Green', '', B2, true) + board('Option C · Peranakan Terracotta', '', C2, true) + '</div>';
+  }
+
+  /* ------------------------------------------------------------------ Proposal 3 · Graphic line style */
+  function lineBody() {
+    function icons(items, bg) { return '<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">' + items.map(function (it) { return '<div style="display:flex;flex-direction:column;align-items:center;gap:8px"><div class="art" style="width:120px;height:120px;background:' + bg + ';box-shadow:none;border:1px solid var(--line)">' + it[0] + '</div><span class="caps" style="color:var(--ink)">' + it[1] + '</span></div>'; }).join('') + '</div>'; }
+    var A3 = optHead('A', 'Engraved fine line', 'Precise engraved illustration with hatching and cross-hatching, like an old botanical or banknote print. Used for ingredients, dishes and small spot drawings.', 'The most crafted and timeless. Strong on dark backgrounds and in print with deboss or foil.', ['Ingredients', 'Spot illustrations', 'Menus']) +
+      stage(art(300, 410, 'var(--ink)', ic('eng-still', 'position:absolute;inset:4% 2%;width:96%;height:92%;color:var(--l40);--ko:var(--ink)')) + art(260, 260, 'var(--off)', ic('eng-slice', 'position:absolute;inset:8%;width:84%;height:84%;color:var(--lake);--ko:var(--off)')), true) +
+      '<p class="note" style="margin-top:10px">Instead of generic icons (Good food · Good people · Good moments):</p>' +
+      icons([[ic('eng-anise', 'position:absolute;inset:14%;width:72%;height:72%;color:var(--lake);--ko:var(--off)'), 'Good food'], [ic('eng-betel', 'position:absolute;inset:10%;width:80%;height:80%;color:var(--lake);--ko:var(--off)'), 'Good people'], [ic('eng-slice', 'position:absolute;inset:14%;width:72%;height:72%;color:var(--lake);--ko:var(--off)'), 'Good moments']], 'var(--off)');
+    var B3 = optHead('B', 'Hand-drawn sketch', 'Loose pen sketches of the real place: the bamboo pavilion, the dining hall, the terrace with lanterns and people at the table. One colour, drawn with a confident, slightly imperfect line.', 'Shows the setting, which is what KIN leads with (setting-led 60%). Warm, human and instantly recognisable as this restaurant.', ['The pavilion', 'The dining hall', 'People at the table']) +
+      stage(art(400, 260, 'var(--off)', sk('pavilion-sunset', 'var(--lake)', 'position:absolute;inset:0')) + art(400, 260, 'var(--off)', sk('dining-hall', 'var(--lake)', 'position:absolute;inset:0')) + art(400, 260, 'var(--lake)', sk('terrace-night', 'var(--off)', 'position:absolute;inset:0'))) +
+      '<p class="note" style="margin-top:10px">Study traced from the 3D renders to show the style. Final drawings would be made by hand by an illustrator. Instead of generic icons:</p>' +
+      icons([[sk('dining-hall', 'var(--lake)', 'position:absolute;inset:0'), 'Good food'], [sk('terrace-dusk', 'var(--lake)', 'position:absolute;inset:0'), 'Good people'], [sk('pavilion-sunset', 'var(--lake)', 'position:absolute;inset:0'), 'Good moments']], 'var(--off)') +
+      refs([['ref-sketch-cafe.jpg', 'One-colour pen sketch of a café'], ['ref-engraved-resort.jpg', 'Drawn building with palms']]);
+    var C3 = optHead('C', 'Brush & spun line', 'The marks from KIN’s plates: a solid rim, spun rings, a single brushed arc, a dry-brushed sweep. Used as dividers, frames, underlines and background gestures rather than pictures.', 'Simple and quick to use across every touchpoint, and it matches the tableware exactly. Pairs with photography rather than replacing it.', ['Dividers', 'Frames', 'Underlines', 'Background arcs']) +
+      stage(art(300, 300, 'var(--off)', ic('cer-plate', 'position:absolute;inset:4%;width:92%;height:92%;color:var(--lake)')) + art(300, 300, 'var(--off)', ic('cer-swirl', 'position:absolute;inset:4%;width:92%;height:92%;color:var(--lake)')) +
+        art(300, 300, 'var(--off)', '<div class="menu-p" style="padding:40px 32px"><div class="caps" style="color:var(--brass)">II · Italia</div><div class="cz" style="font-size:18px">The Italian kitchen</div>' + ic('cer-sweep', 'width:60%;height:8px;display:block;color:var(--lake);margin:2px 0 6px', 'stretch') + dishes(I.slice(0, 3)) + '</div>')) +
+      '<p class="note" style="margin-top:10px">Instead of generic icons:</p>' +
+      icons([[ic('cer-bowl', 'position:absolute;inset:12%;width:76%;height:76%;color:var(--lake)'), 'Good food'], [ic('cer-rings', 'position:absolute;inset:12%;width:76%;height:76%;color:var(--lake)'), 'Good people'], [ic('cer-swirl', 'position:absolute;inset:12%;width:76%;height:76%;color:var(--lake)'), 'Good moments']], 'var(--off)');
+    return head('Proposal 3', 'Add a graphic line style', 'One drawing style for illustrations, icons, dividers and frames, replacing the generic outline icons. Three options; each shows a sample and how it would replace the three icons on the current board.') +
+      '<div class="boards">' + board('Option A · Engraved fine line', '', A3, true) + board('Option B · Hand-drawn sketch', '', B3, true) + board('Option C · Brush & spun line', '', C3, true) + '</div>';
+  }
+
+  /* ------------------------------------------------------------------ Put together · three example combinations */
+  var X3 = {
+    cover: function () {
+      return art(300, 424, 'var(--off)', abs('left:0;right:0;top:0;height:118px', patt('wc-repeat', 118, 'var(--lake)', 'var(--off)', 300, 118)) + abs('left:0;right:0;top:118px;height:4px;background:var(--lake)', '') +
+        abs('left:0;right:0;top:146px;display:flex;justify-content:center', logo(120, 'var(--lake)')) +
+        sk('pavilion-sunset', 'var(--lake)', 'position:absolute;left:-10px;right:-10px;bottom:30px;height:180px') +
+        abs('left:0;right:0;bottom:14px;text-align:center;color:' + GREEN, '<span class="caps">Menu · Lunch to last lantern</span>'));
+    },
+    social: function () {
+      return art(320, 400, 'var(--off)', sk('dining-hall', 'var(--lake)', 'position:absolute;left:0;right:0;top:20px;height:210px') +
+        abs('left:22px;right:22px;top:244px;color:var(--lake)', '<span class="caps" style="display:inline-block;padding:5px 8px;background:' + GREEN + ';color:var(--off);margin-bottom:10px">New · Sunday long table</span><div class="cz" style="font-size:24px;line-height:1.06">Four courses,<br>two kitchens</div>') +
+        abs('left:0;right:0;bottom:0;height:40px', patt('wc-repeat', 80, 'var(--lake)', 'var(--off)', 320, 40)));
+    },
+    print: function () {
+      return art(200, 200, 'var(--off)', ic('wc-a', 'position:absolute;inset:6%;width:88%;height:88%;color:var(--lake)'), 'border-radius:50%') +
+        art(300, 180, 'var(--off)', abs('left:0;top:0;bottom:0;width:70px', patt('wc-repeat', 70, 'var(--lake)', 'var(--off)', 70, 180)) + abs('left:92px;top:22px', logo(84, 'var(--lake)')) +
+          abs('left:92px;bottom:20px;color:var(--lake)', '<div class="caps" style="color:' + GREEN + '">Reserved for</div><div class="cz" style="font-size:14px;margin-top:4px">The long table · 8</div>') + sk('pavilion-sunset', 'var(--lake)', 'position:absolute;right:-20px;top:30px;width:170px;height:100px;opacity:.8'));
+    },
+    web: function () {
+      return art(640, 360, 'var(--off)', abs('left:0;right:0;top:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;color:var(--lake)', logo(54, 'var(--lake)') + '<span class="caps" style="display:flex;gap:18px">Menu<span>Story</span><span>Events</span><span style="color:' + GREEN + '">Reserve</span></span>') +
+        abs('left:0;right:0;top:46px;height:26px', patt('wc-repeat', 52, 'var(--lake)', 'var(--off)', 640, 26)) +
+        sk('pavilion-sunset', 'var(--lake)', 'position:absolute;right:-10px;top:90px;width:380px;height:240px') +
+        abs('left:30px;top:116px;width:280px;color:var(--lake)', '<div class="caps" style="color:' + GREEN + ';margin-bottom:10px">Phuket-Peranakan · Italia</div><div class="cz" style="font-size:32px;line-height:1.05">Two kitchens.<br>One table<br>by the lake.</div><div style="margin-top:18px;display:flex;gap:10px"><span class="caps" style="padding:9px 12px;background:var(--lake);color:var(--off)">Reserve</span><span class="caps" style="padding:9px 12px;border:1px solid var(--lake)">See the menu</span></div>'));
+    }
+  };
+  function togetherBody() {
+    var cols = [['Current', 'Today', O], ['Example 1', 'Pattern A · Line A · no accent', A], ['Example 2', 'Pattern C · Line C · Accent A (cobalt)', B], ['Example 3', 'Pattern B · Line B · Accent B (green)', X3]];
     var rows = [['Menu cover', 'cover'], ['Social post', 'social'], ['Print', 'print'], ['Website', 'web']];
-    var h = '<colgroup><col style="width:76px"><col><col><col><col></colgroup><tr><th></th>' + cols.map(function (c) { return '<th class="col">' + c[1] + '<small>' + c[2] + '</small></th>'; }).join('') + '</tr>';
+    var h = '<colgroup><col style="width:76px"><col><col><col><col></colgroup><tr><th></th>' + cols.map(function (c) { return '<th class="col">' + c[0] + '<small>' + c[1] + '</small></th>'; }).join('') + '</tr>';
     rows.forEach(function (r) {
-      h += '<tr><th class="rowh">' + r[0] + '</th>' + cols.map(function (c) { return '<td><div class="cell"' + (r[1] === 'web' ? ' style="zoom:.34"' : r[1] === 'print' ? ' style="zoom:.42"' : '') + '>' + c[3][r[1]]() + '</div></td>'; }).join('') + '</tr>';
+      h += '<tr><th class="rowh">' + r[0] + '</th>' + cols.map(function (c) { return '<td><div class="cell"' + (r[1] === 'web' ? ' style="zoom:.34"' : r[1] === 'print' ? ' style="zoom:.42"' : '') + '>' + c[2][r[1]]() + '</div></td>'; }).join('') + '</tr>';
     });
-    document.getElementById('cmp').innerHTML = h;
-    document.getElementById('verdict').innerHTML =
-      '<div class="card"><div class="label">A · The Engraver’s Table</div><p><b>Most food-led.</b> Best if KIN wants the menu and the two kitchens to be the hero. Strongest on dark, evening and print.</p></div>' +
-      '<div class="card"><div class="label">B · Glaze & Rim</div><p><b>Most ownable.</b> Built on the plates already bought, so menu, coaster and table speak one language. Brightest and warmest; best for daytime and the long lunch.</p></div>' +
-      '<div class="card"><div class="label">C · Guilloché House</div><p><b>Most premium.</b> Richest use of tone-on-tone and reversed colour; ideal for vouchers, wine lists and events. Needs restraint in daily social posts.</p></div>' +
-      '<div class="card dark"><div class="label">Our recommendation (draft)</div><p>Lead with <b>B</b> as the everyday system, because it comes from KIN’s own tableware, and borrow <b>A</b>’s engraved ingredients for menus and storytelling. Keep <b>C</b> for vouchers and special occasions.</p></div>';
+    return head('Put together', 'Three example combinations', 'How the three proposals could combine, on the same four pieces as today. These are examples to react to, not final designs. Any pattern can be paired with any line style and accent.') +
+      '<div class="cmp"><table>' + h + '</table></div>' +
+      '<div class="verdict"><div class="card"><div class="label">Example 1</div><p><b>Food-led and crafted.</b> Engraved pattern and line, no accent. Strongest on dark, in the evening and in print.</p></div>' +
+      '<div class="card"><div class="label">Example 2</div><p><b>Most ownable.</b> Everything comes from the plates on the table: rim, rings and cobalt. Bright, warm and daytime.</p></div>' +
+      '<div class="card"><div class="label">Example 3</div><p><b>Most setting-led.</b> Sketches of the place and hand-painted tiles, with a garden green accent. Tells the lake and the pavilion first.</p></div>' +
+      '<div class="card dark"><div class="label">Our recommendation (draft)</div><p>Pattern <b>B</b> or <b>C</b>, line style <b>B</b> (the place, since KIN is setting-led), and accent <b>A</b> or <b>B</b>. Engraved ingredients (line A) can still be used inside the menu.</p></div></div>';
   }
 
   /* tabs */
-  var TABS = [['compare', 'Compare all', ''], ['original', 'Current', ''], ['dir-a', 'A · Engraver’s Table', ''], ['dir-b', 'B · Glaze & Rim', ''], ['dir-c', 'C · Guilloché House', '']];
+  var TABS = [['current', 'Current', ''], ['pattern', '1 · Pattern', ''], ['accent', '2 · Accent colour', ''], ['line', '3 · Graphic line', ''], ['together', 'Put together', '']];
+  var BODY = { current: currentBody, pattern: patternBody, accent: accentBody, line: lineBody, together: togetherBody };
   var built = {};
-  function build(id) {
-    if (built[id]) return; built[id] = 1;
-    if (id === 'compare') compare();
-    if (id === 'original') document.getElementById('body-o').innerHTML = origBody();
-    if (id === 'dir-a') document.getElementById('body-a').innerHTML = dirBody(A);
-    if (id === 'dir-b') document.getElementById('body-b').innerHTML = dirBody(B);
-    if (id === 'dir-c') document.getElementById('body-c').innerHTML = dirBody(C);
-  }
+  function build(id) { if (built[id]) return; built[id] = 1; document.getElementById('body-' + id).innerHTML = BODY[id](); }
   function show(id, scroll) {
-    TABS.forEach(function (t) { var s = document.getElementById(t[0]); build(t[0]); s.hidden = t[0] !== id; });
+    TABS.forEach(function (t) { build(t[0]); document.getElementById(t[0]).hidden = t[0] !== id; });
     Array.prototype.forEach.call(document.querySelectorAll('#tabs button'), function (b) { b.setAttribute('aria-selected', String(b.dataset.id === id)); });
     try { history.replaceState(null, '', '#' + id); } catch (e) {}
     if (scroll) { var t = document.querySelector('.tabs'); scrollTo({ top: t.getBoundingClientRect().top + scrollY + 2, behavior: 'smooth' }); }
   }
-  document.getElementById('tabs').innerHTML = TABS.map(function (t) { return '<button type="button" role="tab" data-id="' + t[0] + '">' + t[1] + (t[2] ? '<small>' + t[2] + '</small>' : '') + '</button>'; }).join('');
+  document.getElementById('tabs').innerHTML = TABS.map(function (t) { return '<button type="button" role="tab" data-id="' + t[0] + '">' + t[1] + '</button>'; }).join('');
   document.getElementById('tabs').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) show(b.dataset.id, true); });
+  document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('[data-go]'); if (a) { e.preventDefault(); show(a.getAttribute('data-go'), true); } });
 
   fetch('sprite.svg').then(function (r) { return r.text(); }).then(function (t) {
     document.getElementById('sprite-host').innerHTML = t;
     var h = (location.hash || '').replace('#', '');
-    var first = TABS.some(function (t) { return t[0] === h; }) ? h : 'compare';
+    var legacy = { compare: 'together', original: 'current', 'dir-a': 'together', 'dir-b': 'together', 'dir-c': 'together' };
+    h = legacy[h] || h;
     TABS.forEach(function (t) { build(t[0]); });
-    show(first, false);
+    show(TABS.some(function (t) { return t[0] === h; }) ? h : 'current', false);
   });
 })();
 </script>
