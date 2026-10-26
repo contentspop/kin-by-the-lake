@@ -1296,9 +1296,37 @@
       zone('proposal', 'Creative direction · Light on the Lake', tpl('creative'));
   }
 
+
+  function clogo(w, color, extra) { return '<span style="display:block;width:' + w + 'px;aspect-ratio:1219/545;background:' + color + ';-webkit-mask:url(../assets/logo/logo-compact-lake-blue.png) center/contain no-repeat;mask:url(../assets/logo/logo-compact-lake-blue.png) center/contain no-repeat;' + (extra || '') + '"></span>'; }
+  function compactZone() {
+    var pair = stage(
+      cap(art(260, 170, 'var(--off)', abs('inset:0;display:flex;align-items:center;justify-content:center', logo(170, 'var(--lake)'))), 'Full logo · current') +
+      cap(art(260, 170, 'var(--off)', abs('inset:0;display:flex;align-items:center;justify-content:center', clogo(170, 'var(--lake)'))), 'Compact · Lake Blue') +
+      cap(art(260, 170, 'var(--lake)', abs('inset:0;display:flex;align-items:center;justify-content:center', clogo(170, 'var(--off)'))), 'Compact · reversed') +
+      cap(art(260, 170, 'var(--ink)', abs('inset:0;display:flex;align-items:center;justify-content:center', clogo(170, 'linear-gradient(118deg,#7E5E2B,#C9A766 30%,#8F6D35 50%,#E0C489 70%,#6F5225)'))), 'Compact · aged-brass foil only'));
+    var sizes = [120, 64, 40, 24];
+    var test = '<div style="display:grid;grid-template-columns:110px repeat(' + sizes.length + ',1fr);gap:10px;align-items:center;background:#fff;border:1px solid var(--line);padding:18px;margin-top:14px;max-width:760px">' +
+      '<span></span>' + sizes.map(function (s) { return '<span class="caps" style="color:var(--muted);text-align:center">' + s + ' px wide</span>'; }).join('') +
+      '<span class="caps" style="color:var(--ink)">Full logo</span>' + sizes.map(function (s) { return '<div style="display:flex;justify-content:center">' + logo(s, 'var(--lake)') + '</div>'; }).join('') +
+      '<span class="caps" style="color:var(--ink)">Compact</span>' + sizes.map(function (s) { return '<div style="display:flex;justify-content:center">' + clogo(s, 'var(--lake)') + '</div>'; }).join('') + '</div>' +
+      '<p class="note" style="margin-top:8px">Below about 120 px wide, “by the lake” turns into a grey line. The compact logo keeps KIN and the reflection readable down to favicon size.</p>';
+    var uses = stage(
+      cap('<div style="display:flex;gap:18px;align-items:center">' + art(120, 120, 'var(--lake)', abs('inset:0;display:flex;align-items:center;justify-content:center', logo(84, 'var(--off)')), 'border-radius:50%') + art(120, 120, 'var(--lake)', abs('inset:0;display:flex;align-items:center;justify-content:center', clogo(84, 'var(--off)')), 'border-radius:50%') + '</div>', 'Social profile · current vs compact') +
+      cap('<div style="display:flex;gap:10px;align-items:center">' + [56, 40, 28].map(function (s) { return art(s, s, 'var(--lake)', abs('inset:0;display:flex;align-items:center;justify-content:center', clogo(s * .72, 'var(--off)')), 'border-radius:50%'); }).join('') + '</div>', 'Instagram story ring, comments, LINE chat') +
+      cap('<div style="width:260px;background:#E9E6E0;border-radius:10px 10px 0 0;padding:8px 10px 0;box-shadow:0 8px 20px rgba(15,34,51,.15)"><div style="background:#fff;border-radius:8px 8px 0 0;display:flex;align-items:center;gap:8px;padding:9px 12px;font:400 12px/1 var(--font-text-latin);color:#333">' + art(16, 16, 'var(--lake)', abs('inset:0;display:flex;align-items:center;justify-content:center', clogo(13, 'var(--off)')), 'border-radius:3px;box-shadow:none') + 'KIN by the Lake</div></div>', 'Favicon in the browser tab') +
+      cap('<div style="display:flex;gap:14px;align-items:center">' + art(90, 90, 'var(--off)', abs('inset:6px;border:1px solid var(--lake);border-radius:50%', '') + abs('inset:0;display:flex;align-items:center;justify-content:center', clogo(56, 'var(--lake)')), 'border-radius:50%') + art(60, 60, '#24425F', abs('inset:0;display:flex;align-items:center;justify-content:center', clogo(40, 'rgba(255,255,255,.55)')), 'border-radius:50%;box-shadow:inset 0 0 0 4px rgba(0,0,0,.15)') + art(160, 40, 'var(--off)', abs('inset:0;display:flex;align-items:center;justify-content:center', clogo(46, 'var(--lake)'))) + '</div>', 'Small print · seal sticker, wax seal, cutlery or pencil stamp'));
+    var rules = '<div class="cmp" style="margin-top:14px"><table style="min-width:600px"><tr><th>Use</th><th>Logo</th><th>Why</th></tr>' +
+      [['Social profile, app icon, LINE OA avatar, favicon', 'Compact', 'Shown in a small circle or square; “by the lake” cannot be read'],
+       ['Digital, logo narrower than 120 px', 'Compact', 'Below the current digital minimum for the full logo'],
+       ['Print, logo narrower than 25 mm', 'Compact', 'Stickers, seals, cutlery, pencils, embroidery, stamps'],
+       ['Everything else: menus, signage, website header, stationery, packaging', 'Full logo', '“by the lake” is part of the name and should be seen wherever there is room']].map(function (r) { return '<tr><td style="text-align:left">' + r[0] + '</td><td style="text-align:left"><b>' + r[1] + '</b></td><td style="text-align:left">' + r[2] + '</td></tr>'; }).join('') + '</table></div>' +
+      '<ul style="margin:14px 0 0;padding-left:18px;max-width:820px"><li>Same artwork as the logo, with “by the lake” removed. Nothing is redrawn or moved.</li><li>Clear space stays the height of the letter K.</li><li>Minimum size: 16 px digital (favicon), 8 mm print.</li><li>Where a piece carries the compact logo, the full name should appear nearby in text or on the same touchpoint (profile name, receipt header, packaging side).</li><li>Never type “by the lake” back in under the compact logo; use the full logo instead.</li></ul>';
+    return zone('proposal', 'Compact logo · without “by the lake”', '<p style="margin:10px 0 0;max-width:820px">An optional version of the logo for very small sizes: KIN and the reflection only. It is meant for digital use such as profile pictures and the favicon, and for print only when the logo is very small. Everywhere else the full logo stays.</p>' + pair + sub('Legibility at small sizes', test) + sub('Where it would be used', uses) + sub('When to use which', rules));
+  }
   function logoBody() {
     return tabHead('1 · Logo', 'Logo') +
       zone('current', 'On the board', crops([['primary', 'Primary · Lake Blue on Warm Off-White'], ['reversed', 'Reversed · Off-White on Lake Blue'], ['alternates', 'Alternate versions · blue, black, grey'], ['clearspace', 'Clear space = the height of the letter K'], ['minsize', 'Minimum size · 25 mm print · 120 px digital'], ['social', 'Social media icon · profile and app']])) +
+      compactZone() +
       zone('proposal', 'Not on the board yet', '<p class="note" style="margin-top:8px">Rules that tell designers and suppliers when to use which version, and what never to do.</p>' +
         sub('When to use each version', tpl('logo-versions')) + tpl('logo-clear') + tpl('logo-bg') + tpl('logo-misuse') + '<p class="note" style="margin-top:10px">Rule 10 is about the logo itself. Patterns and graphics may still be tone-on-tone (see Pattern &amp; graphics).</p>' + tpl('logo-reflection'));
   }
