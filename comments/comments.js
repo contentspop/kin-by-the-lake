@@ -1,6 +1,6 @@
 /* KIN by the Lake — comments, answers and Export PDF
    - Document pages: a comment thread at the end of every section (long text, links, up to 6 pictures).
-   - Website and Social previews: pinned comments on the exact spot.
+   - Website, Social and Collateral previews: pinned comments on the exact spot.
    - Questionnaire chips: answers shown under each question, on every page.
    Backend: Google Apps Script bridge → Notion (see apps-script.gs). Endpoint in comments-config.js.
    With no endpoint, comments stay in this browser (preview mode). */
@@ -45,6 +45,7 @@
     if (/^direction\//.test(p)) return 'Design Direction';
     if (/^photography\//.test(p)) return 'Photography Guideline';
     if (/ui_kits\/social/.test(p)) return 'Social';
+    if (/ui_kits\/collateral/.test(p)) return 'Collateral';
     if (/ui_kits\/website/.test(p)) return 'Website' + (window.KIN_SCREEN ? ' · ' + window.KIN_SCREEN.charAt(0).toUpperCase() + window.KIN_SCREEN.slice(1) : '');
     if (/^guidelines\//.test(p)) return 'Guideline · ' + p.replace(/^guidelines\//, '').replace(/\.html$/, '');
     if (/^components\//.test(p)) return 'Components · ' + p.split('/')[1];
@@ -60,7 +61,7 @@
   }
   function pageUrl() { return location.href.split('#')[0] + (window.KIN_SCREEN ? '#screen=' + window.KIN_SCREEN : ''); }
 
-  var PIN_MODE = /ui_kits\/(website|social)\//.test(relPath());
+  var PIN_MODE = /ui_kits\/(website|social|collateral)\//.test(relPath());
   var SECTION_MODE = !PIN_MODE && !/^(index\.html|questionnaire\/)/.test(relPath());
 
   /* ---------- anchoring ---------- */

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KIN by the Lake — Collateral Preview</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  :root { --g: clamp(16px, 4vw, 48px); --lake: #1E3D5A; --ink: #0F2233; --deep: #162E45; --l70: #4A6A88; --l40: #8EA4BB; --l15: #D2DCE6; --off: #F3EFE6; --brass: #B38A45; --brass-lt: #D4B47A; --muted: #6B7A88; --line: #E4DED1; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #EDE8DD; color: var(--lake); font-family: var(--font-body); }
+  img { display: block; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 var(--g); }
+  .eyebrow { font: 500 11px/1.4 var(--font-text-latin); letter-spacing: .28em; text-transform: uppercase; color: var(--brass); }
+  h1, h2 { font-family: var(--font-display); font-weight: 400; letter-spacing: .05em; margin: 0; }
+  .top { background: var(--lake); color: var(--off); padding: 56px 0 40px; }
+  .top a.back { color: #CFAE72; text-decoration: none; font: 500 11px/1 var(--font-text-latin); letter-spacing: .2em; text-transform: uppercase; }
+  .top h1 { font-size: clamp(32px, 5vw, 52px); margin: 18px 0 10px; }
+  .top p { max-width: 720px; font: 300 15px/1.7 var(--font-body); opacity: .88; margin: 0; }
+  .refnote { display: inline-block; margin-top: 18px; padding: 6px 10px; border: 1px solid #E09A8C; color: #F3D3CC; font: 500 10px/1.4 var(--font-text-latin); letter-spacing: .18em; text-transform: uppercase; }
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .jump a { color: var(--off); text-decoration: none; border: 1px solid rgba(243,239,230,.3); padding: 8px 12px; font: 500 10px/1 var(--font-text-latin); letter-spacing: .2em; text-transform: uppercase; }
+  .jump a:hover { border-color: #CFAE72; color: #CFAE72; }
+  section.block { padding: 72px 0 24px; }
+  section.block > .wrap > header { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  section.block h2 { font-size: clamp(26px, 3vw, 36px); }
+  .spec { font: 400 13px/1.6 var(--font-text-latin); color: var(--muted); max-width: 760px; margin: 0; }
+  .table { display: flex; flex-wrap: wrap; gap: 36px 30px; align-items: flex-end; justify-content: center; padding: 40px 28px; background: #E4DED3; position: relative; overflow: hidden; }
+  .table::before { content: ""; position: absolute; inset: 0; background: url(../../assets/direction/materials/noise.png); mix-blend-mode: overlay; opacity: .35; pointer-events: none; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
+  .item figcaption { text-align: center; max-width: 260px; }
+  .item figcaption b { display: block; font: 600 10px/1.4 var(--font-text-latin); letter-spacing: .2em; text-transform: uppercase; color: var(--ink); }
+  .item figcaption span { font: 400 11.5px/1.45 var(--font-text-latin); color: var(--muted); }
+  .art { position: relative; overflow: hidden; flex: none; box-shadow: 0 12px 28px rgba(15,34,51,.22), 0 2px 6px rgba(15,34,51,.12); }
+  .logo { display: block; background: currentColor; -webkit-mask: url(../../assets/logo/logo-primary.png) center/contain no-repeat; mask: url(../../assets/logo/logo-primary.png) center/contain no-repeat; aspect-ratio: 1219/686; }
+  .cz { font-family: var(--font-display); letter-spacing: .06em; }
+  .caps { font: 500 8px/1.3 var(--font-text-latin); letter-spacing: .28em; text-transform: uppercase; }
+  .menu-p { position: absolute; inset: 0; padding: 30px 26px; display: flex; flex-direction: column; gap: 8px; color: var(--lake); }
+  .dish { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; }
+  .dish b { font: 500 10px/1.25 var(--font-display); letter-spacing: .07em; text-transform: uppercase; }
+  .dish em { grid-column: 1; font: 300 7.4px/1.45 var(--font-text-latin); font-style: normal; opacity: .85; }
+  .dish span { grid-row: 1; grid-column: 2; font: 500 9px/1.25 var(--font-text-latin); }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .legend span { font: 600 10px/1 var(--font-text-latin); letter-spacing: .12em; text-transform: uppercase; padding: 7px 9px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
+  footer.pg { padding: 72px 0 96px; text-align: center; font: 400 12px/1.6 var(--font-text-latin); color: var(--muted); }
+  @media (max-width: 640px) { .table { padding: 20px 10px; gap: 24px 14px; } .table .item > .art, .table .item > div { zoom: .78; } }
+</style>
+</head>
+<body>
+<div id="sprite-host" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"></div>
+<header class="top">
+  <div class="wrap">
+    <a class="back" href="../../index.html">← KIN design system</a>
+    <h1>Collateral preview</h1>
+    <p>The printed pieces a guest holds and sees, built from the three proposed graphic systems (01 Ornamental, 02 Illustrated, 03 Ceramic Brushwork), the Reflection line and the Part 2 finishes. Logo, colours and fonts unchanged. A draft to react to: artwork is a study until an illustrator draws it, and details in brackets are placeholders.</p>
+    <span class="refnote">Proposal · not approved · placeholders in [brackets]</span>
+    <nav class="jump"><a href="#menus">Menus</a><a href="#table">On the table</a><a href="#stationery">Stationery</a><a href="#guest">Guest pieces</a><a href="#packaging">Packaging</a><a href="#signage">Signage</a></nav>
+  </div>
+</header>
+<section class="block" id="menus" data-screen-label="Menus"><div class="wrap" id="b-menus"></div></section>
+<section class="block" id="table" data-screen-label="On the table"><div class="wrap" id="b-table"></div></section>
+<section class="block" id="stationery" data-screen-label="Stationery"><div class="wrap" id="b-stationery"></div></section>
+<section class="block" id="guest" data-screen-label="Guest pieces"><div class="wrap" id="b-guest"></div></section>
+<section class="block" id="packaging" data-screen-label="Packaging"><div class="wrap" id="b-packaging"></div></section>
+<section class="block" id="signage" data-screen-label="Signage"><div class="wrap" id="b-signage"></div></section>
+<footer class="pg"><div class="wrap"><em>Eat well. Laugh often. Stay close.</em><br>Collateral preview · KIN by the Lake design system · proposal</div></footer>
+<script>
+(function () {
+  var DIM = {"eng-still": [0.0, 0.0, 600.0, 820.0], "eng-band": [0.0, 0.0, 1200.0, 320.0], "eng-tile": [0.0, 0.0, 400.0, 400.0], "cer-swirl": [-300.0, -300.0, 600.0, 600.0], "eng-betel": [-20.0, -80.0, 190.0, 160.0], "eng-slice": [-130.0, -130.0, 260.0, 260.0], "eng-chilli": [-40.0, -60.0, 260.0, 110.0], "eng-anise": [-70.0, -70.0, 140.0, 140.0], "eng-lemon": [-20.0, -90.0, 250.0, 200.0], "eng-basil": [-110.0, -200.0, 220.0, 210.0], "cer-plate": [-300.0, -300.0, 600.0, 600.0], "cer-bowl": [-300.0, -300.0, 600.0, 600.0], "cer-frame": [0.0, 0.0, 400.0, 560.0], "cer-frame-l": [0.0, 0.0, 560.0, 400.0], "cer-rings": [0.0, 0.0, 120.0, 120.0], "cer-sweep": [0.0, 0.0, 600.0, 60.0], "gui-rosette": [-210.0, -210.0, 420.0, 420.0], "gui-band": [0.0, 0.0, 600.0, 40.0], "gui-lattice": [0.0, 0.0, 120.0, 120.0], "gui-rosette-s": [-80.0, -80.0, 160.0, 160.0]};
+  var A = '../../assets/', BR = A + 'direction/brush/', SKD = A + 'direction/sketch/', LN = A + 'direction/line/', MT = A + 'direction/materials/';
+  function ic(id, style, cls) { var v = DIM[id] || [0, 0, 100, 100]; return '<svg class="' + (cls || '') + '" viewBox="0 0 ' + v[2] + ' ' + v[3] + '"' + (cls === 'stretch' ? ' preserveAspectRatio="none"' : '') + ' style="' + (style || '') + '" aria-hidden="true"><use href="#' + id + '" width="' + v[2] + '" height="' + v[3] + '"/></svg>'; }
+  function patt(id, size, color, bg, w, h, extra) { var pid = 'p' + Math.random().toString(36).slice(2, 8); return '<svg width="' + w + '" height="' + h + '" style="display:block;background:' + bg + ';color:' + color + (extra || '') + '" aria-hidden="true"><defs><pattern id="' + pid + '" width="' + size + '" height="' + size + '" patternUnits="userSpaceOnUse"><use href="#' + id + '" width="' + size + '" height="' + size + '"/></pattern></defs><rect width="100%" height="100%" fill="url(#' + pid + ')"/></svg>'; }
+  function logo(w, color, extra) { return '<span class="logo" style="width:' + w + 'px;color:' + color + ';' + (extra || '') + '"></span>'; }
+  function art(w, h, bg, inner, extra) { return '<div class="art" style="width:' + w + 'px;height:' + h + 'px;background:' + bg + ';' + (extra || '') + '">' + inner + '</div>'; }
+  function abs(css, html) { return '<div style="position:absolute;' + css + '">' + html + '</div>'; }
+  function fill(css) { return 'position:absolute;inset:0;' + (css || ''); }
+  function msk(url, color, css, fit) { return '<span style="display:block;background:' + color + ';-webkit-mask:url(' + url + ') ' + (fit || 'center/contain') + ' no-repeat;mask:url(' + url + ') ' + (fit || 'center/contain') + ' no-repeat;' + (css || '') + '"></span>'; }
+  function eng(n, c, css) { return msk(SKD + 'eng-' + n + '.png', c, css, 'center/cover'); }
+  function sk(n, c, css) { return msk(SKD + n + '.png', c, css, 'center/cover'); }
+  function bw(n, c, css, fit) { return msk(BR + n + '.png', c, css, fit); }
+  function rf(n, w, h, c, css) { return '<span style="display:block;width:' + w + ';height:' + h + ';background:' + c + ';-webkit-mask:url(' + LN + n + '.png) center/100% 100% no-repeat;mask:url(' + LN + n + '.png) center/100% 100% no-repeat;' + (css || '') + '"></span>'; }
+  var FOIL = 'linear-gradient(118deg,#7E5E2B 0%,#C9A766 22%,#8F6D35 40%,#E0C489 58%,#A27F42 76%,#6F5225 100%)';
+  var CLOTH = '#1E3D5A', UP = '#21425F';
+  function cloth(op) { return abs('inset:0;background:url(' + MT + 'noise.png);mix-blend-mode:overlay;opacity:' + (op || .45) + ';pointer-events:none', ''); }
+  function light(s) { return abs('inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,' + (s || .12) + ') 0%,rgba(255,255,255,0) 45%,rgba(0,0,0,' + ((s || .12) * 1.8) + ') 100%)', ''); }
+  function paper(k) { return 'url(' + MT + 'tex-paper-' + (k || 'grain') + '.jpg) center/cover'; }
+  function relief(inner, mode, k) { k = k || 1; var f = mode === 'deboss' ? 'drop-shadow(' + (-.9 * k) + 'px ' + (-.9 * k) + 'px 0 rgba(0,0,0,.45)) drop-shadow(' + (.8 * k) + 'px ' + (.9 * k) + 'px 0 rgba(255,255,255,.22))' : 'drop-shadow(' + (-.8 * k) + 'px ' + (-.8 * k) + 'px 0 rgba(255,255,255,.3)) drop-shadow(' + k + 'px ' + (1.3 * k) + 'px .6px rgba(0,0,0,.42))'; return '<div style="position:absolute;inset:0;filter:' + f + '">' + inner + '</div>'; }
+  function foilLogo(w, extra) { return '<span style="display:block;width:' + w + 'px;aspect-ratio:1219/686;background:' + FOIL + ';-webkit-mask:url(' + A + 'logo/logo-primary.png) center/contain no-repeat;mask:url(' + A + 'logo/logo-primary.png) center/contain no-repeat;' + (extra || '') + '"></span>'; }
+  function foilFrame(i) { return abs('inset:' + i + 'px;border:1.3px solid transparent;border-image:' + FOIL + ' 1;pointer-events:none', ''); }
+  function foilText(t, size) { return '<span class="caps" style="font-size:' + (size || 8) + 'px;background:' + FOIL + ';-webkit-background-clip:text;background-clip:text;color:transparent">' + t + '</span>'; }
+  var P = [['Moo Hong', 'Braised pork belly, black pepper, garlic, star anise', '420'], ['Gaeng Poo Bai Cha Plu', 'Phuket crab curry, betel leaf, khanom jeen', '690'], ['Mee Hokkien', 'Wok-fried yellow noodles, prawn, squid, egg', '360'], ['Loba', 'Five-spice pork roll, tofu, sweet chilli', '280']];
+  var I = [['Burrata e Pomodori', 'Burrata, heirloom tomatoes, basil, olive oil', '520'], ['Tagliolini al Limone', 'Fresh egg pasta, lemon, butter, parmigiano', '560'], ['Branzino al Sale', 'Whole salt-baked sea bass, carved at the table', '1,450'], ['Tiramisù', 'Mascarpone, espresso, cocoa', '290']];
+  function dishes(l) { return l.map(function (d) { return '<div class="dish"><b>' + d[0] + '</b><span>' + d[2] + '</span><em>' + d[1] + '</em></div>'; }).join(''); }
+  var TILES = ['wc-a', 'wc-b', 'wc-c'];
+  function tileBorder(len, size, color, vertical) { var n = Math.ceil(len / size), h = '<div style="display:flex;' + (vertical ? 'flex-direction:column;' : '') + 'border:' + (vertical ? '0 1.5px' : '1.5px 0') + ' solid ' + color + '">'; for (var i = 0; i < n; i++) h += '<div style="width:' + size + 'px;height:' + size + 'px;position:relative;flex:none">' + ic(i % 2 ? 'wc-c' : 'wc-b', 'position:absolute;inset:8%;width:84%;height:84%;color:' + color) + '</div>'; return h + '</div>'; }
+  function corners(color, c) { c = c || 46; var k = function (pos, rot) { return abs(pos + ';width:' + c + 'px;height:' + c + 'px', ic('wc-a', 'width:100%;height:100%;color:' + color + ';transform:rotate(' + rot + 'deg)')); }; return abs('inset:12px;border:1px solid ' + color, '') + abs('inset:17px;border:.5px solid ' + color, '') + k('left:-5px;top:-5px', 0) + k('right:-5px;top:-5px', 90) + k('right:-5px;bottom:-5px', 180) + k('left:-5px;bottom:-5px', 270); }
+  function item(html, name, spec) { return '<figure class="item" style="margin:0">' + html + '<figcaption><b>' + name + '</b><span>' + spec + '</span></figcaption></figure>'; }
+  function head(n, t, s) { return '<header><span class="eyebrow">' + n + '</span><h2>' + t + '</h2><p class="spec">' + s + '</p></header>'; }
+  function table(h) { return '<div class="table">' + h + '</div>'; }
+  function tilt(deg, html) { return '<div style="transform:rotate(' + deg + 'deg)">' + html + '</div>'; }
+
+  /* ---------- 01 Menus */
+  function menuCover(w, h) {
+    return art(w, h, CLOTH, relief(eng('pavilion-sunset', '#11283E', 'position:absolute;left:-14%;right:-14%;top:24%;height:62%'), 'deboss', w / 200) + cloth() + foilFrame(Math.round(w * .05)) +
+      abs('left:0;right:0;top:9%;display:flex;justify-content:center', foilLogo(w * .34)) + abs('left:0;right:0;bottom:7.5%;text-align:center', foilText('Lunch to last light', Math.max(6, w / 36))) + light());
+  }
+  function menuPhuket(w, h) { return art(w, h, paper('grain'), corners('var(--lake)') + '<div class="menu-p" style="padding:' + h * .17 + 'px ' + w * .16 + 'px;gap:7px"><div class="caps" style="color:var(--brass)">I · Phuket &amp; Peranakan</div><div class="cz" style="font-size:16px">The Phuket kitchen</div>' + rf('stroke-1', '40%', '6px', 'var(--lake)') + dishes(P) + '</div>', 'box-shadow:none'); }
+  function menuItalia(w, h) { return art(w, h, paper('grain'), corners('var(--lake)') + '<div class="menu-p" style="padding:' + h * .17 + 'px ' + w * .16 + 'px;gap:7px"><div class="caps" style="color:var(--brass)">II · Italia</div><div class="cz" style="font-size:16px">The Italian kitchen</div>' + rf('stroke-1', '40%', '6px', 'var(--lake)') + dishes(I) + '</div>', 'box-shadow:none'); }
+  function spread() { return '<div style="display:flex;box-shadow:0 14px 32px rgba(15,34,51,.25)">' + menuPhuket(250, 350) + '<div style="width:1px;background:rgba(15,34,51,.15)"></div>' + menuItalia(250, 350) + '</div>'; }
+  function drinks() {
+    return art(170, 400, paper('fibre'), bw('contour-band', 'var(--lake)', 'position:absolute;left:-30px;right:-30px;top:-8px;height:90px') + '<div class="menu-p" style="padding:100px 22px 20px;gap:6px"><div class="caps" style="color:var(--brass)">From the bar</div><div class="cz" style="font-size:15px">Drinks</div>' + rf('stroke-0', '70%', '5px', 'var(--lake)') +
+      dishes([['Betel Spritz', 'Betel leaf, prosecco, lime', '320'], ['Negroni Pandan', 'Gin, pandan, bitter', '380'], ['Lemongrass Soda', 'House cordial, soda', '160'], ['Vino della casa', 'Glass · carafe', '[ ]']]) + '<div style="margin-top:auto;display:flex;justify-content:center">' + rf('reflection', '64px', '11px', 'var(--lake)') + '</div></div>');
+  }
+  function dessert() {
+    return art(180, 260, 'var(--off)', abs('left:16px;right:16px;top:16px;height:118px;border:1px solid var(--lake);border-radius:74px 74px 0 0;overflow:hidden', eng('terrace-dusk', 'var(--lake)', fill())) +
+      '<div class="menu-p" style="padding:146px 22px 18px;gap:6px;text-align:center;align-items:center"><div class="caps" style="color:var(--brass)">To finish</div>' + dishes([I[3], ['Kanom Mor Kaeng', 'Baked coconut custard', '220']]) + '</div>');
+  }
+  function menus() {
+    return head('01 · Menus', 'Menus', 'Cover from Part 2 Exploration C (architectural deboss and aged-brass foil). Inside, ornamental corners and the Reflection line; the drinks list carries a brushwork contour band; desserts use an arched engraved vignette. Prices and dishes are placeholders from the menu draft.') +
+      table(item(menuCover(250, 350), 'Main menu · cover', '02 Illustrated · Lake Blue cloth, blind deboss, aged-brass foil · A4 tall') + item(spread(), 'Main menu · inside spread', '01 Ornamental + Reflection · textured off-white paper, printed Lake Blue') +
+        item(drinks(), 'Drinks list', '03 Brushwork contour · natural fibrous paper · long card') + item(dessert(), 'Dessert card', '02 Illustrated, arch vignette · A6'));
+  }
+
+  /* ---------- 02 On the table */
+  function coaster(inner, bg) { return art(130, 130, bg || 'var(--off)', inner, 'border-radius:50%'); }
+  function onTable() {
+    var cs = '<div style="display:flex;gap:14px">' + coaster(ic('wc-b', 'position:absolute;inset:7%;width:86%;height:86%;color:var(--lake)')) + coaster(abs('inset:8px;border-radius:50%;overflow:hidden;border:1px solid var(--lake)', eng('pavilion-sunset', 'var(--lake)', fill())) + abs('left:0;right:0;bottom:16px;display:flex;justify-content:center', '<span style="background:var(--off);padding:2px 6px;display:block">' + logo(34, 'var(--lake)') + '</span>')) + coaster(ic('cer-plate', 'position:absolute;inset:0;width:100%;height:100%;color:var(--lake)') + abs('left:0;right:0;top:48px;display:flex;justify-content:center', logo(42, 'var(--lake)'))) + '</div>';
+    var napkin = art(210, 210, '#F7F4EC', abs('left:0;right:0;bottom:20px', tileBorder(210, 26, 'var(--lake)')) + abs('left:0;right:0;top:72px;display:flex;justify-content:center', logo(66, 'var(--lake)')) + abs('inset:0;background:linear-gradient(135deg,rgba(255,255,255,.4),rgba(0,0,0,.06))', ''));
+    var tent = '<div style="position:relative;width:200px;height:150px">' + art(200, 130, 'var(--off)', eng('terrace-dusk', 'var(--lake)', 'position:absolute;left:0;top:0;width:100%;height:62%') + abs('left:0;right:0;bottom:16px;text-align:center;color:var(--lake)', '<div class="cz" style="font-size:15px">Reserved</div><div class="caps" style="margin-top:4px;color:var(--brass)">[Guest] · 19:30</div>'), 'transform:perspective(500px) rotateX(14deg);transform-origin:bottom') + '</div>';
+    var number = art(120, 160, CLOTH, cloth() + foilFrame(8) + abs('left:0;right:0;top:34px;text-align:center', '<div class="cz" style="font-size:52px;line-height:1;background:' + FOIL + ';-webkit-background-clip:text;background-clip:text;color:transparent">12</div>') + abs('left:0;right:0;bottom:22px;display:flex;justify-content:center', foilLogo(44)) + light());
+    var bill = art(150, 260, CLOTH, relief(patt('wc-repeat', 64, UP, 'transparent', 150, 260, ';position:absolute;inset:0'), 'emboss', .8) + cloth() + abs('left:30px;right:30px;top:98px;height:64px;background:' + CLOTH + ';display:flex;align-items:center;justify-content:center', foilLogo(66)) + light());
+    var sleeve = art(70, 240, 'var(--off)', abs('left:0;top:0;bottom:0', tileBorder(240, 22, 'var(--lake)', true)) + abs('left:22px;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center', logo(64, 'var(--lake)', 'transform:rotate(90deg)')));
+    return head('02 · On the table', 'On the table', 'Pieces that sit beside the plates. Coasters come as a set, one per system. Linen and cutlery bands use the ornamental border; table numbers and the bill folder use the Part 2 cloth and foil.') +
+      table(item(cs, 'Coaster set', '01 · 02 · 03, one each · uncoated board, 95 mm') + item(napkin, 'Napkin', '01 Ornamental border · printed or embroidered on one edge') + item(sleeve, 'Cutlery band', '01 border · paper band') +
+        item(tent, 'Reserved card', '02 sketch · folded tent card') + item(number, 'Table number', 'Lake Blue cloth, aged-brass foil') + item(bill, 'Bill folder', '01 blind emboss tone-on-tone, foil logo'));
+  }
+
+  /* ---------- 03 Stationery */
+  function stationery() {
+    var bcF = art(250, 150, CLOTH, cloth() + abs('left:0;right:0;top:46px;display:flex;justify-content:center', foilLogo(96)) + light());
+    var bcB = art(250, 150, paper('grain'), abs('left:22px;top:26px;color:var(--lake)', '<div class="cz" style="font-size:13px">[Name Surname]</div><div class="caps" style="margin-top:4px;color:var(--brass)">[Role]</div>' + rf('stroke-1', '70px', '5px', 'var(--lake)', 'margin:10px 0') + '<div style="font:400 8.5px/1.6 var(--font-text-latin)">[phone]<br>[email]<br>[address], Phuket</div>') + abs('right:-30px;bottom:-30px;width:130px;height:130px', ic('wc-a', 'width:100%;height:100%;color:var(--l40)')));
+    var lh = art(230, 325, paper('grain'), abs('left:0;right:0;top:26px;display:flex;justify-content:center', logo(70, 'var(--lake)')) + abs('left:30px;right:30px;top:86px', [1, 2, 3, 4, 5, 6, 7, 8].map(function (i) { return '<div style="height:3px;margin:9px 0;background:rgba(30,61,90,' + (i === 1 ? .35 : .12) + ');width:' + (i % 3 ? 100 : 72) + '%"></div>'; }).join('')) + abs('left:0;right:0;bottom:30px', tileBorder(230, 20, 'var(--lake)')) + abs('left:0;right:0;bottom:10px;text-align:center', '<span class="caps" style="font-size:6px;color:var(--l70)">[address] · Phuket · [web]</span>'));
+    var env = art(300, 150, 'var(--off)', abs('left:0;right:0;top:0;height:76px;background:' + CLOTH + ';clip-path:polygon(0 0,100% 0,50% 100%);overflow:hidden', relief(patt('wc-repeat', 60, UP, 'transparent', 300, 76, ';position:absolute;inset:0'), 'emboss', .7)) + abs('left:0;right:0;bottom:22px;display:flex;justify-content:center', logo(54, 'var(--lake)')));
+    var slip = art(260, 110, paper('fibre'), bw('brush-sweep', 'var(--lake)', 'position:absolute;left:-20px;right:-20px;top:14px;height:40px') + abs('left:0;right:0;bottom:16px;text-align:center;color:var(--lake)', '<div class="cz" style="font-size:12px">With compliments</div>'));
+    return head('03 · Stationery', 'Stationery', 'Business cards, letterhead, envelope and compliment slip. Names and contact details are placeholders.') +
+      table(item('<div style="display:flex;flex-direction:column;gap:12px">' + bcF + bcB + '</div>', 'Business card · front and back', 'Front: cloth, foil logo · Back: textured paper, Reflection line, 01 tile · 90 × 55 mm') +
+        item(lh, 'Letterhead', '01 border at the foot · A4') + item('<div style="display:flex;flex-direction:column;gap:14px">' + env + slip + '</div>', 'Envelope · compliment slip', 'Envelope flap 01 emboss · slip 03 brush sweep · DL'));
+  }
+
+  /* ---------- 04 Guest pieces */
+  function guest() {
+    var voucher = art(330, 160, CLOTH, relief(eng('dining-hall', '#11283E', 'position:absolute;left:44%;right:-10%;top:-10%;bottom:-10%'), 'deboss', 1.2) + cloth() + foilFrame(10) + abs('left:28px;top:34px', foilLogo(80) + '<div style="margin-top:14px">' + foilText('Gift voucher', 8) + '</div><div class="cz" style="color:var(--off);font-size:16px;margin-top:6px">A table for two</div><div class="caps" style="color:var(--l40);margin-top:6px">No. [0000] · valid [date]</div>') + light());
+    var pcF = art(260, 175, 'var(--off)', sk('pavilion-sunset', 'var(--lake)', fill()));
+    var pcB = art(260, 175, paper('grain'), abs('left:20px;top:22px;width:110px;color:var(--lake)', '<div class="caps" style="color:var(--brass)">Our story</div><div class="cz" style="font-size:12px;margin-top:6px;line-height:1.3">Two kitchens, one table by the lake.</div>' + rf('stroke-1', '60px', '5px', 'var(--lake)', 'margin-top:10px')) + abs('left:140px;top:20px;bottom:20px;width:1px;background:rgba(30,61,90,.3)', '') + abs('left:156px;right:20px;top:70px', [1, 2, 3].map(function () { return '<div style="height:1px;background:rgba(30,61,90,.35);margin:16px 0"></div>'; }).join('')) + abs('right:18px;top:18px;width:30px;height:36px;border:1px dashed rgba(30,61,90,.4)', ''));
+    var inv = art(200, 290, 'var(--off)', abs('left:14px;right:14px;top:14px;bottom:14px;border:1px solid var(--lake);border-radius:86px 86px 0 0', '') + abs('left:24px;right:24px;top:24px;height:140px;border-radius:76px 76px 0 0;overflow:hidden', eng('terrace-dusk', 'var(--lake)', fill())) + abs('left:0;right:0;top:178px;text-align:center;color:var(--lake)', '<div class="caps" style="color:var(--brass)">You are invited</div><div class="cz" style="font-size:17px;margin-top:6px">The Long Lunch</div><div style="font:400 9px/1.6 var(--font-text-latin);margin-top:4px">Sunday [date] · from 12:00</div>' + rf('reflection', '56px', '10px', 'var(--lake)', 'margin:10px auto 0')), 'border-radius:100px 100px 4px 4px');
+    var flyer = art(220, 310, 'var(--lake)', bw('contour-swirl', 'var(--l70)', 'position:absolute;left:-70px;top:-60px;width:300px;height:300px') + abs('left:24px;right:24px;bottom:28px;color:var(--off)', '<div class="caps" style="color:var(--brass-lt)">Every Sunday · from 12:00</div><div class="cz" style="font-size:22px;line-height:1.1;margin-top:8px">The Long Lunch</div><div style="font:300 9.5px/1.6 var(--font-text-latin);margin-top:8px;opacity:.85">Four courses from both kitchens, passed round the table until the light changes.</div>' + rf('stroke-0', '60%', '5px', 'var(--brass-lt)', 'margin-top:12px')));
+    return head('04 · Guest pieces', 'Guest pieces', 'Things guests take home or receive: a gift voucher, a story postcard, an event invitation and an A5 flyer.') +
+      table(item(voucher, 'Gift voucher', '02 deboss of the hall, aged-brass foil · DL card') + item('<div style="display:flex;flex-direction:column;gap:12px">' + pcF + pcB + '</div>', 'Story postcard · front and back', '02 sketch · A6') + item(inv, 'Event invitation', '02 arch vignette, die-cut arch · Reflection sign-off') + item(flyer, 'Event flyer', '03 contour, tonal on Lake Blue · A5'));
+  }
+
+  /* ---------- 05 Packaging */
+  function packaging() {
+    var bag = '<div style="position:relative;width:200px;height:290px">' + abs('left:58px;top:0;width:84px;height:46px;border:5px solid #CDBFA6;border-bottom:0;border-radius:42px 42px 0 0', '') + art(200, 250, '#EFE9DC', bw('brush-sweep', 'var(--lake)', 'position:absolute;left:-40px;top:40px;width:290px;height:84px') + abs('left:0;right:0;bottom:36px;display:flex;justify-content:center', logo(76, 'var(--lake)')) + abs('inset:0;background:linear-gradient(90deg,rgba(0,0,0,.06),rgba(255,255,255,0) 30%,rgba(0,0,0,.08))', ''), 'position:absolute;bottom:0;border-radius:2px') + '</div>';
+    var box = '<div style="position:relative;width:240px;height:190px">' + art(240, 150, '#EFE9DC', abs('left:0;right:0;top:0;height:22px;background:var(--lake)', '') + abs('left:50%;top:6px;width:96px;height:96px;margin-left:-48px;border-radius:50%;background:var(--off);box-shadow:0 2px 6px rgba(0,0,0,.18)', ic('cer-plate', 'position:absolute;inset:0;width:100%;height:100%;color:var(--lake)') + abs('left:0;right:0;top:36px;display:flex;justify-content:center', logo(36, 'var(--lake)'))), 'position:absolute;bottom:0') + '</div>';
+    var cake = art(210, 210, 'var(--off)', patt('wc-repeat', 70, 'var(--l15)', 'var(--off)', 210, 210, ';position:absolute;inset:0') + abs('left:46px;right:46px;top:76px;height:58px;background:var(--off);box-shadow:0 0 0 1px var(--lake);display:flex;align-items:center;justify-content:center', logo(70, 'var(--lake)')));
+    var stickers = art(230, 170, '#fff', [0, 1, 2, 3, 4, 5].map(function (i) { var x = 18 + (i % 3) * 70, y = 16 + Math.floor(i / 3) * 76, inner = i % 3 === 0 ? ic('cer-plate', fill('width:100%;height:100%;color:var(--lake)')) + abs('left:0;right:0;top:22px;display:flex;justify-content:center', logo(26, 'var(--lake)')) : i % 3 === 1 ? ic('wc-a', fill('inset:6%;width:88%;height:88%;color:var(--lake)')) : abs('inset:0;border-radius:50%;background:var(--lake)', '') + abs('left:0;right:0;top:22px;display:flex;justify-content:center', foilLogo(28)); return abs('left:' + x + 'px;top:' + y + 'px;width:62px;height:62px;border-radius:50%;overflow:hidden;background:var(--off);box-shadow:0 1px 3px rgba(0,0,0,.15)', inner); }).join(''));
+    var tissue = art(260, 170, 'var(--off)', patt('cer-rings', 56, 'var(--l15)', 'var(--off)', 260, 170, ';position:absolute;inset:0') + abs('inset:0;background:linear-gradient(160deg,rgba(255,255,255,.35),rgba(0,0,0,.05))', ''));
+    return head('05 · Packaging', 'Packaging &amp; takeaway', 'Takeaway and gifting. Bold brushwork for the bag, the plate rim as a seal, the tile pattern tonal on a cake box.') +
+      table(item(bag, 'Takeaway bag', '03 gesture · kraft-white paper bag') + item(box, 'Takeaway box with seal', '03 concentric seal sticker · Lake Blue band') + item(cake, 'Dessert box lid', '01 tile pattern, tonal light') + item(stickers, 'Sticker sheet', 'Seals in all three systems') + item(tissue, 'Wrapping tissue', '03 stacked plates, tonal light'));
+  }
+
+  /* ---------- 06 Signage */
+  function signage() {
+    var entrance = art(220, 300, CLOTH, cloth() + relief(eng('pavilion-sunset', '#11283E', 'position:absolute;left:-30%;right:-30%;top:34%;height:52%'), 'deboss', 1.4) + abs('left:0;right:0;top:40px;display:flex;justify-content:center', foilLogo(120)) + abs('left:0;right:0;bottom:26px;text-align:center', foilText('Phuket-Peranakan · Italia', 7)) + light(), 'border-radius:110px 110px 4px 4px');
+    var dir = '<div style="display:flex;flex-direction:column;gap:10px">' + [['The Pavilion', '→', 'pavilion-sunset'], ['The Hall', '←', 'dining-hall'], ['The Terrace', '↑', 'terrace-dusk']].map(function (d) { return art(240, 64, 'var(--off)', abs('left:10px;top:8px;width:48px;height:48px;border-radius:50%;overflow:hidden;border:1px solid var(--lake)', eng(d[2], 'var(--lake)', fill())) + abs('left:72px;top:16px;color:var(--lake)', '<div class="cz" style="font-size:15px">' + d[0] + '</div>') + abs('right:16px;top:14px;color:var(--brass);font:300 24px/1 var(--font-text-latin)', d[1])); }).join('') + '</div>';
+    var board = art(200, 300, 'var(--lake)', abs('inset:12px;border:1px solid var(--l70)', '') + abs('left:0;right:0;top:30px;display:flex;justify-content:center', logo(70, 'var(--off)')) + abs('left:30px;right:30px;top:96px;color:var(--off);text-align:center', '<div class="caps" style="color:var(--brass-lt)">Today</div>' + rf('stroke-1', '50%', '5px', 'var(--brass-lt)', 'margin:8px auto') + '<div class="cz" style="font-size:13px;line-height:1.6">The Long Lunch<br>12:00 – 16:00</div><div style="height:16px"></div><div class="caps" style="color:var(--brass-lt)">Tonight</div>' + rf('stroke-1', '50%', '5px', 'var(--brass-lt)', 'margin:8px auto') + '<div class="cz" style="font-size:13px;line-height:1.6">Sunset tables<br>from 17:30</div>'));
+    var door = art(170, 120, '#EFE9DC', abs('inset:0', patt('wc-repeat', 60, 'var(--l15)', '#EFE9DC', 170, 120)) + abs('left:30px;right:30px;top:34px;height:52px;background:#EFE9DC;box-shadow:0 0 0 1px var(--lake);display:flex;align-items:center;justify-content:center;color:var(--lake)', '<span class="cz" style="font-size:13px">Restrooms</span>'));
+    return head('06 · Signage', 'Signage &amp; wayfinding', 'The entrance arch, directional signs with small engraved vignettes instead of generic icons, a daily board and door plates.') +
+      table(item(entrance, 'Entrance sign', '02 deboss relief, aged-brass lettering · arched panel') + item(dir, 'Directional signs', '02 spot vignettes · enamel or printed panels') + item(board, 'Daily board', 'Reflection line · Lake Blue panel') + item(door, 'Door plate', '01 tile, tonal'));
+  }
+
+  fetch('../../direction/sprite.svg').then(function (r) { return r.text(); }).then(function (t) {
+    document.getElementById('sprite-host').innerHTML = t;
+    document.getElementById('b-menus').innerHTML = menus();
+    document.getElementById('b-table').innerHTML = onTable();
+    document.getElementById('b-stationery').innerHTML = stationery();
+    document.getElementById('b-guest').innerHTML = guest();
+    document.getElementById('b-packaging').innerHTML = packaging();
+    document.getElementById('b-signage').innerHTML = signage();
+  });
+})();
+</script>
+<script src="../../comments/comments-config.js?v=20261023b"></script><script src="../../comments/comments.js?v=20261026a" defer></script>
+</body>
+</html>
