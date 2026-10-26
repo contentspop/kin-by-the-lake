@@ -276,7 +276,7 @@
     '<button type="button" id="kinc-toggle" aria-pressed="true" title="Show or hide comment pins">' + ICON_EYE + '<span id="kinc-count">0</span></button>' : '') +
     '<button type="button" id="kinc-pdf" title="Save this page as PDF">' + ICON_PDF + '<span>PDF</span></button>';
   var layer = document.createElement('div'); layer.id = 'kinc-layer';
-  var draft = document.createElement('div'); draft.id = 'kinc-draft'; draft.textContent = 'Draft · for review';
+  var draft = document.createElement('div'); draft.id = 'kinc-draft'; var isProp = /^(direction\/|ui_kits\/collateral\/)/.test(relPath()); draft.textContent = isProp ? 'Proposal · for decision' : 'Draft · for review'; if (isProp) draft.style.background = '#B38A45';
 
   function mount() { if (!st.isConnected) (document.head || document.documentElement).appendChild(st); if (!bar.isConnected) document.body.appendChild(bar); if (PIN_MODE && !layer.isConnected) document.body.appendChild(layer); if (!draft.isConnected) document.body.appendChild(draft); }
 

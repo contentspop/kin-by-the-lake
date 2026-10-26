@@ -42,6 +42,18 @@
   .dish span { grid-row: 1; grid-column: 2; font: 500 9px/1.25 var(--font-text-latin); }
   .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
   .legend span { font: 600 10px/1 var(--font-text-latin); letter-spacing: .12em; text-transform: uppercase; padding: 7px 9px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
+  .board { background: #FBF9F4; border: 1px solid var(--line); padding: 22px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .board h3 { font: 400 19px/1.3 var(--font-display); letter-spacing: .05em; margin: 0; color: var(--ink); }
+  .board .note { font: 400 13px/1.6 var(--font-text-latin); color: var(--muted); margin: 0; }
+  .boards { display: grid; gap: 24px; margin-top: 8px; }
+  .finishes { display: flex; flex-wrap: wrap; gap: 6px; }
+  .finishes span { font: 600 10px/1.3 var(--font-text-latin); letter-spacing: .1em; text-transform: uppercase; padding: 7px 9px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
+  .cmp { overflow-x: auto; } .cmp table { border-collapse: separate; border-spacing: 8px; width: 100%; }
+  .cmp th { font: 600 11px/1.3 var(--font-text-latin); letter-spacing: .16em; text-transform: uppercase; color: var(--brass); text-align: left; padding: 4px; }
+  .cmp td { background: #ECE6DA; padding: 12px; font: 400 14px/1.5 var(--font-body); }
+  .refs { display: flex; flex-direction: column; gap: 10px; } .refrow { display: flex; gap: 10px; flex-wrap: wrap; }
+  .refrow figure { width: 150px; margin: 0; } .refrow img { width: 150px; height: 188px; object-fit: cover; border: 1px solid var(--line); } .refrow figcaption { font: 400 11.5px/1.4 var(--font-text-latin); color: var(--muted); margin-top: 4px; }
+  .refpill { align-self: flex-start; font: 600 10px/1 var(--font-text-latin); letter-spacing: .16em; text-transform: uppercase; padding: 6px 9px; background: #F8E7E3; color: #A8412E; border: 1px solid #E7B8AE; }
   footer.pg { padding: 72px 0 96px; text-align: center; font: 400 12px/1.6 var(--font-text-latin); color: var(--muted); }
   @media (max-width: 640px) { .table { padding: 20px 10px; gap: 24px 14px; } .table .item > .art, .table .item > div { zoom: .78; } }
 </style>
@@ -52,12 +64,13 @@
   <div class="wrap">
     <a class="back" href="../../index.html">← KIN design system</a>
     <h1>Collateral preview</h1>
-    <p>The printed pieces a guest holds and sees, built from the three proposed graphic systems (01 Ornamental, 02 Illustrated, 03 Ceramic Brushwork), the Reflection line and the Part 2 finishes. Logo, colours and fonts unchanged. A draft to react to: artwork is a study until an illustrator draws it, and details in brackets are placeholders.</p>
-    <span class="refnote">Proposal · not approved · placeholders in [brackets]</span>
-    <nav class="jump"><a href="#menus">Menus</a><a href="#table">On the table</a><a href="#stationery">Stationery</a><a href="#guest">Guest pieces</a><a href="#packaging">Packaging</a><a href="#signage">Signage</a></nav>
+    <p>The printed pieces a guest holds and sees, built from the three proposed graphic systems (01 Ornamental, 02 Illustrated, 03 Ceramic Brushwork), the Reflection line and the menu materials and finishes, which now live here. Logo, colours and fonts unchanged. A draft to react to: artwork is a study until an illustrator draws it, and details in brackets are placeholders.</p>
+    <span class="refnote">Status: Proposal · for decision · nothing here is approved yet · placeholders in [brackets]</span>
+    <nav class="jump"><a href="#menus">Menus</a><a href="#materials">Menu materials &amp; finishes</a><a href="#table">On the table</a><a href="#stationery">Stationery</a><a href="#guest">Guest pieces</a><a href="#packaging">Packaging</a><a href="#signage">Signage</a></nav>
   </div>
 </header>
 <section class="block" id="menus" data-screen-label="Menus"><div class="wrap" id="b-menus"></div></section>
+<section class="block" id="materials" data-screen-label="Menu materials"><div class="wrap" id="b-materials"></div></section>
 <section class="block" id="table" data-screen-label="On the table"><div class="wrap" id="b-table"></div></section>
 <section class="block" id="stationery" data-screen-label="Stationery"><div class="wrap" id="b-stationery"></div></section>
 <section class="block" id="guest" data-screen-label="Guest pieces"><div class="wrap" id="b-guest"></div></section>
@@ -116,7 +129,7 @@
       '<div class="menu-p" style="padding:146px 22px 18px;gap:6px;text-align:center;align-items:center"><div class="caps" style="color:var(--brass)">To finish</div>' + dishes([I[3], ['Kanom Mor Kaeng', 'Baked coconut custard', '220']]) + '</div>');
   }
   function menus() {
-    return head('01 · Menus', 'Menus', 'Cover from Part 2 Exploration C (architectural deboss and aged-brass foil). Inside, ornamental corners and the Reflection line; the drinks list carries a brushwork contour band; desserts use an arched engraved vignette. Prices and dishes are placeholders from the menu draft.') +
+    return head('01 · Menus · Proposal', 'Menus', 'Cover from Exploration C below (architectural deboss and aged-brass foil). Inside, ornamental corners and the Reflection line; the drinks list carries a brushwork contour band; desserts use an arched engraved vignette. Prices and dishes are placeholders from the menu draft.') +
       table(item(menuCover(250, 350), 'Main menu · cover', '02 Illustrated · Lake Blue cloth, blind deboss, aged-brass foil · A4 tall') + item(spread(), 'Main menu · inside spread', '01 Ornamental + Reflection · textured off-white paper, printed Lake Blue') +
         item(drinks(), 'Drinks list', '03 Brushwork contour · natural fibrous paper · long card') + item(dessert(), 'Dessert card', '02 Illustrated, arch vignette · A6'));
   }
@@ -130,7 +143,7 @@
     var number = art(120, 160, CLOTH, cloth() + foilFrame(8) + abs('left:0;right:0;top:34px;text-align:center', '<div class="cz" style="font-size:52px;line-height:1;background:' + FOIL + ';-webkit-background-clip:text;background-clip:text;color:transparent">12</div>') + abs('left:0;right:0;bottom:22px;display:flex;justify-content:center', foilLogo(44)) + light());
     var bill = art(150, 260, CLOTH, relief(patt('wc-repeat', 64, UP, 'transparent', 150, 260, ';position:absolute;inset:0'), 'emboss', .8) + cloth() + abs('left:30px;right:30px;top:98px;height:64px;background:' + CLOTH + ';display:flex;align-items:center;justify-content:center', foilLogo(66)) + light());
     var sleeve = art(70, 240, 'var(--off)', abs('left:0;top:0;bottom:0', tileBorder(240, 22, 'var(--lake)', true)) + abs('left:22px;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center', logo(64, 'var(--lake)', 'transform:rotate(90deg)')));
-    return head('02 · On the table', 'On the table', 'Pieces that sit beside the plates. Coasters come as a set, one per system. Linen and cutlery bands use the ornamental border; table numbers and the bill folder use the Part 2 cloth and foil.') +
+    return head('03 · On the table · Proposal', 'On the table', 'Pieces that sit beside the plates. Coasters come as a set, one per system. Linen and cutlery bands use the ornamental border; table numbers and the bill folder use the cloth and foil from the menu materials.') +
       table(item(cs, 'Coaster set', '01 · 02 · 03, one each · uncoated board, 95 mm') + item(napkin, 'Napkin', '01 Ornamental border · printed or embroidered on one edge') + item(sleeve, 'Cutlery band', '01 border · paper band') +
         item(tent, 'Reserved card', '02 sketch · folded tent card') + item(number, 'Table number', 'Lake Blue cloth, aged-brass foil') + item(bill, 'Bill folder', '01 blind emboss tone-on-tone, foil logo'));
   }
@@ -142,7 +155,7 @@
     var lh = art(230, 325, paper('grain'), abs('left:0;right:0;top:26px;display:flex;justify-content:center', logo(70, 'var(--lake)')) + abs('left:30px;right:30px;top:86px', [1, 2, 3, 4, 5, 6, 7, 8].map(function (i) { return '<div style="height:3px;margin:9px 0;background:rgba(30,61,90,' + (i === 1 ? .35 : .12) + ');width:' + (i % 3 ? 100 : 72) + '%"></div>'; }).join('')) + abs('left:0;right:0;bottom:30px', tileBorder(230, 20, 'var(--lake)')) + abs('left:0;right:0;bottom:10px;text-align:center', '<span class="caps" style="font-size:6px;color:var(--l70)">[address] · Phuket · [web]</span>'));
     var env = art(300, 150, 'var(--off)', abs('left:0;right:0;top:0;height:76px;background:' + CLOTH + ';clip-path:polygon(0 0,100% 0,50% 100%);overflow:hidden', relief(patt('wc-repeat', 60, UP, 'transparent', 300, 76, ';position:absolute;inset:0'), 'emboss', .7)) + abs('left:0;right:0;bottom:22px;display:flex;justify-content:center', logo(54, 'var(--lake)')));
     var slip = art(260, 110, paper('fibre'), bw('brush-sweep', 'var(--lake)', 'position:absolute;left:-20px;right:-20px;top:14px;height:40px') + abs('left:0;right:0;bottom:16px;text-align:center;color:var(--lake)', '<div class="cz" style="font-size:12px">With compliments</div>'));
-    return head('03 · Stationery', 'Stationery', 'Business cards, letterhead, envelope and compliment slip. Names and contact details are placeholders.') +
+    return head('04 · Stationery · Proposal', 'Stationery', 'Business cards, letterhead, envelope and compliment slip. Names and contact details are placeholders.') +
       table(item('<div style="display:flex;flex-direction:column;gap:12px">' + bcF + bcB + '</div>', 'Business card · front and back', 'Front: cloth, foil logo · Back: textured paper, Reflection line, 01 tile · 90 × 55 mm') +
         item(lh, 'Letterhead', '01 border at the foot · A4') + item('<div style="display:flex;flex-direction:column;gap:14px">' + env + slip + '</div>', 'Envelope · compliment slip', 'Envelope flap 01 emboss · slip 03 brush sweep · DL'));
   }
@@ -154,7 +167,7 @@
     var pcB = art(260, 175, paper('grain'), abs('left:20px;top:22px;width:110px;color:var(--lake)', '<div class="caps" style="color:var(--brass)">Our story</div><div class="cz" style="font-size:12px;margin-top:6px;line-height:1.3">Two kitchens, one table by the lake.</div>' + rf('stroke-1', '60px', '5px', 'var(--lake)', 'margin-top:10px')) + abs('left:140px;top:20px;bottom:20px;width:1px;background:rgba(30,61,90,.3)', '') + abs('left:156px;right:20px;top:70px', [1, 2, 3].map(function () { return '<div style="height:1px;background:rgba(30,61,90,.35);margin:16px 0"></div>'; }).join('')) + abs('right:18px;top:18px;width:30px;height:36px;border:1px dashed rgba(30,61,90,.4)', ''));
     var inv = art(200, 290, 'var(--off)', abs('left:14px;right:14px;top:14px;bottom:14px;border:1px solid var(--lake);border-radius:86px 86px 0 0', '') + abs('left:24px;right:24px;top:24px;height:140px;border-radius:76px 76px 0 0;overflow:hidden', eng('terrace-dusk', 'var(--lake)', fill())) + abs('left:0;right:0;top:178px;text-align:center;color:var(--lake)', '<div class="caps" style="color:var(--brass)">You are invited</div><div class="cz" style="font-size:17px;margin-top:6px">The Long Lunch</div><div style="font:400 9px/1.6 var(--font-text-latin);margin-top:4px">Sunday [date] · from 12:00</div>' + rf('reflection', '56px', '10px', 'var(--lake)', 'margin:10px auto 0')), 'border-radius:100px 100px 4px 4px');
     var flyer = art(220, 310, 'var(--lake)', bw('contour-swirl', 'var(--l70)', 'position:absolute;left:-70px;top:-60px;width:300px;height:300px') + abs('left:24px;right:24px;bottom:28px;color:var(--off)', '<div class="caps" style="color:var(--brass-lt)">Every Sunday · from 12:00</div><div class="cz" style="font-size:22px;line-height:1.1;margin-top:8px">The Long Lunch</div><div style="font:300 9.5px/1.6 var(--font-text-latin);margin-top:8px;opacity:.85">Four courses from both kitchens, passed round the table until the light changes.</div>' + rf('stroke-0', '60%', '5px', 'var(--brass-lt)', 'margin-top:12px')));
-    return head('04 · Guest pieces', 'Guest pieces', 'Things guests take home or receive: a gift voucher, a story postcard, an event invitation and an A5 flyer.') +
+    return head('05 · Guest pieces · Proposal', 'Guest pieces', 'Things guests take home or receive: a gift voucher, a story postcard, an event invitation and an A5 flyer.') +
       table(item(voucher, 'Gift voucher', '02 deboss of the hall, aged-brass foil · DL card') + item('<div style="display:flex;flex-direction:column;gap:12px">' + pcF + pcB + '</div>', 'Story postcard · front and back', '02 sketch · A6') + item(inv, 'Event invitation', '02 arch vignette, die-cut arch · Reflection sign-off') + item(flyer, 'Event flyer', '03 contour, tonal on Lake Blue · A5'));
   }
 
@@ -165,7 +178,7 @@
     var cake = art(210, 210, 'var(--off)', patt('wc-repeat', 70, 'var(--l15)', 'var(--off)', 210, 210, ';position:absolute;inset:0') + abs('left:46px;right:46px;top:76px;height:58px;background:var(--off);box-shadow:0 0 0 1px var(--lake);display:flex;align-items:center;justify-content:center', logo(70, 'var(--lake)')));
     var stickers = art(230, 170, '#fff', [0, 1, 2, 3, 4, 5].map(function (i) { var x = 18 + (i % 3) * 70, y = 16 + Math.floor(i / 3) * 76, inner = i % 3 === 0 ? ic('cer-plate', fill('width:100%;height:100%;color:var(--lake)')) + abs('left:0;right:0;top:22px;display:flex;justify-content:center', logo(26, 'var(--lake)')) : i % 3 === 1 ? ic('wc-a', fill('inset:6%;width:88%;height:88%;color:var(--lake)')) : abs('inset:0;border-radius:50%;background:var(--lake)', '') + abs('left:0;right:0;top:22px;display:flex;justify-content:center', foilLogo(28)); return abs('left:' + x + 'px;top:' + y + 'px;width:62px;height:62px;border-radius:50%;overflow:hidden;background:var(--off);box-shadow:0 1px 3px rgba(0,0,0,.15)', inner); }).join(''));
     var tissue = art(260, 170, 'var(--off)', patt('cer-rings', 56, 'var(--l15)', 'var(--off)', 260, 170, ';position:absolute;inset:0') + abs('inset:0;background:linear-gradient(160deg,rgba(255,255,255,.35),rgba(0,0,0,.05))', ''));
-    return head('05 · Packaging', 'Packaging &amp; takeaway', 'Takeaway and gifting. Bold brushwork for the bag, the plate rim as a seal, the tile pattern tonal on a cake box.') +
+    return head('06 · Packaging · Proposal', 'Packaging &amp; takeaway', 'Takeaway and gifting. Bold brushwork for the bag, the plate rim as a seal, the tile pattern tonal on a cake box.') +
       table(item(bag, 'Takeaway bag', '03 gesture · kraft-white paper bag') + item(box, 'Takeaway box with seal', '03 concentric seal sticker · Lake Blue band') + item(cake, 'Dessert box lid', '01 tile pattern, tonal light') + item(stickers, 'Sticker sheet', 'Seals in all three systems') + item(tissue, 'Wrapping tissue', '03 stacked plates, tonal light'));
   }
 
@@ -175,13 +188,91 @@
     var dir = '<div style="display:flex;flex-direction:column;gap:10px">' + [['The Pavilion', '→', 'pavilion-sunset'], ['The Hall', '←', 'dining-hall'], ['The Terrace', '↑', 'terrace-dusk']].map(function (d) { return art(240, 64, 'var(--off)', abs('left:10px;top:8px;width:48px;height:48px;border-radius:50%;overflow:hidden;border:1px solid var(--lake)', eng(d[2], 'var(--lake)', fill())) + abs('left:72px;top:16px;color:var(--lake)', '<div class="cz" style="font-size:15px">' + d[0] + '</div>') + abs('right:16px;top:14px;color:var(--brass);font:300 24px/1 var(--font-text-latin)', d[1])); }).join('') + '</div>';
     var board = art(200, 300, 'var(--lake)', abs('inset:12px;border:1px solid var(--l70)', '') + abs('left:0;right:0;top:30px;display:flex;justify-content:center', logo(70, 'var(--off)')) + abs('left:30px;right:30px;top:96px;color:var(--off);text-align:center', '<div class="caps" style="color:var(--brass-lt)">Today</div>' + rf('stroke-1', '50%', '5px', 'var(--brass-lt)', 'margin:8px auto') + '<div class="cz" style="font-size:13px;line-height:1.6">The Long Lunch<br>12:00 – 16:00</div><div style="height:16px"></div><div class="caps" style="color:var(--brass-lt)">Tonight</div>' + rf('stroke-1', '50%', '5px', 'var(--brass-lt)', 'margin:8px auto') + '<div class="cz" style="font-size:13px;line-height:1.6">Sunset tables<br>from 17:30</div>'));
     var door = art(170, 120, '#EFE9DC', abs('inset:0', patt('wc-repeat', 60, 'var(--l15)', '#EFE9DC', 170, 120)) + abs('left:30px;right:30px;top:34px;height:52px;background:#EFE9DC;box-shadow:0 0 0 1px var(--lake);display:flex;align-items:center;justify-content:center;color:var(--lake)', '<span class="cz" style="font-size:13px">Restrooms</span>'));
-    return head('06 · Signage', 'Signage &amp; wayfinding', 'The entrance arch, directional signs with small engraved vignettes instead of generic icons, a daily board and door plates.') +
+    return head('07 · Signage · Proposal', 'Signage &amp; wayfinding', 'The entrance arch, directional signs with small engraved vignettes instead of generic icons, a daily board and door plates.') +
       table(item(entrance, 'Entrance sign', '02 deboss relief, aged-brass lettering · arched panel') + item(dir, 'Directional signs', '02 spot vignettes · enamel or printed panels') + item(board, 'Daily board', 'Reflection line · Lake Blue panel') + item(door, 'Door plate', '01 tile, tonal'));
   }
+
+  /* compat for the materials study */
+  var LAKE_CLOTH = CLOTH, LAKE_UP = UP;
+  function paperBg(k) { return paper(k); }
+  function cornerFrame(w, h, color, inner) { return corners(color) + inner; }
+  function stage(h) { return '<div class="table" style="padding:26px 18px">' + h + '</div>'; }
+  function cap(html, text) { return '<figure class="item" style="margin:0">' + html + '<figcaption><span>' + text + '</span></figcaption></figure>'; }
+  function board(title, note, html) { return '<div class="board"><h3>' + title + '</h3>' + (note ? '<p class="note">' + note + '</p>' : '') + html + '</div>'; }
+  function refs(list) { return '<div class="refs"><span class="refpill">Reference · internal use only</span><div class="refrow">' + list.map(function (r) { return '<figure><img src="' + A + 'direction/' + r[0] + '" alt="" loading="lazy"><figcaption>' + r[1] + '</figcaption></figure>'; }).join('') + '</div></div>'; }
+  /* ================================================================== Part 2 · Menu materials & print finishes */
+  // relief: same colour as the substrate, revealed only by highlight and shadow
+
+  // ---- the three explorations' covers
+  function coverA(w, h) { // natural paper + fine-line print + restrained blind emboss
+    return art(w, h, paperBg('grain'), relief(abs('inset:16px;border:1px solid #EFEADF', '') + abs('inset:22px;border:.6px solid #EFEADF', ''), 'emboss', .8) +
+      eng('pavilion-sunset', 'var(--lake)', 'position:absolute;left:8%;right:8%;top:30%;height:44%;opacity:.95') +
+      abs('left:0;right:0;top:9%;display:flex;justify-content:center', logo(w * .36, 'var(--lake)')) +
+      abs('left:0;right:0;bottom:8%;text-align:center', '<span class="caps" style="color:var(--lake);font-size:' + Math.max(6, w / 36) + 'px">Menu</span>'));
+  }
+  function coverB(w, h) { // Lake Blue cloth + tone-on-tone ornamental blind emboss
+    return art(w, h, LAKE_CLOTH, relief(patt('wc-repeat', w * .42, LAKE_UP, 'transparent', w, h, ';position:absolute;inset:0'), 'emboss', w / 260) + cloth(.45) +
+      abs('left:22%;right:22%;top:36%;bottom:36%;background:' + LAKE_CLOTH + ';display:flex;align-items:center;justify-content:center', relief(abs('inset:6px;border:1px solid ' + LAKE_UP, ''), 'deboss', .8) + logo(w * .3, '#2B4F70', 'filter:drop-shadow(-.6px -.6px 0 rgba(0,0,0,.4)) drop-shadow(.6px .7px 0 rgba(255,255,255,.18))')) + light(.12));
+  }
+  function coverC(w, h) { // Lake Blue + architectural blind deboss + aged-brass foil
+    return art(w, h, LAKE_CLOTH, relief(eng('pavilion-sunset', '#11283E', 'position:absolute;left:-14%;right:-14%;top:24%;height:62%'), 'deboss', w / 200) + cloth(.45) +
+      foilFrame(Math.round(w * .05)) + abs('left:0;right:0;top:9%;display:flex;justify-content:center', foilLogo(w * .34)) +
+      abs('left:0;right:0;bottom:7.5%;text-align:center', '<span class="caps" style="font-size:' + Math.max(6, w / 36) + 'px;background:' + FOIL + ';-webkit-background-clip:text;background-clip:text;color:transparent">Lunch to last light</span>') + light(.12));
+  }
+  function interior(w, h, kind, sys) {
+    var deco = sys === 'orn' ? cornerFrame(w, h, 'var(--lake)', '') : '';
+    return art(w, h, paperBg(kind), deco + '<div class="menu-p" style="padding:' + (h * (sys === 'orn' ? .2 : .12)) + 'px ' + (w * .16) + 'px;gap:7px"><div class="caps" style="color:var(--brass)">I · Phuket &amp; Peranakan</div><div class="cz" style="font-size:15px">The Phuket kitchen</div>' + rf('stroke-1', '40%', '6px', 'var(--lake)') + dishes(P.slice(0, sys === 'brush' ? 2 : 3)) + (sys === 'brush' ? bw('contour-band', 'var(--lake)', 'width:100%;height:' + (h * .13) + 'px;flex:none') + '<div class="caps" style="color:var(--brass)">II · Italia</div>' + dishes(I.slice(0, 1)) : '') + '</div>');
+  }
+  function tabletop(cover) {
+    return art(560, 360, '#E4DED3', cloth(.35) +
+      abs('left:40px;top:34px;transform:rotate(-7deg);box-shadow:0 18px 30px rgba(15,34,51,.28)', cover) +
+      abs('right:26px;top:70px;width:270px;filter:drop-shadow(0 12px 14px rgba(15,34,51,.28))', '<img src="' + MT + 'plate-cut.png" alt="" style="width:100%;display:block">') +
+      light(.1), 'box-shadow:none');
+  }
+  function closeup(inner, w, h) { return art(w || 260, h || 260, 'transparent', inner, 'box-shadow:none;border:1px solid var(--line)'); }
+
+  function materialsBody() {
+    var techs = [
+      ['Blind embossing', 'Artwork raised from the material, no ink or foil. Tone-on-tone, revealed by light.', 'Ornament, botanical patterns, simplified borders', art(150, 150, LAKE_CLOTH, relief(ic('wc-a', 'position:absolute;inset:12%;width:76%;height:76%;color:' + LAKE_UP), 'emboss', 1.3) + cloth(.4) + light(.12), 'box-shadow:none')],
+      ['Blind debossing', 'Artwork pressed in. Fine shadows with an engraved feel.', 'Architectural line, frames, fine ornament', art(150, 150, LAKE_CLOTH, relief(sk('dining-hall', '#1B3853', 'position:absolute;inset:0;-webkit-mask-size:220%;mask-size:220%'), 'deboss', 1.2) + cloth(.4) + light(.12), 'box-shadow:none')],
+      ['Tone-on-tone print', 'Ink close to the substrate: lighter blue on Lake Blue, ivory on cream. Contrast without relief.', 'Patterns, contour artwork', art(150, 150, LAKE_CLOTH, bw('contour-swirl', '#34597C', fill()) + cloth(.4), 'box-shadow:none')],
+      ['Aged-brass foil', 'A muted antique-gold foil for the logo, titles and fine frames. Matched to Aged Brass from physical samples.', 'Logo, menu title, fine frames', art(150, 150, LAKE_CLOTH, cloth(.4) + foilFrame(12) + abs('left:0;right:0;top:56px;display:flex;justify-content:center', foilLogo(80)) + light(.1), 'box-shadow:none')]
+    ];
+    var techHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:22px">' + techs.map(function (t) { return '<div style="display:flex;flex-direction:column;gap:10px">' + t[3] + '<div><b class="cz" style="font-size:15px">' + t[0] + '</b><p class="note" style="margin:4px 0">' + t[1] + '</p><p class="note" style="margin:0"><b>For:</b> ' + t[2] + '</p></div></div>'; }).join('') + '</div>' +
+      '<p class="note" style="margin-top:16px"><b>Combinations to explore, never all at once:</b> A · Lake Blue material, architectural blind deboss, aged-brass foil logo. B · Off-White textured paper, blind-embossed ornament, deep-blue type. C · Lake Blue material, tonal botanical print, selective emboss. D · Natural ivory paper, painterly blue brushwork, blind-debossed frame.</p>';
+    var cats = stage(
+        cap(art(200, 260, paperBg('fibre'), '', ''), 'A · Natural fibrous paper') +
+        cap(art(200, 260, paperBg('grain'), '', ''), 'A · Fine-grain paper') +
+        cap(art(200, 260, LAKE_CLOTH, relief(patt('wc-repeat', 84, LAKE_UP, 'transparent', 200, 260, ';position:absolute;inset:0'), 'emboss', 1) + cloth(.45) + light(.12)), 'B · Tone-on-tone relief') +
+        cap(art(200, 260, LAKE_CLOTH, relief(eng('pavilion-sunset', '#11283E', 'position:absolute;left:-20%;right:-20%;top:28%;height:56%'), 'deboss', 1) + cloth(.45) + foilFrame(10) + abs('left:0;right:0;top:24px;display:flex;justify-content:center', foilLogo(70)) + light(.12)), 'C · Relief with aged-brass foil'));
+    function expl(letter, title, mat, treat, art_, chars, cover, close, closeCap, inner) {
+      return board('Exploration ' + letter + ' · ' + title, '', '<div class="finishes"><span><b>Material</b> · ' + mat + '</span><span><b>Treatment</b> · ' + treat + '</span><span><b>Artwork</b> · ' + art_ + '</span></div><p class="note" style="margin:0">' + chars + '</p>' +
+        stage(cap(cover(240, 340), '01 · Full cover') + cap(close, '03 · ' + closeCap) + cap(inner, '04 · Interior')) +
+        stage(cap(tabletop(cover(170, 240)), '05 · On the table with KIN’s plates')), true);
+    }
+    var paperClose = closeup('<div style="position:absolute;inset:0;background:' + paperBg('grain') + ';background-size:250%"></div>' + eng('pavilion-sunset', 'var(--lake)', 'position:absolute;left:-60%;width:260%;top:-40%;height:220%'), 260, 260);
+    var embossClose = closeup('<div style="position:absolute;inset:0;background:' + LAKE_CLOTH + '"></div>' + relief(patt('wc-repeat', 260, LAKE_UP, 'transparent', 260, 260, ';position:absolute;inset:0'), 'emboss', 2.2) + cloth(.6) + light(.22), 260, 260);
+    var foilClose = closeup('<div style="position:absolute;inset:0;background:' + LAKE_CLOTH + '"></div>' + relief(eng('pavilion-sunset', '#11283E', 'position:absolute;left:-90%;width:280%;top:-10%;height:170%'), 'deboss', 1.6) + cloth(.6) + abs('left:28px;top:24px', foilLogo(150)) + foilFrame(10) + light(.18), 260, 260);
+    var rows = [['01 · Ornamental Heritage', 'Blind-embossed patterns, debossed borders, fine tonal print'], ['02 · Illustrated Heritage', 'Architectural blind deboss (simplified line), engraved-style print, selective aged-brass foil'], ['03 · Ceramic Brushwork', 'Painterly blue print, tonal contour relief, selective concentric emboss. Pigment and brush texture stay printed, not pressed.']];
+    return '<header><span class="eyebrow">02 · Menu materials · Proposal</span><h2>Menu materials &amp; print finishes</h2><p class="spec"><b>Tactile Heritage.</b> The menu as a crafted object, not a printed sheet. This adds no new artwork: it decides how the three graphic systems are printed, pressed and finished, in Lake Blue, Warm Off-White and Aged Brass only. Everything shown is a screen study; paper, relief depth and foil colour are chosen from physical samples with the printer.</p></header>' +
+      '<div class="boards">' +
+      board('Three material categories', 'A · Tactile paper and natural texture (menu interiors, inserts, wine list, story pages). B · Tone-on-tone embossing and debossing. C · Heritage relief with aged-brass foil.', cats, true) +
+      board('Finishing techniques', '', techHtml, true) +
+      board('Which finish suits which system', 'Not everything needs to be pressed. Fine architecture is simplified before debossing.', '<div class="cmp"><table style="min-width:560px"><tr><th>System</th><th>Suitable treatment</th></tr>' + rows.map(function (r) { return '<tr><td style="text-align:left">' + r[0] + '</td><td style="text-align:left">' + r[1] + '</td></tr>'; }).join('') + '</table></div>', true) +
+      expl('A', 'Natural paper & heritage print', 'Warm Off-White textured paper', 'Fine-line print, restrained blind emboss', '02 engraving or 01 ornament', 'Soft natural texture, a detailed Lake Blue drawing, generous space, an understated editorial page.', coverA, paperClose, 'Printed line on paper, close up', interior(240, 340, 'grain', 'orn')) +
+      expl('B', 'Tonal ornamental relief', 'Deep Lake Blue textured cover', 'Blind emboss / deboss', '01 Ornamental Heritage', 'Repeating tiles pressed tone-on-tone, visible only in raking light. Minimal type, no foil.', coverB, embossClose, 'Embossed tiles under directional light', interior(240, 340, 'fibre', 'brush')) +
+      expl('C', 'Architectural heritage relief', 'Lake Blue premium cover material', 'Architectural blind deboss + aged-brass foil', '02 Illustrated Heritage', 'A large drawing of the pavilion pressed into the cover, with a restrained foil logo and fine foil frame.', coverC, foilClose, 'Deboss and foil detail', interior(240, 340, 'grain', 'orn')) +
+      board('Production and day-to-day use', '', '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;font-size:14px"><div><b class="cz">Emboss &amp; deboss</b><ul style="margin:6px 0 0;padding-left:18px"><li>Minimum line weight and spacing</li><li>Substrate thickness and relief depth</li><li>Die cost against print run</li><li>Simplify fine artwork first</li></ul></div><div><b class="cz">Foil</b><ul style="margin:6px 0 0;padding-left:18px"><li>Muted antique gold, not bright yellow</li><li>Adhesion on textured material</li><li>Small-detail reproduction</li><li>Scratch resistance</li></ul></div><div><b class="cz">Paper</b><ul style="margin:6px 0 0;padding-left:18px"><li>Fine-line and small-type clarity</li><li>Opacity, grain direction, folding</li><li>Ink absorption</li></ul></div><div><b class="cz">Restaurant use</b><ul style="margin:6px 0 0;padding-left:18px"><li>Daily handling and spills</li><li>Cleaning and replacement cost</li><li>Replaceable inserts for menu updates</li><li>Construction: rigid cover + inserts, folded card or sewn booklet</li></ul></div></div>', true) +
+      board('How each exploration will be judged', '', '<div class="finishes">' + ['Brand consistency', 'Material quality', 'Graphic integration', 'Visual balance', 'Production credibility', 'Practicality', 'Harmony with the plates'].map(function (t) { return '<span>' + t + '</span>'; }).join('') + '</div>', true) +
+      board('Material references', 'Internal only. Their green and burgundy colours are not adopted; only the techniques are.', refs([['materials/ref-01-fibrous-paper.jpg', '01 · Natural fibrous paper'], ['materials/ref-02-fine-grain-paper.jpg', '02 · Fine-grain paper'], ['materials/ref-03-architectural-relief.jpg', '03 · Architectural relief'], ['materials/ref-04-botanical-relief.jpg', '04 · Ornamental botanical relief'], ['materials/ref-05-flowing-botanical.jpg', '05 · Flowing botanical relief'], ['materials/ref-06-relief-foil.jpg', '06 · Relief with metallic detail'], ['materials/ref-07-architectural-menu.jpg', '07 · Monochrome architectural menu']]), true) +
+      '</div>';
+  }
+
 
   fetch('../../direction/sprite.svg').then(function (r) { return r.text(); }).then(function (t) {
     document.getElementById('sprite-host').innerHTML = t;
     document.getElementById('b-menus').innerHTML = menus();
+    document.getElementById('b-materials').innerHTML = materialsBody();
     document.getElementById('b-table').innerHTML = onTable();
     document.getElementById('b-stationery').innerHTML = stationery();
     document.getElementById('b-guest').innerHTML = guest();
@@ -190,6 +281,6 @@
   });
 })();
 </script>
-<script src="../../comments/comments-config.js?v=20261023b"></script><script src="../../comments/comments.js?v=20261026a" defer></script>
+<script src="../../comments/comments-config.js?v=20261023b"></script><script src="../../comments/comments.js?v=20261026b" defer></script>
 </body>
 </html>
