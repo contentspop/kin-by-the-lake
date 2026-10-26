@@ -59,20 +59,24 @@
     '#kinnav .r2,#kinnav .r3{display:flex;justify-content:center;align-items:stretch;gap:clamp(18px,2.4vw,34px);overflow-x:auto;scrollbar-width:none;padding:0 20px}' +
     '#kinnav .r2::-webkit-scrollbar,#kinnav .r3::-webkit-scrollbar{display:none}' +
     '#kinnav .r2{height:58px;border-bottom:1px solid #D9D3C6}' +
-    '#kinnav .r3{height:56px}' +
+    '#kinnav .r3{height:58px;position:absolute;left:0;right:0;top:134px;background:#F3EFE6;border-bottom:1px solid #D9D3C6;box-shadow:0 18px 30px rgba(15,34,51,.12);display:none}' +
+    '#kinnav.drop .r3{display:flex}' +
+    '#kinnav .r2 .t.hov{color:#B38A45}' +
     '#kinnav .crumb{display:flex;align-items:center;gap:10px;font:500 13px/1 Cinzel,Georgia,serif;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}' +
     '#kinnav .crumb b{width:7px;height:7px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg);opacity:.7}' +
-    '#kinnav .t{all:unset;cursor:pointer;display:flex;align-items:center;white-space:nowrap;font:400 15px/1 ' + F + ';letter-spacing:.06em;border-bottom:1px solid transparent;margin-bottom:-1px}' +
+    '#kinnav .t{all:unset;cursor:pointer;display:flex;align-items:center;white-space:nowrap;font:400 15px/1 ' + F + ';letter-spacing:.06em;border-bottom:1.5px solid transparent}' +
     '#kinnav .t:hover{color:#B38A45}' +
     '#kinnav .t.on{border-bottom-color:#1E3D5A}' +
     '#kinnav .r3 .t{font-size:14.5px}' +
     '#kinnav .panel{display:none;position:absolute;left:0;right:0;top:76px;background:#F3EFE6;border-bottom:1px solid #D9D3C6;box-shadow:0 24px 40px rgba(15,34,51,.12);padding:34px clamp(16px,6vw,96px) 40px}' +
-    '#kinnav.open .panel{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px 40px}' +
-    '#kinnav .panel h4{margin:0 0 14px;font:500 12px/1.3 ' + F + ';letter-spacing:.24em;text-transform:uppercase;color:#B38A45}' +
-    '#kinnav .panel a{display:block;padding:7px 0;font:400 19px/1.3 Cinzel,Georgia,serif;letter-spacing:.03em}' +
+    '#kinnav.open .panel{display:block}' +
+    '#kinnav .panel .row{display:grid;grid-template-columns:200px 1fr;align-items:baseline;gap:10px 30px;padding:16px 0;border-top:1px solid #D9D3C6}' +
+    '#kinnav .panel .row > div{display:flex;flex-wrap:wrap;gap:4px 30px}' +
+    '#kinnav .panel h4{margin:0;font:500 12px/1.3 ' + F + ';letter-spacing:.24em;text-transform:uppercase;color:#B38A45}' +
+    '#kinnav .panel a{display:block;padding:6px 0;font:400 18px/1.3 Cinzel,Georgia,serif;letter-spacing:.03em}' +
     '#kinnav .panel a:hover{color:#B38A45}' +
-    '#kinnav .panel .home{grid-column:1/-1;font:500 12px/1 ' + F + ';letter-spacing:.24em;text-transform:uppercase;padding:0 0 4px}' +
-    '@media (max-width:760px){#kinnav .r1{height:64px}#kinnav .menu span{display:none}#kinnav .logo img{height:36px}#kinnav .cta{padding:12px 12px;font-size:11px;letter-spacing:.06em}#kinnav .panel{top:64px}' +
+    '#kinnav .panel .home{font:500 12px/1 ' + F + ';letter-spacing:.24em;text-transform:uppercase;padding:0 0 16px}' +
+    '@media (max-width:760px){#kinnav .r1{height:64px}#kinnav .menu span{display:none}#kinnav .logo img{height:36px}#kinnav .cta{padding:12px 12px;font-size:11px;letter-spacing:.06em}#kinnav .panel{top:64px}#kinnav .r3{top:122px}#kinnav .panel .row{grid-template-columns:1fr}' +
     '#kinnav .r2,#kinnav .r3{justify-content:flex-start}#kinnav .crumb{display:none}#kinnav .t{font-size:14px}}' +
     '@media print{#kinnav{display:none}}';
 
@@ -81,7 +85,7 @@
 
   function render(hover) {
     var act = activeSection(), sec = hover != null ? hover : act;
-    var r2 = '<a class="crumb" href="' + ROOT + 'index.html">KIN by the Lake<b></b></a>' + MENU.map(function (m, i) { return '<button type="button" class="t' + (i === sec ? ' on' : '') + '" data-s="' + i + '">' + m.label + '</button>'; }).join('');
+    var r2 = '<a class="crumb" href="' + ROOT + 'index.html">KIN by the Lake<b></b></a>' + MENU.map(function (m, i) { return '<button type="button" class="t' + (i === act ? ' on' : '') + (hover != null && i === hover ? ' hov' : '') + '" data-s="' + i + '">' + m.label + '</button>'; }).join('');
     var items = sec >= 0 ? MENU[sec].items : MENU.map(function (m) { return m.items[0]; });
     var r3 = items.map(function (it) { return '<a class="t' + (matches(it[0]) ? ' on' : '') + '" href="' + ROOT + it[0] + '">' + it[1] + '</a>'; }).join('');
     nav.querySelector('.r2').innerHTML = r2;
@@ -91,23 +95,26 @@
     '<a class="logo" href="' + ROOT + 'index.html" aria-label="KIN hub"><img src="' + ROOT + 'assets/logo/logo-primary.png" alt="KIN by the Lake"></a>' +
     '<a class="cta" href="' + ROOT + 'questionnaire/">Questionnaire</a></div>' +
     '<div class="r2"></div><div class="r3"></div>' +
-    '<div class="panel"><a class="home" href="' + ROOT + 'index.html">← Project hub</a>' + MENU.map(function (m) { return '<div><h4>' + m.label + '</h4>' + m.items.map(function (it) { return '<a href="' + ROOT + it[0] + '">' + it[1] + '</a>'; }).join('') + '</div>'; }).join('') +
-    '<div><h4>Answer</h4><a href="' + ROOT + 'questionnaire/">Questionnaire</a></div></div>';
+    '<div class="panel"><a class="home" href="' + ROOT + 'index.html">← Project hub</a>' + MENU.map(function (m) { return '<div class="row"><h4>' + m.label + '</h4><div>' + m.items.map(function (it) { return '<a href="' + ROOT + it[0] + '">' + it[1] + '</a>'; }).join('') + '</div></div>'; }).join('') +
+    '<div class="row"><h4>Answer</h4><div><a href="' + ROOT + 'questionnaire/">Questionnaire</a></div></div></div>';
   render();
 
   var hoverT;
-  nav.addEventListener('mouseover', function (e) { var b = e.target.closest('.r2 .t'); if (b) { clearTimeout(hoverT); render(+b.dataset.s); } });
-  nav.addEventListener('mouseleave', function () { hoverT = setTimeout(function () { render(); }, 250); });
+  function drop(i) { clearTimeout(hoverT); render(i); nav.classList.add('drop'); }
+  function undrop() { nav.classList.remove('drop'); render(); }
+  nav.addEventListener('mouseover', function (e) { var b = e.target.closest('.r2 .t'); if (b) drop(+b.dataset.s); else if (e.target.closest('.r1')) { clearTimeout(hoverT); undrop(); } });
+  nav.addEventListener('mouseleave', function () { hoverT = setTimeout(undrop, 250); });
   nav.addEventListener('mouseenter', function () { clearTimeout(hoverT); });
   nav.addEventListener('click', function (e) {
     var b = e.target.closest('.r2 .t');
-    if (b) { render(+b.dataset.s); return; }
+    if (b) { var i = +b.dataset.s; if (nav.classList.contains('drop') && nav.querySelector('.r2 .t.hov[data-s="' + i + '"]')) undrop(); else drop(i); return; }
     var m = e.target.closest('.menu');
     if (m) { var o = nav.classList.toggle('open'); m.classList.toggle('open', o); m.setAttribute('aria-expanded', String(o)); return; }
     if (e.target.closest('.panel a')) { nav.classList.remove('open'); nav.querySelector('.menu').classList.remove('open'); }
   });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { nav.classList.remove('open'); nav.querySelector('.menu').classList.remove('open'); } });
-  document.addEventListener('click', function (e) { if (!nav.contains(e.target) && nav.classList.contains('open')) { nav.classList.remove('open'); nav.querySelector('.menu').classList.remove('open'); } });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { undrop(); nav.classList.remove('open'); nav.querySelector('.menu').classList.remove('open'); } });
+  document.addEventListener('click', function (e) { if (!nav.contains(e.target)) undrop();
+    if (!nav.contains(e.target) && nav.classList.contains('open')) { nav.classList.remove('open'); nav.querySelector('.menu').classList.remove('open'); } });
   window.addEventListener('hashchange', function () { render(); });
   var lastHash = location.hash; setInterval(function () { if (location.hash !== lastHash) { lastHash = location.hash; render(); } }, 400);
 
