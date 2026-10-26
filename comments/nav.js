@@ -1,101 +1,121 @@
-/* KIN hub · site-wide top navigation with dropdowns (injected on every main page) */
+/* KIN hub · site-wide navigation (three tiers: brand bar, sections, pages) */
 (function () {
   var me = document.currentScript && document.currentScript.src;
   var ROOT = me ? me.replace(/comments\/nav\.js.*$/, '') : '/';
-  var path = location.href.replace(ROOT, '').split('#')[0].split('?')[0];
+  function here() { return location.href.replace(ROOT, '').split('?')[0]; }
 
   var MENU = [
     { label: 'Foundations', items: [
-      ['share/KIN-Brand-Book.html', 'Brand & Story', 'Story, essence, positioning, values, voice'],
-      ['menu/', 'Menu & Offer', 'Two kitchens, dishes, sets and packages'],
-      ['strategy/', 'Strategy & Activation', '60/40, a day at KIN, USPs, compset'],
-      ['benchmark/', 'Benchmark · Longrain', 'What to learn from a sharing-table restaurant']
+      ['share/KIN-Brand-Book.html', 'Brand & Story'],
+      ['menu/', 'Menu & Offer'],
+      ['strategy/', 'Strategy & Activation'],
+      ['benchmark/', 'Benchmark · Longrain']
     ] },
     { label: 'Design System', items: [
-      ['share/KIN-Design-System.html#overview', 'Overview', 'The identity board and what we propose'],
-      ['share/KIN-Design-System.html#logo', '1 · Logo', ''],
-      ['share/KIN-Design-System.html#type', '2 · Typography', ''],
-      ['share/KIN-Design-System.html#colour', '3 · Colour', ''],
-      ['share/KIN-Design-System.html#pattern', '4 · Pattern & graphics', 'Reflection line and three graphic systems'],
-      ['share/KIN-Design-System.html#photo', '5 · Photography', ''],
-      ['share/KIN-Design-System.html#digital', '6 · Layout & digital', ''],
-      ['share/KIN-Design-System.html#apps', '7 · Applications', '']
-    ], cols: 2 },
+      ['share/KIN-Design-System.html#overview', 'Overview'],
+      ['share/KIN-Design-System.html#logo', 'Logo'],
+      ['share/KIN-Design-System.html#type', 'Typography'],
+      ['share/KIN-Design-System.html#colour', 'Colour'],
+      ['share/KIN-Design-System.html#pattern', 'Pattern & Graphics'],
+      ['share/KIN-Design-System.html#photo', 'Photography'],
+      ['share/KIN-Design-System.html#digital', 'Layout & Digital'],
+      ['share/KIN-Design-System.html#apps', 'Applications']
+    ] },
     { label: 'Guidelines', items: [
-      ['photography/', 'Photography Guideline', 'Light, food, people, shot list']
+      ['photography/', 'Photography Guideline']
     ] },
     { label: 'Previews', items: [
-      ['ui_kits/website/index.html', 'Website Preview', 'Home, Menu, Story, Reserve'],
-      ['ui_kits/social/index.html', 'Social Media Preview', 'Instagram, Facebook, LINE OA'],
-      ['ui_kits/collateral/index.html', 'Collateral Preview', 'Menus and materials, print, packaging, signage']
+      ['ui_kits/website/index.html', 'Website'],
+      ['ui_kits/social/index.html', 'Social Media'],
+      ['ui_kits/collateral/index.html', 'Collateral']
     ] }
   ];
 
-  function isActive(href) { var h = href.split('#')[0]; return h && (path === h || (h.slice(-1) === '/' && path.indexOf(h) === 0)); }
+  function matches(href) {
+    var h = here(), page = h.split('#')[0], hash = (h.split('#')[1] || ''), hp = href.split('#')[0], hh = href.split('#')[1];
+    if (!(page === hp || (hp.slice(-1) === '/' && page.indexOf(hp) === 0))) return false;
+    if (!hh) return true;
+    var sub = ['shared', 'ornamental', 'illustrated', 'brushwork', 'together'];
+    if (sub.indexOf(hash) >= 0) hash = 'pattern';
+    return (hash || 'overview') === hh;
+  }
+  function activeSection() { for (var i = 0; i < MENU.length; i++) if (MENU[i].items.some(function (it) { return it[0].split('#')[0] && matches(it[0].split('#')[0]); })) return i; return -1; }
 
   var F = 'Montserrat, "Helvetica Neue", Arial, sans-serif';
   var css = document.createElement('style');
   css.textContent =
-    '#kinnav{position:sticky;top:0;z-index:2147482000;background:#0F2233;color:#F3EFE6;font-family:' + F + ';box-shadow:0 1px 0 rgba(207,174,114,.35)}' +
+    '#kinnav{position:relative;z-index:2147482000;background:#F3EFE6;color:#1E3D5A;font-family:' + F + ';border-bottom:1px solid #D9D3C6}' +
     '#kinnav *{box-sizing:border-box}' +
-    '#kinnav .kn-in{max-width:1240px;margin:0 auto;padding:0 clamp(14px,3vw,40px);height:54px;display:flex;align-items:center;gap:6px}' +
-    '#kinnav .kn-logo{display:flex;align-items:center;gap:10px;color:#F3EFE6;text-decoration:none;margin-right:auto;font:600 10px/1 ' + F + ';letter-spacing:.22em;text-transform:uppercase}' +
-    '#kinnav .kn-logo img{height:26px;width:auto;display:block}' +
-    '#kinnav .kn-logo span{opacity:.7}' +
-    '#kinnav .kn-list{display:flex;align-items:center;gap:2px;list-style:none;margin:0;padding:0}' +
-    '#kinnav .kn-item{position:relative}' +
-    '#kinnav .kn-top{all:unset;cursor:pointer;display:flex;align-items:center;gap:6px;height:54px;padding:0 12px;font:600 10.5px/1 ' + F + ';letter-spacing:.18em;text-transform:uppercase;color:#F3EFE6}' +
-    '#kinnav .kn-top:hover,#kinnav .kn-item.open .kn-top,#kinnav .kn-top.on{color:#CFAE72}' +
-    '#kinnav .kn-top i{width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg)}' +
-    '#kinnav .kn-drop{position:absolute;top:54px;left:0;min-width:300px;background:#F8F5EE;color:#1E3D5A;border-top:2px solid #B38A45;box-shadow:0 18px 40px rgba(15,34,51,.25);padding:10px;display:none}' +
-    '#kinnav .kn-item.open .kn-drop{display:grid}' +
-    '#kinnav .kn-drop.c2{grid-template-columns:1fr 1fr;min-width:480px}' +
-    '#kinnav .kn-drop a{display:block;padding:10px 12px;text-decoration:none;color:#1E3D5A}' +
-    '#kinnav .kn-drop a:hover,#kinnav .kn-drop a.on{background:#ECE6DA}' +
-    '#kinnav .kn-drop b{display:block;font:500 15px/1.25 Cinzel,Georgia,serif;letter-spacing:.04em}' +
-    '#kinnav .kn-drop small{display:block;margin-top:3px;font:400 11.5px/1.4 ' + F + ';color:#52708F}' +
-    '#kinnav .kn-q{margin-left:8px;text-decoration:none;background:#B38A45;color:#fff;padding:11px 14px;font:600 10px/1 ' + F + ';letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}' +
-    '#kinnav .kn-q:hover{background:#9C7738}' +
-    '#kinnav .kn-burger{all:unset;cursor:pointer;display:none;width:40px;height:40px;align-items:center;justify-content:center}' +
-    '#kinnav .kn-burger span{display:block;width:20px;height:1.5px;background:#F3EFE6;box-shadow:0 6px 0 #F3EFE6,0 -6px 0 #F3EFE6}' +
-    '@media (max-width:900px){' +
-    '#kinnav .kn-burger{display:flex}' +
-    '#kinnav .kn-list{display:none;position:absolute;top:54px;left:0;right:0;flex-direction:column;align-items:stretch;background:#0F2233;padding:6px 0 14px;max-height:calc(100vh - 54px);overflow:auto}' +
-    '#kinnav.mob .kn-list{display:flex}' +
-    '#kinnav .kn-top{height:46px;padding:0 20px;justify-content:space-between;width:100%}' +
-    '#kinnav .kn-drop,#kinnav .kn-drop.c2{position:static;min-width:0;grid-template-columns:1fr;box-shadow:none;margin:0 12px}' +
-    '#kinnav .kn-q{margin:10px 20px 0;text-align:center}' +
-    '#kinnav .kn-logo span{display:none}}' +
-    '.tabs{top:54px !important}@media print{#kinnav{display:none}}';
+    '#kinnav a{color:inherit;text-decoration:none}' +
+    '#kinnav .r1{height:76px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 clamp(16px,3vw,40px);border-bottom:1px solid #D9D3C6}' +
+    '#kinnav .menu{all:unset;cursor:pointer;display:flex;align-items:center;gap:16px;font:400 15px/1 ' + F + ';letter-spacing:.06em;justify-self:start}' +
+    '#kinnav .menu i{display:block;width:26px;height:1.5px;background:#1E3D5A;box-shadow:0 -8px 0 #1E3D5A,0 8px 0 #1E3D5A}' +
+    '#kinnav .menu.open i{background:transparent;box-shadow:none;position:relative}' +
+    '#kinnav .menu.open i::before,#kinnav .menu.open i::after{content:"";position:absolute;left:0;top:0;width:26px;height:1.5px;background:#1E3D5A;transform:rotate(45deg)}' +
+    '#kinnav .menu.open i::after{transform:rotate(-45deg)}' +
+    '#kinnav .logo img{height:46px;width:auto;display:block}' +
+    '#kinnav .cta{justify-self:end;background:#1E3D5A;color:#F3EFE6;padding:15px 22px;font:400 14px/1 ' + F + ';letter-spacing:.08em}' +
+    '#kinnav .cta:hover{background:#16304A}' +
+    '#kinnav .r2,#kinnav .r3{display:flex;justify-content:center;align-items:stretch;gap:clamp(18px,2.4vw,34px);overflow-x:auto;scrollbar-width:none;padding:0 20px}' +
+    '#kinnav .r2::-webkit-scrollbar,#kinnav .r3::-webkit-scrollbar{display:none}' +
+    '#kinnav .r2{height:58px;border-bottom:1px solid #D9D3C6}' +
+    '#kinnav .r3{height:56px}' +
+    '#kinnav .crumb{display:flex;align-items:center;gap:10px;font:500 13px/1 Cinzel,Georgia,serif;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}' +
+    '#kinnav .crumb b{width:7px;height:7px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg);opacity:.7}' +
+    '#kinnav .t{all:unset;cursor:pointer;display:flex;align-items:center;white-space:nowrap;font:400 15px/1 ' + F + ';letter-spacing:.06em;border-bottom:1px solid transparent;margin-bottom:-1px}' +
+    '#kinnav .t:hover{color:#B38A45}' +
+    '#kinnav .t.on{border-bottom-color:#1E3D5A}' +
+    '#kinnav .r3 .t{font-size:14.5px}' +
+    '#kinnav .panel{display:none;position:absolute;left:0;right:0;top:76px;background:#F3EFE6;border-bottom:1px solid #D9D3C6;box-shadow:0 24px 40px rgba(15,34,51,.12);padding:34px clamp(16px,6vw,96px) 40px}' +
+    '#kinnav.open .panel{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px 40px}' +
+    '#kinnav .panel h4{margin:0 0 14px;font:500 12px/1.3 ' + F + ';letter-spacing:.24em;text-transform:uppercase;color:#B38A45}' +
+    '#kinnav .panel a{display:block;padding:7px 0;font:400 19px/1.3 Cinzel,Georgia,serif;letter-spacing:.03em}' +
+    '#kinnav .panel a:hover{color:#B38A45}' +
+    '#kinnav .panel .home{grid-column:1/-1;font:500 12px/1 ' + F + ';letter-spacing:.24em;text-transform:uppercase;padding:0 0 4px}' +
+    '@media (max-width:760px){#kinnav .r1{height:64px}#kinnav .menu span{display:none}#kinnav .logo img{height:36px}#kinnav .cta{padding:12px 12px;font-size:11px;letter-spacing:.06em}#kinnav .panel{top:64px}' +
+    '#kinnav .r2,#kinnav .r3{justify-content:flex-start}#kinnav .crumb{display:none}#kinnav .t{font-size:14px}}' +
+    '@media print{#kinnav{display:none}}';
 
   var nav = document.createElement('nav');
   nav.id = 'kinnav'; nav.setAttribute('aria-label', 'KIN hub');
-  nav.innerHTML = '<div class="kn-in"><a class="kn-logo" href="' + ROOT + 'index.html"><img src="' + ROOT + 'assets/logo/logo-reversed.png" alt="KIN by the Lake"><span>Project hub</span></a>' +
-    '<button class="kn-burger" type="button" aria-label="Menu"><span></span></button>' +
-    '<ul class="kn-list">' + MENU.map(function (m, i) {
-      var on = m.items.some(function (it) { return isActive(it[0]); });
-      return '<li class="kn-item"><button class="kn-top' + (on ? ' on' : '') + '" type="button" data-i="' + i + '">' + m.label + '<i></i></button><div class="kn-drop' + (m.cols === 2 ? ' c2' : '') + '">' +
-        m.items.map(function (it) { return '<a href="' + ROOT + it[0] + '"' + (isActive(it[0]) && it[0].indexOf('#') < 0 ? ' class="on"' : '') + '><b>' + it[1] + '</b>' + (it[2] ? '<small>' + it[2] + '</small>' : '') + '</a>'; }).join('') + '</div></li>';
-    }).join('') + '<li><a class="kn-q" href="' + ROOT + 'questionnaire/">Questionnaire</a></li></ul></div>';
 
-  nav.addEventListener('click', function (e) {
-    var t = e.target.closest('.kn-top');
-    if (t) { var li = t.parentNode, was = li.classList.contains('open'); Array.prototype.forEach.call(nav.querySelectorAll('.kn-item.open'), function (x) { x.classList.remove('open'); }); if (!was) li.classList.add('open'); return; }
-    if (e.target.closest('.kn-burger')) { nav.classList.toggle('mob'); return; }
-    if (e.target.closest('.kn-drop a')) { nav.classList.remove('mob'); Array.prototype.forEach.call(nav.querySelectorAll('.kn-item.open'), function (x) { x.classList.remove('open'); }); }
-  });
-  if (window.matchMedia && matchMedia('(hover:hover) and (min-width:901px)').matches) {
-    nav.addEventListener('mouseover', function (e) { var li = e.target.closest('.kn-item'); if (!li) return; Array.prototype.forEach.call(nav.querySelectorAll('.kn-item.open'), function (x) { if (x !== li) x.classList.remove('open'); }); li.classList.add('open'); });
-    nav.addEventListener('mouseleave', function () { Array.prototype.forEach.call(nav.querySelectorAll('.kn-item.open'), function (x) { x.classList.remove('open'); }); });
+  function render(hover) {
+    var act = activeSection(), sec = hover != null ? hover : act;
+    var r2 = '<a class="crumb" href="' + ROOT + 'index.html">KIN by the Lake<b></b></a>' + MENU.map(function (m, i) { return '<button type="button" class="t' + (i === sec ? ' on' : '') + '" data-s="' + i + '">' + m.label + '</button>'; }).join('');
+    var items = sec >= 0 ? MENU[sec].items : MENU.map(function (m) { return m.items[0]; });
+    var r3 = items.map(function (it) { return '<a class="t' + (matches(it[0]) ? ' on' : '') + '" href="' + ROOT + it[0] + '">' + it[1] + '</a>'; }).join('');
+    nav.querySelector('.r2').innerHTML = r2;
+    nav.querySelector('.r3').innerHTML = r3;
   }
-  document.addEventListener('click', function (e) { if (!nav.contains(e.target)) Array.prototype.forEach.call(nav.querySelectorAll('.kn-item.open'), function (x) { x.classList.remove('open'); }); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { nav.classList.remove('mob'); Array.prototype.forEach.call(nav.querySelectorAll('.kn-item.open'), function (x) { x.classList.remove('open'); }); } });
+  nav.innerHTML = '<div class="r1"><button class="menu" type="button" aria-expanded="false"><i></i><span>Menu</span></button>' +
+    '<a class="logo" href="' + ROOT + 'index.html" aria-label="KIN hub"><img src="' + ROOT + 'assets/logo/logo-primary.png" alt="KIN by the Lake"></a>' +
+    '<a class="cta" href="' + ROOT + 'questionnaire/">Questionnaire</a></div>' +
+    '<div class="r2"></div><div class="r3"></div>' +
+    '<div class="panel"><a class="home" href="' + ROOT + 'index.html">← Project hub</a>' + MENU.map(function (m) { return '<div><h4>' + m.label + '</h4>' + m.items.map(function (it) { return '<a href="' + ROOT + it[0] + '">' + it[1] + '</a>'; }).join('') + '</div>'; }).join('') +
+    '<div><h4>Answer</h4><a href="' + ROOT + 'questionnaire/">Questionnaire</a></div></div>';
+  render();
+
+  var hoverT;
+  nav.addEventListener('mouseover', function (e) { var b = e.target.closest('.r2 .t'); if (b) { clearTimeout(hoverT); render(+b.dataset.s); } });
+  nav.addEventListener('mouseleave', function () { hoverT = setTimeout(function () { render(); }, 250); });
+  nav.addEventListener('mouseenter', function () { clearTimeout(hoverT); });
+  nav.addEventListener('click', function (e) {
+    var b = e.target.closest('.r2 .t');
+    if (b) { render(+b.dataset.s); return; }
+    var m = e.target.closest('.menu');
+    if (m) { var o = nav.classList.toggle('open'); m.classList.toggle('open', o); m.setAttribute('aria-expanded', String(o)); return; }
+    if (e.target.closest('.panel a')) { nav.classList.remove('open'); nav.querySelector('.menu').classList.remove('open'); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { nav.classList.remove('open'); nav.querySelector('.menu').classList.remove('open'); } });
+  document.addEventListener('click', function (e) { if (!nav.contains(e.target) && nav.classList.contains('open')) { nav.classList.remove('open'); nav.querySelector('.menu').classList.remove('open'); } });
+  window.addEventListener('hashchange', function () { render(); });
+  var lastHash = location.hash; setInterval(function () { if (location.hash !== lastHash) { lastHash = location.hash; render(); } }, 400);
 
   function mount() {
     if (!css.isConnected) (document.head || document.documentElement).appendChild(css);
     if (document.body && !nav.isConnected) document.body.insertBefore(nav, document.body.firstChild);
   }
   if (document.body) mount(); else document.addEventListener('DOMContentLoaded', mount);
-  // pages that re-render their body (bundled documents) can detach the bar; put it back
+  // bundled pages can re-render their body; put the bar back if it is removed
   new MutationObserver(function () { if (!nav.isConnected || !css.isConnected) mount(); }).observe(document.documentElement, { childList: true, subtree: true });
 })();
