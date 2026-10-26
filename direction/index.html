@@ -271,7 +271,7 @@
       board('The approved board', 'Logo, reversed logo, alternate versions, colours, typography, clear space, icons and applications.', '<img src="../assets/direction/current-board.jpg" alt="KIN identity board" style="width:100%;border:1px solid var(--line)">', true) +
       board('What it has', '', '<ul style="margin:0;padding-left:18px"><li>Logo with the lake reflection and “by the lake”</li><li>Lake Blue, Warm Off-White, Aged Brass</li><li>Cinzel and Montserrat Light</li><li>Concept: Simple. Natural. Timeless.</li></ul>') +
       board('What is missing', '', '<ol style="margin:0;padding-left:18px"><li><b>A pattern</b>: nothing to use on menu covers, packaging, walls or social backgrounds → <a href="#pattern" data-go="pattern">Proposal 1</a></li><li><b>An accent colour</b>: everything is navy, cream or gold → <a href="#accent" data-go="accent">Proposal 2</a></li><li><b>A graphic line style</b>: the icons (fork and plate, people) are generic outline icons → <a href="#line" data-go="line">Proposal 3</a></li></ol>') +
-      board('The starting point: KIN’s own tableware', 'Cobalt lips, spun brush bands feathering into a cream well, dry-brushed tray edges. Pattern C and line style C come straight from these plates.',
+      board('The starting point: KIN’s own tableware', 'Cobalt lips, spun brush bands feathering into a cream well, dry-brushed tray edges. Pattern B and line style C come straight from these plates.',
         '<div class="tableware">' + [['plate-banded', 'Plate · dark blue band'], ['pasta-plate', 'Pasta plate · spun bands'], ['square-plate', 'Square plate · brushed arcs'], ['rect-tray', 'Tray · dry-brushed edge'], ['oval-platter', 'Oval platter · brushwork'], ['cup-saucer', 'Cup · cobalt lip']].map(function (t) { return '<figure><img src="../assets/direction/tableware/' + t[0] + '.jpg" alt="" loading="lazy"><figcaption>' + t[1] + '</figcaption></figure>'; }).join('') + '</div>', true) +
       '</div>';
   }
@@ -279,23 +279,19 @@
   /* ------------------------------------------------------------------ Proposal 1 · Pattern */
   function coaster(bg, inner) { return art(180, 180, bg, inner, 'border-radius:50%'); }
   function patternBody() {
-    var A1 = optHead('A', 'Pantry Engraving', 'A repeat of engraved ingredients from both kitchens: betel leaf, pomelo, bird’s-eye chilli and star anise from Phuket, lemon and basil from Italy. Fine line, like an old botanical print.', 'Food-led and specific to KIN. Works tone-on-tone (light blue on Lake Blue) or Lake Blue on cream.', ['Menus', 'Packaging', 'Wallpaper', 'Social backgrounds']) +
-      stage(patt('eng-tile', 200, 'var(--lake)', 'var(--off)', 260, 260) + patt('eng-tile', 200, 'var(--l40)', 'var(--ink)', 260, 260) +
-        art(220, 311, 'var(--ink)', patt('eng-tile', 170, 'var(--l70)', 'var(--ink)', 220, 311, ';position:absolute;inset:0') + abs('left:30px;right:30px;top:96px;bottom:96px;background:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px var(--brass)', logo(110, 'var(--brass)'))) +
-        coaster('var(--off)', patt('eng-tile', 150, 'var(--lake)', 'var(--off)', 180, 180, ';position:absolute;inset:0')));
-    var B1 = optHead('B', 'Porcelain Lattice, hand-painted', 'The Porcelain Lattice from the Design System draft, redrawn as hand-painted tiles: uneven watercolour pigment, quatrefoils, star flowers and scrolls, like Peranakan and Italian majolica tiles side by side.', 'Speaks to both cultures at once (Peranakan tiles, Italian maiolica). Warmer and more crafted than a flat vector lattice.', ['Menu covers', 'Walls and floors', 'Napkins', 'Coasters']) +
+    var B1 = optHead('A', 'Porcelain Lattice, hand-painted', 'The Porcelain Lattice from the Design System draft, redrawn as hand-painted tiles: uneven watercolour pigment, quatrefoils, star flowers and scrolls, like Peranakan and Italian majolica tiles side by side.', 'Speaks to both cultures at once (Peranakan tiles, Italian maiolica). Warmer and more crafted than a flat vector lattice.', ['Menu covers', 'Walls and floors', 'Napkins', 'Coasters']) +
       stage('<figure style="margin:0"><div class="art" style="width:200px;height:200px;background:url(../assets/patterns/porcelain-lattice-lake-blue.svg) var(--off)"></div><figcaption style="text-align:center;margin-top:8px">Design System draft (flat)</figcaption></figure>' +
         '<figure style="margin:0">' + patt('wc-repeat', 200, 'var(--lake)', 'var(--off)', 260, 260) + '<figcaption style="text-align:center;margin-top:8px">Hand-painted version</figcaption></figure>' +
         '<figure style="margin:0">' + patt('wc-repeat', 200, 'var(--l15)', 'var(--lake)', 260, 260) + '<figcaption style="text-align:center;margin-top:8px">Reversed</figcaption></figure>' +
         art(220, 311, 'var(--off)', patt('wc-repeat', 110, 'var(--lake)', 'var(--off)', 220, 311, ';position:absolute;inset:0') + abs('left:34px;right:34px;top:92px;bottom:92px;background:var(--off);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px var(--lake)', logo(110, 'var(--lake)'))) +
         coaster('var(--off)', ic('wc-a', 'position:absolute;inset:6%;width:88%;height:88%;color:var(--lake)'))) +
       refs([['ref-tiles-watercolour.jpg', 'Hand-painted tile wall'], ['ref-tiles-blue.jpg', 'Blue watercolour tiles']]);
-    var C1 = optHead('C', 'Glaze & Rim', 'Taken from KIN’s own tableware: rings of spun brush bands, brushed arcs and dry-brushed edges. A “stacked plates” repeat for backgrounds, a rim frame that holds text the way a plate holds food.', 'Completely ownable and true: the menu, the coaster and the plate in front of the guest speak one language.', ['Menu frames', 'Coasters', 'Packaging tape', 'Website edges']) +
+    var C1 = optHead('B', 'Glaze & Rim', 'Taken from KIN’s own tableware: rings of spun brush bands, brushed arcs and dry-brushed edges. A “stacked plates” repeat for backgrounds, a rim frame that holds text the way a plate holds food.', 'Completely ownable and true: the menu, the coaster and the plate in front of the guest speak one language.', ['Menu frames', 'Coasters', 'Packaging tape', 'Website edges']) +
       stage(patt('cer-rings', 110, 'var(--lake)', 'var(--off)', 260, 260) + patt('cer-rings', 110, 'var(--l15)', 'var(--lake)', 260, 260) +
         art(220, 311, 'var(--off)', ic('cer-frame', 'position:absolute;inset:0;width:100%;height:100%;color:var(--lake)', 'stretch') + abs('left:0;right:0;top:118px;display:flex;justify-content:center', logo(110, 'var(--lake)'))) +
         coaster('var(--off)', ic('cer-plate', 'position:absolute;inset:0;width:100%;height:100%;color:var(--lake)') + abs('left:0;right:0;top:70px;display:flex;justify-content:center', logo(60, 'var(--lake)'))));
-    return head('Proposal 1', 'Add a pattern', 'A pattern gives KIN something to use on menu covers, packaging, napkins, walls and social backgrounds. Three options, all in the approved colours. Each shows positive and negative versions, a menu cover and a coaster.') +
-      '<div class="boards">' + board('Option A · Pantry Engraving', '', A1, true) + board('Option B · Porcelain Lattice, hand-painted', '', B1, true) + board('Option C · Glaze & Rim', '', C1, true) + '</div>';
+    return head('Proposal 1', 'Add a pattern', 'A pattern gives KIN something to use on menu covers, packaging, napkins, walls and social backgrounds. Two options, both in the approved colours. Each shows positive and negative versions, a menu cover and a coaster.') +
+      '<div class="boards">' + board('Option A · Porcelain Lattice, hand-painted', '', B1, true) + board('Option B · Glaze & Rim', '', C1, true) + '</div>';
   }
 
   /* ------------------------------------------------------------------ Proposal 2 · Accent colour */
@@ -349,7 +345,7 @@
       '<div class="boards">' + board('Option A · Engraved fine line', '', A3, true) + board('Option B · Hand-drawn sketch', '', B3, true) + board('Option C · Brush & spun line', '', C3, true) + '</div>';
   }
 
-  /* ------------------------------------------------------------------ Put together · three example combinations */
+  /* ------------------------------------------------------------------ Put together · two example combinations */
   var X3 = {
     cover: function () {
       return art(300, 424, 'var(--off)', abs('left:0;right:0;top:0;height:118px', patt('wc-repeat', 118, 'var(--lake)', 'var(--off)', 300, 118)) + abs('left:0;right:0;top:118px;height:4px;background:var(--lake)', '') +
@@ -375,18 +371,17 @@
     }
   };
   function togetherBody() {
-    var cols = [['Current', 'Today', O], ['Example 1', 'Pattern A · Line A · no accent', A], ['Example 2', 'Pattern C · Line C · Accent A (cobalt)', B], ['Example 3', 'Pattern B · Line B · Accent B (green)', X3]];
+    var cols = [['Current', 'Today', O], ['Example 1', 'Pattern B · Line C · Accent A (cobalt)', B], ['Example 2', 'Pattern A · Line B · Accent B (green)', X3]];
     var rows = [['Menu cover', 'cover'], ['Social post', 'social'], ['Print', 'print'], ['Website', 'web']];
-    var h = '<colgroup><col style="width:76px"><col><col><col><col></colgroup><tr><th></th>' + cols.map(function (c) { return '<th class="col">' + c[0] + '<small>' + c[1] + '</small></th>'; }).join('') + '</tr>';
+    var h = '<colgroup><col style="width:76px"><col><col><col></colgroup><tr><th></th>' + cols.map(function (c) { return '<th class="col">' + c[0] + '<small>' + c[1] + '</small></th>'; }).join('') + '</tr>';
     rows.forEach(function (r) {
       h += '<tr><th class="rowh">' + r[0] + '</th>' + cols.map(function (c) { return '<td><div class="cell"' + (r[1] === 'web' ? ' style="zoom:.34"' : r[1] === 'print' ? ' style="zoom:.42"' : '') + '>' + c[2][r[1]]() + '</div></td>'; }).join('') + '</tr>';
     });
-    return head('Put together', 'Three example combinations', 'How the three proposals could combine, on the same four pieces as today. These are examples to react to, not final designs. Any pattern can be paired with any line style and accent.') +
+    return head('Put together', 'Two example combinations', 'How the three proposals could combine, on the same four pieces as today. These are examples to react to, not final designs. Any pattern can be paired with any line style and accent.') +
       '<div class="cmp"><table>' + h + '</table></div>' +
-      '<div class="verdict"><div class="card"><div class="label">Example 1</div><p><b>Food-led and crafted.</b> Engraved pattern and line, no accent. Strongest on dark, in the evening and in print.</p></div>' +
-      '<div class="card"><div class="label">Example 2</div><p><b>Most ownable.</b> Everything comes from the plates on the table: rim, rings and cobalt. Bright, warm and daytime.</p></div>' +
-      '<div class="card"><div class="label">Example 3</div><p><b>Most setting-led.</b> Sketches of the place and hand-painted tiles, with a garden green accent. Tells the lake and the pavilion first.</p></div>' +
-      '<div class="card dark"><div class="label">Our recommendation (draft)</div><p>Pattern <b>B</b> or <b>C</b>, line style <b>B</b> (the place, since KIN is setting-led), and accent <b>A</b> or <b>B</b>. Engraved ingredients (line A) can still be used inside the menu.</p></div></div>';
+      '<div class="verdict"><div class="card"><div class="label">Example 1</div><p><b>Most ownable.</b> Everything comes from the plates on the table: rim, rings and cobalt. Bright, warm and daytime.</p></div>' +
+      '<div class="card"><div class="label">Example 2</div><p><b>Most setting-led.</b> Sketches of the place and hand-painted tiles, with a garden green accent. Tells the lake and the pavilion first.</p></div>' +
+      '<div class="card dark"><div class="label">Our recommendation (draft)</div><p>Pattern <b>A</b> or <b>B</b>, line style <b>B</b> (the place, since KIN is setting-led), and accent <b>A</b> or <b>B</b>. Engraved ingredients (line A) can still be used inside the menu.</p></div></div>';
   }
 
   /* tabs */
