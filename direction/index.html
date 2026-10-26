@@ -70,10 +70,10 @@
 </head>
 <body>
 <header class="top"><div class="wrap"><a class="back" href="../share/KIN-Design-System.html">← Design System</a>
-  <span class="kicker">Design System · Part 1 · Visual reference system</span>
+  <span class="kicker">Design System · Visual reference system &amp; menu materials</span>
   <h1>Three Graphic Systems</h1>
-  <p>KIN’s identity is a logo, three colours and two typefaces, with no pattern or illustration of its own yet. We propose three graphic languages that work alongside each other, not three competing looks: Ornamental Heritage, Illustrated Heritage and Expressive Ceramic Brushwork, joined by one line taken from the logo. The logo, the colours and the fonts stay exactly as they are. Part 2, menu materials and print finishes, follows.</p>
-  <div class="status"><span class="pill red">Proposal · for discussion</span><span class="pill">Logo, colours and fonts unchanged</span><span class="pill">Part 2 · menu materials to follow</span></div>
+  <p>KIN’s identity is a logo, three colours and two typefaces, with no pattern or illustration of its own yet. We propose three graphic languages that work alongside each other, not three competing looks: Ornamental Heritage, Illustrated Heritage and Expressive Ceramic Brushwork, joined by one line taken from the logo. The logo, the colours and the fonts stay exactly as they are. Part 2 turns them into physical menus: paper, embossing, debossing and aged-brass foil.</p>
+  <div class="status"><span class="pill red">Proposal · for discussion</span><span class="pill">Logo, colours and fonts unchanged</span><span class="pill">Part 2 · menu materials and finishes</span></div>
 </div></header>
 
 <nav class="tabs" role="tablist" aria-label="Proposals"><div class="wrap" id="tabs"></div></nav>
@@ -84,6 +84,7 @@
 <section class="block dir" id="illustrated" data-screen-label="System 02 · Illustrated Heritage" hidden><div class="wrap" id="body-illustrated"></div></section>
 <section class="block dir" id="brushwork" data-screen-label="System 03 · Ceramic Brushwork" hidden><div class="wrap" id="body-brushwork"></div></section>
 <section class="block dir" id="together" data-screen-label="Part 1 · Together" hidden><div class="wrap" id="body-together"></div></section>
+<section class="block dir" id="materials" data-screen-label="Part 2 · Menu materials" hidden><div class="wrap" id="body-materials"></div></section>
 <section class="block dir" id="accent" data-screen-label="Optional · Accent colour" hidden><div class="wrap" id="body-accent"></div></section>
 
 <footer class="pg"><div class="wrap"><em>Eat well. Laugh often. Stay close.</em><br>KIN by the Lake · Design System · directions, proposal not approved</div></footer>
@@ -519,12 +520,96 @@
       '<div class="boards">' + board('One menu, three systems', '', spread, true) +
       board('Who does what', '', '<div class="cmp"><table style="min-width:560px"><tr><th>System</th><th>Role</th><th>Character</th></tr><tr><td style="text-align:left">01 · Ornamental Heritage</td><td style="text-align:left">Decoration and culture</td><td style="text-align:left">Symmetry, repetition, botanical geometry</td></tr><tr><td style="text-align:left">02 · Illustrated Heritage</td><td style="text-align:left">Story and sense of place</td><td style="text-align:left">Fine engraving and expressive sketch</td></tr><tr><td style="text-align:left">03 · Ceramic Brushwork</td><td style="text-align:left">Signature, link to the table</td><td style="text-align:left">Gesture, pigment, movement, circles</td></tr></table></div>', true) +
       board('Where each system leads', '', '<div class="cmp"><table style="min-width:560px"><tr><th>Touchpoint</th><th>Leads with</th><th>Note</th></tr>' + rows.map(function (r) { return '<tr><td style="text-align:left">' + r[0] + '</td><td style="text-align:left">' + r[1] + '</td><td style="text-align:left">' + r[2] + '</td></tr>'; }).join('') + '</table></div>', true) +
-      '<div class="board" style="grid-column:1/-1;background:var(--ink);color:var(--off)"><div class="caps" style="color:var(--brass-lt);font-size:10px">Next · Part 2</div><p style="margin:0">Menu materials and print finishes: paper, tone-on-tone embossing and debossing, relief and aged-brass foil. It will turn these three systems into physical menus once the material references are in.</p></div></div>';
+      '<div class="board" style="grid-column:1/-1;background:var(--ink);color:var(--off)"><div class="caps" style="color:var(--brass-lt);font-size:10px">Next · Part 2</div><p style="margin:0">Menu materials and print finishes: paper, tone-on-tone embossing and debossing, relief and aged-brass foil. → <a href="#materials" data-go="materials" style="color:var(--brass-lt)">Open Part 2</a></p></div></div>';
+  }
+
+  /* ================================================================== Part 2 · Menu materials & print finishes */
+  var MT = '../assets/direction/materials/';
+  var NOISE = 'url(' + MT + 'noise.png)';
+  var FOIL = 'linear-gradient(118deg,#7E5E2B 0%,#C9A766 22%,#8F6D35 40%,#E0C489 58%,#A27F42 76%,#6F5225 100%)';
+  function cloth(op) { return abs('inset:0;background-image:' + NOISE + ';mix-blend-mode:overlay;opacity:' + (op || .5) + ';pointer-events:none', ''); }
+  function paperBg(kind) { return 'url(' + MT + 'tex-paper-' + (kind || 'grain') + '.jpg) center/cover'; }
+  function light(strength) { return abs('inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,' + (strength || .14) + ') 0%,rgba(255,255,255,0) 45%,rgba(0,0,0,' + ((strength || .14) * 1.8) + ') 100%)', ''); }
+  // relief: same colour as the substrate, revealed only by highlight and shadow
+  function relief(inner, mode, k) {
+    k = k || 1;
+    var f = mode === 'deboss'
+      ? 'drop-shadow(' + (-0.9 * k) + 'px ' + (-0.9 * k) + 'px 0 rgba(0,0,0,.45)) drop-shadow(' + (0.8 * k) + 'px ' + (0.9 * k) + 'px 0 rgba(255,255,255,.22))'
+      : 'drop-shadow(' + (-0.8 * k) + 'px ' + (-0.8 * k) + 'px 0 rgba(255,255,255,.3)) drop-shadow(' + (1 * k) + 'px ' + (1.3 * k) + 'px .6px rgba(0,0,0,.42))';
+    return '<div style="position:absolute;inset:0;filter:' + f + '">' + inner + '</div>';
+  }
+  function foilLogo(w, extra) { return '<span style="display:block;width:' + w + 'px;aspect-ratio:1219/686;background:' + FOIL + ';-webkit-mask:url(../assets/logo/logo-primary.png) center/contain no-repeat;mask:url(../assets/logo/logo-primary.png) center/contain no-repeat;' + (extra || '') + '"></span>'; }
+  function foilFrame(inset) { return abs('inset:' + inset + 'px;border:1.4px solid transparent;border-image:' + FOIL + ' 1;pointer-events:none', ''); }
+  var LAKE_CLOTH = '#1E3D5A', LAKE_UP = '#21425F';
+
+  // ---- the three explorations' covers
+  function coverA(w, h) { // natural paper + fine-line print + restrained blind emboss
+    return art(w, h, paperBg('grain'), relief(abs('inset:16px;border:1px solid #EFEADF', '') + abs('inset:22px;border:.6px solid #EFEADF', ''), 'emboss', .8) +
+      eng('pavilion-sunset', 'var(--lake)', 'position:absolute;left:8%;right:8%;top:30%;height:44%;opacity:.95') +
+      abs('left:0;right:0;top:9%;display:flex;justify-content:center', logo(w * .36, 'var(--lake)')) +
+      abs('left:0;right:0;bottom:8%;text-align:center', '<span class="caps" style="color:var(--lake);font-size:' + Math.max(6, w / 36) + 'px">Menu</span>'));
+  }
+  function coverB(w, h) { // Lake Blue cloth + tone-on-tone ornamental blind emboss
+    return art(w, h, LAKE_CLOTH, relief(patt('wc-repeat', w * .42, LAKE_UP, 'transparent', w, h, ';position:absolute;inset:0'), 'emboss', w / 260) + cloth(.45) +
+      abs('left:22%;right:22%;top:36%;bottom:36%;background:' + LAKE_CLOTH + ';display:flex;align-items:center;justify-content:center', relief(abs('inset:6px;border:1px solid ' + LAKE_UP, ''), 'deboss', .8) + logo(w * .3, '#2B4F70', 'filter:drop-shadow(-.6px -.6px 0 rgba(0,0,0,.4)) drop-shadow(.6px .7px 0 rgba(255,255,255,.18))')) + light(.12));
+  }
+  function coverC(w, h) { // Lake Blue + architectural blind deboss + aged-brass foil
+    return art(w, h, LAKE_CLOTH, relief(eng('pavilion-sunset', '#11283E', 'position:absolute;left:-14%;right:-14%;top:24%;height:62%'), 'deboss', w / 200) + cloth(.45) +
+      foilFrame(Math.round(w * .05)) + abs('left:0;right:0;top:9%;display:flex;justify-content:center', foilLogo(w * .34)) +
+      abs('left:0;right:0;bottom:7.5%;text-align:center', '<span class="caps" style="font-size:' + Math.max(6, w / 36) + 'px;background:' + FOIL + ';-webkit-background-clip:text;background-clip:text;color:transparent">Lunch to last light</span>') + light(.12));
+  }
+  function interior(w, h, kind, sys) {
+    var deco = sys === 'orn' ? cornerFrame(w, h, 'var(--lake)', '') : '';
+    return art(w, h, paperBg(kind), deco + '<div class="menu-p" style="padding:' + (h * (sys === 'orn' ? .2 : .12)) + 'px ' + (w * .16) + 'px;gap:7px"><div class="caps" style="color:var(--brass)">I · Phuket &amp; Peranakan</div><div class="cz" style="font-size:15px">The Phuket kitchen</div>' + rf('stroke-1', '40%', '6px', 'var(--lake)') + dishes(P.slice(0, sys === 'brush' ? 2 : 3)) + (sys === 'brush' ? bw('contour-band', 'var(--lake)', 'width:100%;height:' + (h * .13) + 'px;flex:none') + '<div class="caps" style="color:var(--brass)">II · Italia</div>' + dishes(I.slice(0, 1)) : '') + '</div>');
+  }
+  function tabletop(cover) {
+    return art(560, 360, '#E4DED3', cloth(.35) +
+      abs('left:40px;top:34px;transform:rotate(-7deg);box-shadow:0 18px 30px rgba(15,34,51,.28)', cover) +
+      abs('right:26px;top:70px;width:270px;filter:drop-shadow(0 12px 14px rgba(15,34,51,.28))', '<img src="' + MT + 'plate-cut.png" alt="" style="width:100%;display:block">') +
+      light(.1), 'box-shadow:none');
+  }
+  function closeup(inner, w, h) { return art(w || 260, h || 260, 'transparent', inner, 'box-shadow:none;border:1px solid var(--line)'); }
+
+  function materialsBody() {
+    var techs = [
+      ['Blind embossing', 'Artwork raised from the material, no ink or foil. Tone-on-tone, revealed by light.', 'Ornament, botanical patterns, simplified borders', art(150, 150, LAKE_CLOTH, relief(ic('wc-a', 'position:absolute;inset:12%;width:76%;height:76%;color:' + LAKE_UP), 'emboss', 1.3) + cloth(.4) + light(.12), 'box-shadow:none')],
+      ['Blind debossing', 'Artwork pressed in. Fine shadows with an engraved feel.', 'Architectural line, frames, fine ornament', art(150, 150, LAKE_CLOTH, relief(sk('dining-hall', '#1B3853', 'position:absolute;inset:0;-webkit-mask-size:220%;mask-size:220%'), 'deboss', 1.2) + cloth(.4) + light(.12), 'box-shadow:none')],
+      ['Tone-on-tone print', 'Ink close to the substrate: lighter blue on Lake Blue, ivory on cream. Contrast without relief.', 'Patterns, contour artwork', art(150, 150, LAKE_CLOTH, bw('contour-swirl', '#34597C', fill()) + cloth(.4), 'box-shadow:none')],
+      ['Aged-brass foil', 'A muted antique-gold foil for the logo, titles and fine frames. Matched to Aged Brass from physical samples.', 'Logo, menu title, fine frames', art(150, 150, LAKE_CLOTH, cloth(.4) + foilFrame(12) + abs('left:0;right:0;top:56px;display:flex;justify-content:center', foilLogo(80)) + light(.1), 'box-shadow:none')]
+    ];
+    var techHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:22px">' + techs.map(function (t) { return '<div style="display:flex;flex-direction:column;gap:10px">' + t[3] + '<div><b class="cz" style="font-size:15px">' + t[0] + '</b><p class="note" style="margin:4px 0">' + t[1] + '</p><p class="note" style="margin:0"><b>For:</b> ' + t[2] + '</p></div></div>'; }).join('') + '</div>' +
+      '<p class="note" style="margin-top:16px"><b>Combinations to explore, never all at once:</b> A · Lake Blue material, architectural blind deboss, aged-brass foil logo. B · Off-White textured paper, blind-embossed ornament, deep-blue type. C · Lake Blue material, tonal botanical print, selective emboss. D · Natural ivory paper, painterly blue brushwork, blind-debossed frame.</p>';
+    var cats = stage(
+        cap(art(200, 260, paperBg('fibre'), '', ''), 'A · Natural fibrous paper') +
+        cap(art(200, 260, paperBg('grain'), '', ''), 'A · Fine-grain paper') +
+        cap(art(200, 260, LAKE_CLOTH, relief(patt('wc-repeat', 84, LAKE_UP, 'transparent', 200, 260, ';position:absolute;inset:0'), 'emboss', 1) + cloth(.45) + light(.12)), 'B · Tone-on-tone relief') +
+        cap(art(200, 260, LAKE_CLOTH, relief(eng('pavilion-sunset', '#11283E', 'position:absolute;left:-20%;right:-20%;top:28%;height:56%'), 'deboss', 1) + cloth(.45) + foilFrame(10) + abs('left:0;right:0;top:24px;display:flex;justify-content:center', foilLogo(70)) + light(.12)), 'C · Relief with aged-brass foil'));
+    function expl(letter, title, mat, treat, art_, chars, cover, close, closeCap, inner) {
+      return board('Exploration ' + letter + ' · ' + title, '', '<div class="finishes"><span><b>Material</b> · ' + mat + '</span><span><b>Treatment</b> · ' + treat + '</span><span><b>Artwork</b> · ' + art_ + '</span></div><p class="note" style="margin:0">' + chars + '</p>' +
+        stage(cap(cover(240, 340), '01 · Full cover') + cap(close, '03 · ' + closeCap) + cap(inner, '04 · Interior')) +
+        stage(cap(tabletop(cover(170, 240)), '05 · On the table with KIN’s plates')), true);
+    }
+    var paperClose = closeup('<div style="position:absolute;inset:0;background:' + paperBg('grain') + ';background-size:250%"></div>' + eng('pavilion-sunset', 'var(--lake)', 'position:absolute;left:-60%;width:260%;top:-40%;height:220%'), 260, 260);
+    var embossClose = closeup('<div style="position:absolute;inset:0;background:' + LAKE_CLOTH + '"></div>' + relief(patt('wc-repeat', 260, LAKE_UP, 'transparent', 260, 260, ';position:absolute;inset:0'), 'emboss', 2.2) + cloth(.6) + light(.22), 260, 260);
+    var foilClose = closeup('<div style="position:absolute;inset:0;background:' + LAKE_CLOTH + '"></div>' + relief(eng('pavilion-sunset', '#11283E', 'position:absolute;left:-90%;width:280%;top:-10%;height:170%'), 'deboss', 1.6) + cloth(.6) + abs('left:28px;top:24px', foilLogo(150)) + foilFrame(10) + light(.18), 260, 260);
+    var rows = [['01 · Ornamental Heritage', 'Blind-embossed patterns, debossed borders, fine tonal print'], ['02 · Illustrated Heritage', 'Architectural blind deboss (simplified line), engraved-style print, selective aged-brass foil'], ['03 · Ceramic Brushwork', 'Painterly blue print, tonal contour relief, selective concentric emboss. Pigment and brush texture stay printed, not pressed.']];
+    return '<div class="eyebrow">Part 2 · Menu design</div><h2>Materials &amp; print finishes</h2><p class="lead"><b>Tactile Heritage.</b> The menu as a crafted object, not a printed sheet. Part 2 adds no new artwork: it decides how the three graphic systems are printed, pressed and finished, in Lake Blue, Warm Off-White and Aged Brass only. Everything shown is a screen study; paper, relief depth and foil colour are chosen from physical samples with the printer.</p>' +
+      '<div class="boards">' +
+      board('Three material categories', 'A · Tactile paper and natural texture (menu interiors, inserts, wine list, story pages). B · Tone-on-tone embossing and debossing. C · Heritage relief with aged-brass foil.', cats, true) +
+      board('Finishing techniques', '', techHtml, true) +
+      board('Which finish suits which system', 'Not everything needs to be pressed. Fine architecture is simplified before debossing.', '<div class="cmp"><table style="min-width:560px"><tr><th>System</th><th>Suitable treatment</th></tr>' + rows.map(function (r) { return '<tr><td style="text-align:left">' + r[0] + '</td><td style="text-align:left">' + r[1] + '</td></tr>'; }).join('') + '</table></div>', true) +
+      expl('A', 'Natural paper & heritage print', 'Warm Off-White textured paper', 'Fine-line print, restrained blind emboss', '02 engraving or 01 ornament', 'Soft natural texture, a detailed Lake Blue drawing, generous space, an understated editorial page.', coverA, paperClose, 'Printed line on paper, close up', interior(240, 340, 'grain', 'orn')) +
+      expl('B', 'Tonal ornamental relief', 'Deep Lake Blue textured cover', 'Blind emboss / deboss', '01 Ornamental Heritage', 'Repeating tiles pressed tone-on-tone, visible only in raking light. Minimal type, no foil.', coverB, embossClose, 'Embossed tiles under directional light', interior(240, 340, 'fibre', 'brush')) +
+      expl('C', 'Architectural heritage relief', 'Lake Blue premium cover material', 'Architectural blind deboss + aged-brass foil', '02 Illustrated Heritage', 'A large drawing of the pavilion pressed into the cover, with a restrained foil logo and fine foil frame.', coverC, foilClose, 'Deboss and foil detail', interior(240, 340, 'grain', 'orn')) +
+      board('Production and day-to-day use', '', '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;font-size:14px"><div><b class="cz">Emboss &amp; deboss</b><ul style="margin:6px 0 0;padding-left:18px"><li>Minimum line weight and spacing</li><li>Substrate thickness and relief depth</li><li>Die cost against print run</li><li>Simplify fine artwork first</li></ul></div><div><b class="cz">Foil</b><ul style="margin:6px 0 0;padding-left:18px"><li>Muted antique gold, not bright yellow</li><li>Adhesion on textured material</li><li>Small-detail reproduction</li><li>Scratch resistance</li></ul></div><div><b class="cz">Paper</b><ul style="margin:6px 0 0;padding-left:18px"><li>Fine-line and small-type clarity</li><li>Opacity, grain direction, folding</li><li>Ink absorption</li></ul></div><div><b class="cz">Restaurant use</b><ul style="margin:6px 0 0;padding-left:18px"><li>Daily handling and spills</li><li>Cleaning and replacement cost</li><li>Replaceable inserts for menu updates</li><li>Construction: rigid cover + inserts, folded card or sewn booklet</li></ul></div></div>', true) +
+      board('How each exploration will be judged', '', '<div class="finishes">' + ['Brand consistency', 'Material quality', 'Graphic integration', 'Visual balance', 'Production credibility', 'Practicality', 'Harmony with the plates'].map(function (t) { return '<span>' + t + '</span>'; }).join('') + '</div>', true) +
+      board('Material references', 'Internal only. Their green and burgundy colours are not adopted; only the techniques are.', refs([['materials/ref-01-fibrous-paper.jpg', '01 · Natural fibrous paper'], ['materials/ref-02-fine-grain-paper.jpg', '02 · Fine-grain paper'], ['materials/ref-03-architectural-relief.jpg', '03 · Architectural relief'], ['materials/ref-04-botanical-relief.jpg', '04 · Ornamental botanical relief'], ['materials/ref-05-flowing-botanical.jpg', '05 · Flowing botanical relief'], ['materials/ref-06-relief-foil.jpg', '06 · Relief with metallic detail'], ['materials/ref-07-architectural-menu.jpg', '07 · Monochrome architectural menu']]), true) +
+      '</div>';
   }
 
   /* tabs */
-  var TABS = [['current', 'Current', ''], ['shared', 'Reflection line', ''], ['ornamental', '01 · Ornamental', ''], ['illustrated', '02 · Illustrated', ''], ['brushwork', '03 · Brushwork', ''], ['together', 'Together', ''], ['accent', 'Accent · optional', '']];
-  var BODY = { current: currentBody, shared: sharedBody, ornamental: ornamentalBody, illustrated: illustratedBody, brushwork: brushBody, together: systemsTogether, accent: accentBody };
+  var TABS = [['current', 'Current', ''], ['shared', 'Reflection line', ''], ['ornamental', '01 · Ornamental', ''], ['illustrated', '02 · Illustrated', ''], ['brushwork', '03 · Brushwork', ''], ['together', 'Together', ''], ['materials', 'Part 2 · Menu materials', ''], ['accent', 'Accent · optional', '']];
+  var BODY = { current: currentBody, shared: sharedBody, ornamental: ornamentalBody, illustrated: illustratedBody, brushwork: brushBody, together: systemsTogether, materials: materialsBody, accent: accentBody };
   var built = {};
   function build(id) { if (built[id]) return; built[id] = 1; document.getElementById('body-' + id).innerHTML = BODY[id](); }
   function show(id, scroll) {
