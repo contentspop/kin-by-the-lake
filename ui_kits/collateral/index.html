@@ -93,10 +93,10 @@
   function bw(n, c, css, fit) { return msk(BR + n + '.png', c, css, fit); }
   function rf(n, w, h, c, css) { return '<span style="display:block;width:' + w + ';height:' + h + ';background:' + c + ';-webkit-mask:url(' + LN + n + '.png) center/100% 100% no-repeat;mask:url(' + LN + n + '.png) center/100% 100% no-repeat;' + (css || '') + '"></span>'; }
   var FOIL = 'linear-gradient(118deg,#7E5E2B 0%,#C9A766 22%,#8F6D35 40%,#E0C489 58%,#A27F42 76%,#6F5225 100%)';
-  var CLOTH = '#1E3D5A', UP = '#21425F';
-  function cloth(op) { return abs('inset:0;background:url(' + MT + 'noise.png);mix-blend-mode:overlay;opacity:' + (op || .45) + ';pointer-events:none', ''); }
+  var CLOTH = '#1E3D5A url(' + MT + 'tex-cover-blue.jpg) 0 0/360px repeat', UP = '#21425F';
+  function cloth(op) { return abs('inset:0;background:url(' + MT + 'noise.png);mix-blend-mode:overlay;opacity:' + ((op || .45) * .4) + ';pointer-events:none', ''); }
   function light(s) { return abs('inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,' + (s || .12) + ') 0%,rgba(255,255,255,0) 45%,rgba(0,0,0,' + ((s || .12) * 1.8) + ') 100%)', ''); }
-  function paper(k) { return 'url(' + MT + 'tex-paper-' + (k || 'grain') + '.jpg) center/cover'; }
+  function paper(k) { return '#F3EFE6 url(' + MT + 'tex-paper-fine.jpg) 0 0/' + (k === 'fibre' ? 300 : 240) + 'px repeat'; }
   function relief(inner, mode, k) { k = k || 1; var f = mode === 'deboss' ? 'drop-shadow(' + (-.9 * k) + 'px ' + (-.9 * k) + 'px 0 rgba(0,0,0,.45)) drop-shadow(' + (.8 * k) + 'px ' + (.9 * k) + 'px 0 rgba(255,255,255,.22))' : 'drop-shadow(' + (-.8 * k) + 'px ' + (-.8 * k) + 'px 0 rgba(255,255,255,.3)) drop-shadow(' + k + 'px ' + (1.3 * k) + 'px .6px rgba(0,0,0,.42))'; return '<div style="position:absolute;inset:0;filter:' + f + '">' + inner + '</div>'; }
   function foilLogo(w, extra) { return '<span style="display:block;width:' + w + 'px;aspect-ratio:1219/686;background:' + FOIL + ';-webkit-mask:url(' + A + 'logo/logo-primary.png) center/contain no-repeat;mask:url(' + A + 'logo/logo-primary.png) center/contain no-repeat;' + (extra || '') + '"></span>'; }
   function foilFrame(i) { return abs('inset:' + i + 'px;border:1.3px solid transparent;border-image:' + FOIL + ' 1;pointer-events:none', ''); }
@@ -250,7 +250,7 @@
         stage(cap(cover(240, 340), '01 · Full cover') + cap(close, '03 · ' + closeCap) + cap(inner, '04 · Interior')) +
         stage(cap(tabletop(cover(170, 240)), '05 · On the table with KIN’s plates')), true);
     }
-    var paperClose = closeup('<div style="position:absolute;inset:0;background:' + paperBg('grain') + ';background-size:250%"></div>' + eng('pavilion-sunset', 'var(--lake)', 'position:absolute;left:-60%;width:260%;top:-40%;height:220%'), 260, 260);
+    var paperClose = closeup('<div style="position:absolute;inset:0;background:' + paperBg('grain') + ';background-size:520px"></div>' + eng('pavilion-sunset', 'var(--lake)', 'position:absolute;left:-60%;width:260%;top:-40%;height:220%'), 260, 260);
     var embossClose = closeup('<div style="position:absolute;inset:0;background:' + LAKE_CLOTH + '"></div>' + relief(patt('wc-repeat', 260, LAKE_UP, 'transparent', 260, 260, ';position:absolute;inset:0'), 'emboss', 2.2) + cloth(.6) + light(.22), 260, 260);
     var foilClose = closeup('<div style="position:absolute;inset:0;background:' + LAKE_CLOTH + '"></div>' + relief(eng('pavilion-sunset', '#11283E', 'position:absolute;left:-90%;width:280%;top:-10%;height:170%'), 'deboss', 1.6) + cloth(.6) + abs('left:28px;top:24px', foilLogo(150)) + foilFrame(10) + light(.18), 260, 260);
     var rows = [['01 · Ornamental Heritage', 'Blind-embossed patterns, debossed borders, fine tonal print'], ['02 · Illustrated Heritage', 'Architectural blind deboss (simplified line), engraved-style print, selective aged-brass foil'], ['03 · Ceramic Brushwork', 'Painterly blue print, tonal contour relief, selective concentric emboss. Pigment and brush texture stay printed, not pressed.']];
