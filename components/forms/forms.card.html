@@ -15,4 +15,4 @@ return <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:24}}>
 <div style={{display:'flex',flexDirection:'column',gap:12}}><span className="lb">Seating</span><Radio name="s" checked={seat==='hall'} onChange={()=>setSeat('hall')}>Dining hall</Radio><Radio name="s" checked={seat==='pav'} onChange={()=>setSeat('pav')}>Pavilion (8–14 guests)</Radio><span className="lb">Extras</span><Checkbox checked={hc} onChange={setHc}>High chair</Checkbox><Checkbox>Longtail boat arrival</Checkbox><span className="lb">Language</span><SegmentedControl value={lang} onChange={setLang} options={[{value:'en',label:'EN'},{value:'th',label:'ไทย',lang:'th'},{value:'it',label:'IT'}]}/></div>
 </div>; }
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-</script><script src="../../comments/comments-config.js?v=20261023b"></script><script src="../../comments/comments.js?v=20261026c" defer></script></body></html>
+</script><script src="../../comments/comments-config.js?v=20261023b"></script><script src="../../comments/comments.js?v=20261027a" defer></script></body></html>
